@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meilech & Tzippy's Wedding</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    @keyframes pulse-grow {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+.pulse-text {
+  animation: pulse-grow 2s infinite ease-in-out;
+  display: inline-block;
+}
+    body {
+      font-family: 'Open Sans', sans-serif;
+      scroll-behavior: smooth;
+    }
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+    }
+    .fade-enter { opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .fade-enter-active { opacity: 1; transform: translateY(0); }
+    .sparkle:hover {
+  animation: sparkle-glow 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes sparkle-glow {
+  0% {
+    text-shadow: 0 0 5px gold;
+  }
+  100% {
+    text-shadow: 0 0 15px goldenrod, 0 0 25px #fef08a;
+  }
+}
+  </style>
+</head>
+<body class="bg-gradient-to-br from-[#fdfaf3] via-[#f5f2ea] to-[#eae6d8] text-gray-900">
+
+  <!-- Navigation -->
+  <header class="bg-white shadow-md sticky top-0 z-10">
+    <nav class="container mx-auto flex justify-between items-center p-4">
+      <h1 class="text-xl font-bold text-yellow-800">Meilech & Tzippy</h1>
+      <ul class="flex space-x-6 text-yellow-700 font-medium text-sm md:text-base">
+        <li><a href="#" class="hover:text-yellow-900">Home</a></li>
+        <li><a href="#countdown-section" class="hover:text-yellow-900">Countdown</a></li>
+        <li><a href="#details-section" class="hover:text-yellow-900">Details</a></li>
+        <li><a href="#map-section" class="hover:text-yellow-900">Map</a></li>
+        <li><a href="#shabbos-section" class="hover:text-yellow-900">Shabbos</a></li>
+        <li><a href="#bruchos-section" class="hover:text-yellow-900">Bruchos</a></li>
+        <li><a href="#chat-section" class="hover:text-yellow-900">Chat</a></li>
+        <li><a href="#thankyou-section" class="hover:text-yellow-900">Thanks</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="text-center min-h-screen py-32 px-6 bg-gradient-to-b from-[#fdfaf3] to-[#f5f2ea] bg-[url('https://www.transparenttextures.com/patterns/white-wall-3.png')] bg-repeat">
+  <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-yellow-800">You're Invited</h2>
+  <p class="text-2xl md:text-3xl lg:text-4xl mb-8 text-yellow-700">Join us in celebrating the wedding of</p>
+  <h1 class="text-5xl md:text-6xl font-bold text-yellow-900 mb-6 sparkle">Meilech & Tzippy</h1>
+  <p class="text-xl md:text-2xl lg:text-3xl text-yellow-700">Monday, November 3, 2025 | י"ב חשון תשפ"ו</p>
+  <div class="flex justify-center mt-10">
+  <div class="w-24 h-24 rounded-full border-4 border-yellow-700 flex items-center justify-center text-2xl font-bold text-yellow-800 shadow-lg bg-white bg-opacity-80">
+    M & T
+  </div>
+</div>
+
+</section>
+
+  <!-- Countdown Section -->
+  <section id="countdown-section" class="text-center min-h-screen py-32 px-6">
+    <h1 class="text-5xl md:text-6xl font-bold text-yellow-800 mb-6">Countdown to the Chasunah</h1>
+<p class="text-2xl text-yellow-700 mb-6">The excitement is building...We're counting down the moments!</p>
+    <div class="mx-auto mb-12 max-w-md bg-white bg-opacity-80 p-10 rounded-xl shadow-lg">
+      <div class="text-xl font-medium text-yellow-700 mb-2">Time left until the big day:</div>
+      <div class="text-6xl font-bold text-yellow-900" id="totalDays">0</div>
+      <div class="text-2xl text-yellow-700 mt-2">Total Days</div>
+    </div>
+    <div id="countdown" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 justify-center text-center text-lg font-semibold">
+      <div class="bg-white bg-opacity-70 p-4 rounded shadow flex flex-col justify-between h-32">
+        <div class="text-yellow-700 text-sm">Weeks</div>
+        <div id="weeks" class="text-3xl text-yellow-900">0</div>
+        <div class="text-yellow-700 text-sm">Remaining</div>
+      </div>
+      <div class="bg-white bg-opacity-70 p-4 rounded shadow flex flex-col justify-between h-32">
+        <div class="text-yellow-700 text-sm">Days</div>
+        <div id="days" class="text-3xl text-yellow-900">0</div>
+        <div class="text-yellow-700 text-sm">Remaining</div>
+      </div>
+      <div class="bg-white bg-opacity-70 p-4 rounded shadow flex flex-col justify-between h-32">
+        <div class="text-yellow-700 text-sm">Hours</div>
+        <div id="hours" class="text-3xl text-yellow-900">0</div>
+        <div class="text-yellow-700 text-sm">Remaining</div>
+      </div>
+      <div class="bg-white bg-opacity-70 p-4 rounded shadow flex flex-col justify-between h-32">
+        <div class="text-yellow-700 text-sm">Minutes</div>
+        <div id="minutes" class="text-3xl text-yellow-900">0</div>
+        <div class="text-yellow-700 text-sm">Remaining</div>
+      </div>
+      <div class="bg-white bg-opacity-70 p-4 rounded shadow flex flex-col justify-between h-32">
+        <div class="text-yellow-700 text-sm">Seconds</div>
+        <div id="seconds" class="text-3xl text-yellow-900">0</div>
+        <div class="text-yellow-700 text-sm">Remaining</div>
+      </div>
+    </div>
+    <p class="text-md text-yellow-700 mt-6 pulse-text">We can't wait to celebrate with you!</p>
+  </section>
+
+  <!-- Wedding Details Section -->
+  <section id="details-section" class="text-center min-h-screen py-32 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6]">
+    <h1 class="text-5xl md:text-6xl font-bold text-yellow-800 mb-6">Wedding Day Details</h1>
+    <p class="text-xl text-yellow-700 mb-10">Here’s everything you need to know to celebrate with us!</p>
+<div class="max-w-3xl mx-auto text-center bg-white bg-opacity-80 p-10 rounded-xl shadow-lg space-y-12">
+      <div>
+        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Venue</h2>
+        <p class="text-xl text-yellow-800">Ateres Chaya Surah<br>106 S Madison Ave<br>Spring Valley, NY</p>
+      </div>
+
+      <div>
+        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Date</h2>
+        <p class="text-xl text-yellow-800">Monday, November 3, 2025<br>י"ב חשון תשפ"ו</p>
+      </div>
+
+      <div>
+        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Schedule</h2>
+        <p class="text-xl text-yellow-800">
+          Kabulas Panim – 6:00 PM<br>
+          Chuppah – 7:00 PM<br>
+          Seudah – 8:30 PM<br>
+          Dancing Begins – 10:00 PM
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Atmosphere</h2>
+        <p class="text-xl text-yellow-800">Come ready to celebrate in joy and dignity. The evening will be full of music, warmth, and true simcha.</p>
+      </div>
+
+      <div>
+        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Transportation & Parking</h2>
+        <p class="text-xl text-yellow-800">There is parking available on-site. Please allow extra time for arrival as we expect a full house.</p>
+      </div>
+    </div>
+    <p class="mt-12 text-yellow-700 text-xl">We can't wait to see you and celebrate this special day together!</p>
+  </section>
+
+  <!-- Page 4: Map Section -->
+  <section id="map-section" class="text-center py-16 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6] shadow-inner">
+    <h1 class="text-5xl md:text-6xl font-bold text-yellow-800 mb-6">Getting Around</h1>
+    <p class="text-xl text-yellow-700 mb-4">Lost? Don’t worry. We pinned the simcha trail just for you.</p>
+    <p class="text-md text-yellow-700 mb-10 italic">Need help finding us? Just follow the music and smiles — we’ll be there!</p>
+    <div class="max-w-4xl mx-auto rounded-xl overflow-hidden shadow-lg mb-10">
+    <iframe 
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2941.136193816545!2d-74.0368994845449!3d41.12197257616733!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2d2f1dcd99fd9%3A0x624c15339e147dc9!2s106%20S%20Madison%20Ave%2C%20Spring%20Valley%2C%20NY%2010977!5e0!3m2!1sen!2sus!4v1716400551096!5m2!1sen!2sus" 
+  style="width: 100%; height: 480px; border: 0;" 
+  allowfullscreen="" 
+  loading="lazy" 
+  referrerpolicy="no-referrer-when-downgrade">
+</iframe>
+
+    </div>
+    <div class="max-w-3xl mx-auto text-left bg-white bg-opacity-80 p-8 rounded-xl shadow space-y-8 text-lg">
+   <div>
+        <h2 class="text-2xl font-bold text-yellow-900">🗺️ What’s Pinned?</h2>
+        <ul class="list-disc list-inside text-yellow-800">
+                    <li><strong>Wedding Venue:</strong> Ateres Chaya Surah, Spring Valley</li>
+          <li><strong>Oifruf:</strong> 3 Harvest Ct, Monsey</li>
+          <li><strong>Bogleiten:</strong> 15 Sophia St, Monsey</li>
+          <li><strong>Bovarfen:</strong> Belz Shul, 1 Harvest Ct</li>
+          <li><strong>Shabbos Sheva Brachas:</strong> Bobov Shul, Jill Ln</li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="text-2xl font-bold text-yellow-900">🧭 Tip:</h2>
+        <p class="text-yellow-800">Leave a few minutes early. Monsey traffic likes to surprise you—especially on simcha days!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Page 5: Shabbos Events -->
+  <section id="shabbos-section" class="text-center py-16 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6] shadow-inner">
+    <h1 class="text-5xl md:text-6xl font-bold text-yellow-800 mb-6">Shabbos Oifruf & Sheva Brachas</h1>
+    <p class="text-xl text-yellow-700 mb-10">Join us for the special Shabbos events surrounding our wedding celebration.</p>
+    <div class="max-w-3xl mx-auto text-center bg-white bg-opacity-80 p-10 rounded-xl shadow-lg space-y-12">
+      <div>
+        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Shabbos Oifruf Seudah</h2>
+        <p class="text-xl text-yellow-800">Beth Medrash D'Monsey Simcha Hall<br>3 Harvest Ct.<br>Monsey, NY 10952</p>
+      </div>
+      <div>
+        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Bogleiten</h2>
+        <p class="text-xl text-yellow-800">Departing from:<br>15 Sophia St.<br>Monsey, NY 10952</p>
+      </div>
+      <div>
+        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Bovarfen</h2>
+        <p class="text-xl text-yellow-800">Belz Shul<br>1 Harvest Ct.<br>Monsey, NY 10952</p>
+      </div>
+      <div>
+        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Shabbos Sheva Brachas</h2>
+        <p class="text-xl text-yellow-800">Bobov Shul<br>20 Jill Ln.<br>Monsey, NY 10952</p>
+      </div>
+    </div>
+  </section>
+
+<!-- Page 6: Bruchos & Wishes -->
+  <section id="bruchos-section" class="text-center py-16 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6] shadow-inner text-gray-900">
+    <h1 class="text-5xl md:text-6xl font-bold text-yellow-800 mb-6">Bruchos & Warm Wishes</h1>
+    <p class="text-xl text-yellow-700 mb-10">We would love to hear from you! Leave a heartfelt brocha or message for us to cherish.</p>
+
+    <div class="max-w-2xl mx-auto">
+      <form id="bruchaForm" class="bg-white bg-opacity-80 p-8 rounded-xl shadow-md space-y-6">
+        <div>
+          <label for="name" class="block text-lg text-yellow-900 font-semibold mb-1">Your Name</label>
+          <input type="text" id="name" name="name" class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-600" required>
+        </div>
+        <div>
+          <label for="message" class="block text-lg text-yellow-900 font-semibold mb-1">Your Brucha / Message</label>
+          <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-600" required></textarea>
+        </div>
+        <button type="submit" class="bg-yellow-700 hover:bg-yellow-800 text-white px-6 py-2 rounded text-lg font-semibold">Post Brucha</button>
+      </form>
+
+      <div class="mt-12">
+        <h2 class="text-3xl font-bold text-yellow-900 mb-4">Public Messages</h2>
+        <p class="text-yellow-700 mb-6">Messages will appear here for everyone to read and enjoy.</p>
+        <div class="space-y-4 text-left" id="messages">
+          <div class="bg-white bg-opacity-60 p-4 rounded shadow">
+            <p class="font-bold text-yellow-800">Sample Guest</p>
+            <p class="text-yellow-900">Mazal tov! May your home be filled with joy, warmth, and bracha always!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Page 7: Chat & Questions -->
+<section id="chat-section" class="text-center py-16 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6] shadow-inner text-gray-900">
+  <h1 class="text-5xl md:text-6xl font-bold text-yellow-800 mb-6">Have a Question?</h1>
+  <p class="text-xl text-yellow-700 mb-10">Whether it's about directions, what time to show up, or where to park — we’re (virtually) here to help!</p>
+
+  <div class="max-w-2xl mx-auto bg-white bg-opacity-80 p-8 rounded-xl shadow-md">
+    <form action="https://formsubmit.co/elimelechmoster@gmail.com" method="POST" class="space-y-6">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_autoresponse" value="Thank you for your message! We'll be in touch soon.">
+
+      <div>
+        <label for="chat-name" class="block text-lg text-yellow-900 font-semibold mb-1">Your Name</label>
+        <input type="text" id="chat-name" name="name" class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-600" required>
+      </div>
+      <div>
+        <label for="question" class="block text-lg text-yellow-900 font-semibold mb-1">Your Question</label>
+        <textarea id="question" name="question" rows="4" class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-600" required></textarea>
+      </div>
+      <button type="submit" class="bg-yellow-700 hover:bg-yellow-800 text-white px-6 py-2 rounded text-lg font-semibold">Send Message</button>
+    </form>
+
+    <div class="mt-10 text-yellow-700">
+      <p class="text-lg italic">We’ll reply soon — or you can just come find us by the food table 😉</p>
+    </div>
+  </div>
+</section>
+
+<!-- Page 8: Thank You -->
+<section id="thankyou-section" class="text-center py-20 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6] shadow-inner text-gray-900">
+  <h1 class="text-5xl md:text-6xl font-bold text-yellow-800 mb-8">Thank You for Being Part of Our Simcha</h1>
+  <div class="max-w-3xl mx-auto text-xl text-yellow-800 space-y-6 bg-white bg-opacity-80 p-10 rounded-xl shadow-lg">
+    <p>Dear family and friends,</p>
+    <p>We’re so excited as we count down the days to our wedding, and we feel incredibly lucky to be surrounded by such love and support. Your warm wishes, thoughtful messages, and excitement mean more than we can say.</p>
+    <p>Thank you for joining us on this beautiful journey. Whether you’ll be dancing with us in person or celebrating from afar, your presence in our lives is a true bracha.</p>
+    <p>We can’t wait to celebrate together with joy, music, and lots of smiles!</p>
+    <p class="text-2xl font-bold text-yellow-900">With love and excitement,</p>
+    <p class="text-2xl font-bold text-yellow-900">Meilech & Tzippy</p>
+  </div>
+
+  <div class="mt-10">
+    <a href="#chat-section" class="inline-block bg-yellow-700 hover:bg-yellow-800 text-white text-lg font-semibold px-6 py-3 rounded shadow">Send Us a Message</a>
+  </div>
+</section>
+
+<footer class="text-center py-6 text-yellow-700 text-sm">
+  <p>© 2025 Meilech & Tzippy. Built with love and simcha.</p>
+  <p>Contact us at <a href="mailto:elimelechmoster@gmail.com" class="underline">elimelechmoster@gmail.com</a></p>
+</footer>
+
+  <!-- Countdown Script -->
+  <script>
+    const targetDate = new Date("2025-11-03T18:00:00").getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      const totalDays = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const weeks = Math.floor(totalDays / 7);
+      const days = totalDays % 7;
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("weeks").innerText = weeks;
+      document.getElementById("days").innerText = days;
+      document.getElementById("hours").innerText = hours;
+      document.getElementById("minutes").innerText = minutes;
+      document.getElementById("seconds").innerText = seconds;
+      document.getElementById("totalDays").innerText = totalDays;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+
+  <!-- Brucha Form Script -->
+  <script>
+    const form = document.getElementById('bruchaForm');
+    const messagesDiv = document.getElementById('messages');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (name && message) {
+        const newMsg = document.createElement('div');
+        newMsg.className = 'bg-white bg-opacity-60 p-4 rounded shadow fade-enter';
+        newMsg.innerHTML = `<p class='font-bold text-yellow-800'>${name}</p><p class='text-yellow-900'>${message}</p>`;
+
+        messagesDiv.insertBefore(newMsg, messagesDiv.firstChild);
+
+        setTimeout(() => {
+          newMsg.classList.add('fade-enter-active');
+        }, 10);
+
+        form.reset();
+      }
+    });
+  </script>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+  const totalDaysEl = document.getElementById("totalDays");
+
+  totalDaysEl.style.cursor = "pointer";
+  totalDaysEl.addEventListener("click", () => {
+    const end = Date.now() + 1500; // 1.5 seconds
+
+    const colors = ['#92400e', '#ca8a04', '#fef9c3', '#fde68a'];
+
+    (function frame() {
+      confetti({
+        particleCount: 5,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: colors
+      });
+      confetti({
+        particleCount: 5,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: colors
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    })();
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+  window.addEventListener('load', () => {
+    const duration = 2000;
+    const end = Date.now() + duration;
+    const colors = ['#ca8a04', '#fef9c3', '#fde68a'];
+
+    (function frame() {
+      confetti({
+        particleCount: 5,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: colors,
+      });
+      confetti({
+        particleCount: 5,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: colors,
+      });
+      if (Date.now() < end) requestAnimationFrame(frame);
+    })();
+  });
+</script>
+</body>
+</html>
