@@ -289,17 +289,18 @@
 
     const name = form.name.value;
     const message = form.message.value;
-    const timestamp = new Date().toLocaleString();
 
-    const data = [[name, message, timestamp]];
+    const data = {
+      contents: {
+        name: name,
+        message: message
+      }
+    };
 
-    const sheetEndpoint = 'https://v1.nocodeapi.com/meilech/google_sheets/gToAnvPxvtJoMFpm?tabId=Sheet1';
+    const sheetEndpoint = 'https://script.google.com/macros/s/AKfycbzVRNF0j8vvXKT0JgA2IzT5uI1uDt2jRsGbLvChWVhvDUF4oNslNZqlm1XYdKn3sSre/exec';
 
     const response = await fetch(sheetEndpoint, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify(data)
     });
 
