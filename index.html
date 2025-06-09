@@ -106,17 +106,20 @@
     </nav>
   </header>
 
-<!-- Hero Section -->
+<!-- Hero Section (drop-in replacement) -->
 <section
   id="hero-section"
   class="text-center min-h-screen flex flex-col justify-center items-center
          bg-gradient-to-b from-[#fdfaf3] to-[#f5f2ea]
+         bg-[url('https://www.transparenttextures.com/patterns/white-wall-3.png')] bg-repeat
          px-6"
 >
-  <!-- 1) Live Countdown Headline -->
+  <!-- 1) Live Countdown Headline, 3 lines -->
   <h1 id="hero-countdown"
-      class="text-5xl md:text-6xl lg:text-7xl font-playfair text-yellow-800 mb-6">
-    Only <span id="daysLeft">150</span> days to go until Meilech &amp; Tzippy’s wedding!
+      class="text-5xl md:text-6xl lg:text-7xl font-playfair text-yellow-800 mb-6 leading-tight">
+    Only <span id="daysLeft" class="inline-block">150</span> days to go until<br/>
+    Meilech &amp; Tzippy’s<br/>
+    wedding!
   </h1>
 
   <!-- 2) Save the Date Button -->
@@ -140,49 +143,61 @@
     </p>
   </div>
 </section>
+
 <script>
   (function() {
-    const WEDDING_DATE = new Date("2025-11-03T18:30:00");
-    const TOTAL_DAYS   = Math.ceil((WEDDING_DATE - new Date())/(1000*60*60*24)) + document.getElementById('daysLeft').innerText*0; // placeholder
+    // 1) Wedding date & initial countdown baseline
+    const WEDDING_DATE = new Date("2025-11-03T18:30:00").getTime();
+    const INITIAL_DAYS = 150;
+
+    // 2) Element references
+    const daysLeftEl   = document.getElementById("daysLeft");
+    const percentEl    = document.getElementById("percentDone");
+    const fillEl       = document.getElementById("progress-fill");
 
     function updateHero() {
-      const now        = new Date();
-      const diffMs     = WEDDING_DATE - now;
-      const daysLeft   = Math.max(0, Math.ceil(diffMs / (1000*60*60*24)));
-      const daysTotal  =  Math.ceil((WEDDING_DATE - new Date("2025-11-03T00:00:00"))/(1000*60*60*24));
-      const daysDone   = daysTotal - daysLeft;
-      const pctDone    = Math.floor((daysDone / daysTotal) * 100);
-
-      // Update headline
-      document.getElementById('daysLeft').innerText = daysLeft;
-      // Update progress bar fill
-      document.getElementById('progress-fill').style.width = pctDone + '%';
-      // Update percent text
-      document.getElementById('percentDone').innerText = pctDone + '%';
+      const now      = Date.now();
+      const diffMs   = WEDDING_DATE - now;
+      const daysLeft = Math.max(0, Math.ceil(diffMs / (1000*60*60*24)));
+      // Calculate percent from the 150-day baseline
+      const daysDone = INITIAL_DAYS - daysLeft;
+      const pctDone  = Math.min(100, Math.max(0,
+                            Math.round((daysDone / INITIAL_DAYS) * 100)));
+      
+      // Update the three-lined headline
+      daysLeftEl.innerText = daysLeft;
+      // Update progress bar and percent text
+      fillEl.style.width = pctDone + "%";
+      percentEl.innerText = pctDone + "%";
     }
 
-    // Setup Save-the-Date link
+    // 3) Build and attach Google Calendar link
     function setupSaveDate() {
       const title    = encodeURIComponent("Meilech & Tzippy’s Wedding");
-      const details  = encodeURIComponent("Join us for the chuppah, seudah, dancing & simcha!\nVenue: Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY");
+      const details  = encodeURIComponent(
+        "Join us for the chuppah, seudah, dancing & simcha!\n\n" +
+        "Venue: Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY"
+      );
       const location = encodeURIComponent("Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY");
       const start    = WEDDING_DATE.toISOString().replace(/-|:|\.\d+/g, "");
-      const end      = new Date(WEDDING_DATE.getTime()+4*60*60*1000).toISOString().replace(/-|:|\.\d+/g, "");
+      const end      = new Date(WEDDING_DATE + 4*60*60*1000)  // +4h
+                          .toISOString().replace(/-|:|\.\d+/g, "");
       const href = [
         "https://calendar.google.com/calendar/render?action=TEMPLATE",
-        "text="+title,
-        "dates="+start+"/"+end,
-        "details="+details,
-        "location="+location,
+        "text=" + title,
+        "dates=" + start + "/" + end,
+        "details=" + details,
+        "location=" + location,
         "sf=true&output=xml"
       ].join("&");
-      document.getElementById('save-date').href = href;
+      document.getElementById("save-date").href = href;
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    // Initialize on page load
+    document.addEventListener("DOMContentLoaded", () => {
       setupSaveDate();
       updateHero();
-      setInterval(updateHero, 60*60*1000); // refresh hourly
+      setInterval(updateHero, 1000);  // refresh every second
     });
   })();
 </script>
@@ -485,32 +500,6 @@
   <p>Contact us at <a href="mailto:elimelechmoster@gmail.com" class="underline">elimelechmoster@gmail.com</a></p>
 </footer>
 
-  <!-- Countdown Script -->
-  <script>
-    const targetDate = new Date("2025-11-03T18:00:00").getTime();
-
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const distance = targetDate - now;
-
-      const totalDays = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const weeks = Math.floor(totalDays / 7);
-      const days = totalDays % 7;
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      document.getElementById("weeks").innerText = weeks;
-      document.getElementById("days").innerText = days;
-      document.getElementById("hours").innerText = hours;
-      document.getElementById("minutes").innerText = minutes;
-      document.getElementById("seconds").innerText = seconds;
-      document.getElementById("totalDays").innerText = totalDays;
-    }
-
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-  </script>
 
   <!-- Brucha Form Script -->
   <script>
