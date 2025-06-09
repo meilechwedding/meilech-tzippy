@@ -322,15 +322,22 @@
 <!-- Page 7: Chat & Questions -->
 <section id="chat-section" class="text-center py-16 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6] shadow-inner text-gray-900">
   <h1 class="text-5xl md:text-6xl font-bold text-yellow-800 mb-6">Have a Question?</h1>
-  <p class="text-xl text-yellow-700 mb-10">Whether it's about directions, what time to show up, or where to park — we’re (virtually) here to help!</p>
+  <p class="text-xl text-yellow-700 mb-10">
+    Whether it's about directions, what time to show up, or where to park — we’re (virtually) here to help!
+  </p>
 
   <div class="max-w-2xl mx-auto bg-white bg-opacity-80 p-8 rounded-xl shadow-md">
     <form action="https://formsubmit.co/elimelechmoster@gmail.com" method="POST" class="space-y-6">
       <!-- Auto-reply message -->
       <input type="hidden" name="_autoresponse" value="Thank you for your message! We'll be in touch soon.">
-
       <!-- Display message as a table -->
       <input type="hidden" name="_template" value="table">
+
+      <!-- honeypot (invisible to real users) -->
+      <div style="display: none;">
+        <label for="hp_field">Leave this blank</label>
+        <input type="text" id="hp_field" name="hp_field" autocomplete="off">
+      </div>
 
       <!-- Name Field -->
       <div>
@@ -361,6 +368,31 @@
     </div>
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const chatForm = document.querySelector('#chat-section form');
+    const startTime = Date.now();
+
+    chatForm.addEventListener('submit', function(e) {
+      // 1) Honeypot check
+      const hp = document.getElementById('hp_field').value;
+      if (hp) {
+        e.preventDefault();
+        console.warn('Spam detected: honeypot was filled.');
+        return;
+      }
+      // 2) Minimum fill-time check (3 seconds)
+      const elapsed = Date.now() - startTime;
+      if (elapsed < 3000) {
+        e.preventDefault();
+        console.warn('Form submitted too quickly—likely a bot.');
+        return;
+      }
+      // Otherwise allow the form to submit normally
+    });
+  });
+</script>
 
 <!-- Page 8: Thank You -->
 <section id="thankyou-section" class="text-center py-20 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6] shadow-inner text-gray-900">
