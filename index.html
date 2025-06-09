@@ -1,104 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Meilech & Tzippy's Wedding</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
+  <link
+    href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap"
+    rel="stylesheet"
+  />
   <style>
-    #progress-container {
-    margin-top: 1rem; /* space above the bar so it sits below the button */
-  }
-    @keyframes pulse-grow {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.08);
-      }
-    }
-
-    .pulse-text {
-      animation: pulse-grow 2s infinite ease-in-out;
-      display: inline-block;
-    }
-
-    body {
-      font-family: 'Open Sans', sans-serif;
-      scroll-behavior: smooth;
-    }
-
-    h1, h2, h3 {
-      font-family: 'Playfair Display', serif;
-    }
-
-    .fade-enter { opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
-    .fade-enter-active { opacity: 1; transform: translateY(0); }
-
-    .sparkle:hover {
-      animation: sparkle-glow 0.6s ease-in-out infinite alternate;
-    }
-
-    @keyframes sparkle-glow {
-      0% {
-        text-shadow: 0 0 5px gold;
-      }
-      100% {
-        text-shadow: 0 0 15px goldenrod, 0 0 25px #fef08a;
-      }
-    }
+    body { font-family: 'Open Sans', sans-serif; scroll-behavior: smooth; }
+    h1,h2,h3 { font-family: 'Playfair Display', serif; }
+    .font-playfair { font-family: 'Playfair Display', serif; }
+    #progress-container { margin-top: 1rem; } /* Space below button */
   </style>
 </head>
-<body class="bg-gradient-to-br from-[#fdfaf3] via-[#f5f2ea] to-[#eae6d8] text-gray-900">
+<body class="bg-gradient-to-br from-[#fdfaf3] to-[#f5f2ea] text-gray-900">
 
-<!-- Bottom Toast -->
-<div id="bottomToast" class="hidden fixed bottom-12 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 border border-yellow-600 text-yellow-800 px-6 py-3 rounded-xl shadow-lg text-lg font-semibold transition-opacity duration-500 z-50">
-  💌 Awww... you clicked M & T! You just made our day 10% more magical ✨
-</div>
-
-<!-- Top Bubble -->
-<div id="topBubble" class="hidden fixed top-10 left-1/2 transform -translate-x-1/2 bg-yellow-100 text-yellow-900 px-5 py-2 rounded-full shadow-md text-base font-medium animate-bounce z-50">
-  💛 Mazel Tov! We’re blushing 😄
-</div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const mtButton = document.querySelector('.mt-circle');
-    const bottomToast = document.getElementById('bottomToast');
-    const topBubble = document.getElementById('topBubble');
-
-    if (mtButton) {
-      mtButton.addEventListener('click', () => {
-        bottomToast.classList.remove('hidden');
-        bottomToast.classList.add('opacity-100');
-
-        topBubble.classList.remove('hidden');
-
-        setTimeout(() => {
-          bottomToast.classList.add('opacity-0');
-          topBubble.classList.add('opacity-0');
-
-          setTimeout(() => {
-            bottomToast.classList.add('hidden');
-            bottomToast.classList.remove('opacity-100', 'opacity-0');
-
-            topBubble.classList.add('hidden');
-            topBubble.classList.remove('opacity-0');
-          }, 600);
-        }, 4000);
-      });
-    }
-  });
-</script>
-
-  <!-- Navigation -->
+  <!-- Navigation (unchanged) -->
   <header class="bg-white shadow-md sticky top-0 z-10">
     <nav class="container mx-auto flex justify-between items-center p-4">
       <h1 class="text-xl font-bold text-yellow-800">Meilech & Tzippy</h1>
       <ul class="flex space-x-6 text-yellow-700 font-medium text-sm md:text-base">
         <li><a href="#" class="hover:text-yellow-900">Home</a></li>
-        <li><a href="#countdown-section" class="hover:text-yellow-900">Countdown</a></li>
+        <li><a href="#countdown-hero" class="hover:text-yellow-900">Countdown</a></li>
         <li><a href="#details-section" class="hover:text-yellow-900">Details</a></li>
         <li><a href="#map-section" class="hover:text-yellow-900">Map</a></li>
         <li><a href="#shabbos-section" class="hover:text-yellow-900">Shabbos</a></li>
@@ -109,158 +38,151 @@
     </nav>
   </header>
 
-<!-- Hero + Countdown Section (Replace your old Hero & page-2 here) -->
-<section
-  id="countdown-hero"
-  class="text-center min-h-screen py-32 px-6 flex flex-col justify-center items-center
-         bg-gradient-to-b from-[#fdfaf3] to-[#f5f2ea]
-         bg-[url('https://www.transparenttextures.com/patterns/white-wall-3.png')] bg-repeat"
->
-  <section id="hero-section" …>
-  <h1 class="text-5xl md:text-6xl lg:text-7xl font-playfair text-yellow-800 mb-6 leading-tight">
-    Only <span id="daysLeft">150</span> days to go until<br/>
-    Meilech &amp; Tzippy’s<br/>
-    wedding!
-  </h1>
-
-  <!-- Save-the-Date Button -->
-  <a
-    id="save-date"
-    href="#"
-    target="_blank"
-    class="bg-yellow-700 hover:bg-yellow-800 text-white
-           px-8 py-3 rounded-full text-lg font-semibold shadow-lg mb-10 transition"
+  <!-- ▶ Hero + Unified Countdown (Pages 1 & 2) ▶ -->
+  <section
+    id="countdown-hero"
+    class="text-center min-h-screen py-32 px-6 flex flex-col justify-center items-center
+           bg-[url('https://www.transparenttextures.com/patterns/white-wall-3.png')] bg-repeat"
   >
-    Save the Date
-  </a>
+    <!-- Hero Headline -->
+    <h1 class="font-playfair text-yellow-800 text-5xl md:text-6xl lg:text-7xl mb-6 leading-tight">
+      Only <span id="daysLeft">150</span> days to go until<br/>
+      Meilech &amp; Tzippy’s<br/>
+      wedding!
+    </h1>
 
-  <!-- Progress Bar -->
-  <div id="progress-container" class="w-full max-w-2xl mb-12">
-    <div class="bg-gray-200 rounded-full h-4 overflow-hidden">
-      <div id="progress-fill" class="h-full bg-yellow-600 transition-all"></div>
+    <!-- Save-the-Date Button -->
+    <a
+      id="save-date"
+      href="#"
+      target="_blank"
+      class="bg-yellow-700 hover:bg-yellow-800 text-white
+             px-8 py-3 rounded-full text-lg font-semibold shadow-lg mb-10 transition"
+    >
+      Save the Date
+    </a>
+
+    <!-- Progress Bar -->
+    <div id="progress-container" class="w-full max-w-2xl">
+      <div class="bg-gray-200 rounded-full h-4 overflow-hidden">
+        <div id="progress-fill" class="h-full bg-yellow-600 transition-all"></div>
+      </div>
+      <p class="mt-2 text-yellow-700 font-medium">
+        Our hearts are <span id="percentDone">0%</span> full of love for the big day!
+      </p>
     </div>
-    <p class="mt-2 text-yellow-700 font-medium">
-  Our hearts are <span id="percentDone">0%</span> full of love for the big day!
-</p>
+
+    <!-- Detailed Countdown Cards -->
+    <h2 class="text-4xl font-semibold text-yellow-800 mt-12 mb-4">Countdown to the Chasunah</h2>
+    <p class="text-lg text-yellow-700 mb-6">The excitement is building…</p>
+
+    <div class="mx-auto mb-8 max-w-md bg-white bg-opacity-80 p-10 rounded-xl shadow-lg">
+      <div class="text-gray-700 text-sm mb-2">Time left until the big day:</div>
+      <div class="text-6xl font-bold text-yellow-900 mb-2" id="totalDays">0</div>
+      <div class="text-gray-700">Total Days</div>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 max-w-4xl w-full mx-auto">
+      <div class="bg-white bg-opacity-80 p-6 rounded-lg shadow">
+        <div class="text-sm text-yellow-700 mb-1">Weeks</div>
+        <div class="text-3xl font-bold text-yellow-900" id="weeks">0</div>
+        <div class="text-xs text-yellow-700">Remaining</div>
+      </div>
+      <div class="bg-white bg-opacity-80 p-6 rounded-lg shadow">
+        <div class="text-sm text-yellow-700 mb-1">Days</div>
+        <div class="text-3xl font-bold text-yellow-900" id="days">0</div>
+        <div class="text-xs text-yellow-700">Remaining</div>
+      </div>
+      <div class="bg-white bg-opacity-80 p-6 rounded-lg shadow">
+        <div class="text-sm text-yellow-700 mb-1">Hours</div>
+        <div class="text-3xl font-bold text-yellow-900" id="hours">0</div>
+        <div class="text-xs text-yellow-700">Remaining</div>
+      </div>
+      <div class="bg-white bg-opacity-80 p-6 rounded-lg shadow">
+        <div class="text-sm text-yellow-700 mb-1">Minutes</div>
+        <div class="text-3xl font-bold text-yellow-900" id="minutes">0</div>
+        <div class="text-xs text-yellow-700">Remaining</div>
+      </div>
+      <div class="bg-white bg-opacity-80 p-6 rounded-lg shadow">
+        <div class="text-sm text-yellow-700 mb-1">Seconds</div>
+        <div class="text-3xl font-bold text-yellow-900" id="seconds">0</div>
+        <div class="text-xs text-yellow-700">Remaining</div>
+      </div>
+    </div>
   </section>
 
-  <!-- Page 2: Detailed Countdown (uses the same timer script) -->
-<section id="countdown-section" class="text-center py-16 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6]">
-  <h2 class="text-5xl md:text-6xl font-bold text-yellow-800 mb-4">Countdown to the Chasunah</h2>
-  <p class="text-lg text-yellow-700 mb-6">The excitement is building…</p>
+  <!-- ▶ Unified Countdown Script ▶ -->
+  <script>
+    (function(){
+      // Dates
+      const ENGAGEMENT_TS = new Date("2025-01-29T00:00:00").getTime();
+      const WEDDING_TS    = new Date("2025-11-03T18:30:00").getTime();
 
-  <div class="mx-auto mb-8 max-w-md bg-white bg-opacity-80 p-10 rounded-xl shadow-lg">
-    <div class="text-gray-700 text-sm mb-2">Time left until the big day:</div>
-    <div class="text-6xl font-bold text-yellow-900" id="totalDays">0</div>
-    <div class="text-gray-700">Total Days</div>
-  </div>
+      // Elements
+      const daysLeftEl = document.getElementById("daysLeft");
+      const totalEl    = document.getElementById("totalDays");
+      const weeksEl    = document.getElementById("weeks");
+      const daysEl     = document.getElementById("days");
+      const hoursEl    = document.getElementById("hours");
+      const minsEl     = document.getElementById("minutes");
+      const secsEl     = document.getElementById("seconds");
+      const fillEl     = document.getElementById("progress-fill");
+      const pctEl      = document.getElementById("percentDone");
+      const saveBtn    = document.getElementById("save-date");
 
-  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 max-w-4xl mx-auto">
-    <div class="bg-white bg-opacity-80 p-6 rounded-xl shadow">
-      <div class="text-sm text-yellow-700 mb-1">Weeks</div>
-      <div class="text-3xl font-bold text-yellow-900" id="weeks">0</div>
-      <div class="text-xs text-yellow-700">Remaining</div>
-    </div>
-    <div class="bg-white bg-opacity-80 p-6 rounded-xl shadow">
-      <div class="text-sm text-yellow-700 mb-1">Days</div>
-      <div class="text-3xl font-bold text-yellow-900" id="days">0</div>
-      <div class="text-xs text-yellow-700">Remaining</div>
-    </div>
-    <div class="bg-white bg-opacity-80 p-6 rounded-xl shadow">
-      <div class="text-sm text-yellow-700 mb-1">Hours</div>
-      <div class="text-3xl font-bold text-yellow-900" id="hours">0</div>
-      <div class="text-xs text-yellow-700">Remaining</div>
-    </div>
-    <div class="bg-white bg-opacity-80 p-6 rounded-xl shadow">
-      <div class="text-sm text-yellow-700 mb-1">Minutes</div>
-      <div class="text-3xl font-bold text-yellow-900" id="minutes">0</div>
-      <div class="text-xs text-yellow-700">Remaining</div>
-    </div>
-    <div class="bg-white bg-opacity-80 p-6 rounded-xl shadow">
-      <div class="text-sm text-yellow-700 mb-1">Seconds</div>
-      <div class="text-3xl font-bold text-yellow-900" id="seconds">0</div>
-      <div class="text-xs text-yellow-700">Remaining</div>
-    </div>
-  </div>
-</section>
+      // Update all countdowns & progress
+      function updateAll() {
+        const now    = Date.now();
+        const diff   = WEDDING_TS - now;
+        const dTotal = Math.max(0, Math.ceil(diff / (1000*60*60*24)));
+        const w      = Math.floor(dTotal/7);
+        const dRem   = dTotal % 7;
+        const h      = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+        const m      = Math.floor((diff % (1000*60*60)) / (1000*60));
+        const s      = Math.floor((diff % (1000*60)) / 1000);
 
-<script>
-(function(){
-  // 1) Dates:
-  const ENGAGEMENT_TS = new Date("2025-01-29T00:00:00").getTime();
-  const WEDDING_TS    = new Date("2025-11-03T18:30:00").getTime();
+        // Hero & detailed
+        daysLeftEl.innerText = dTotal;
+        totalEl.innerText    = dTotal;
+        weeksEl.innerText    = w;
+        daysEl.innerText     = dRem;
+        hoursEl.innerText    = h;
+        minsEl.innerText     = m;
+        secsEl.innerText     = s;
 
-  // 2) Element references (hero + bar + detailed countdown):
-  const daysLeftEl = document.getElementById("daysLeft");
-  const pctEl      = document.getElementById("percentDone");
-  const fillEl     = document.getElementById("progress-fill");
-  const totalEl    = document.getElementById("totalDays");
-  const weeksEl    = document.getElementById("weeks");
-  const daysEl     = document.getElementById("days");
-  const hoursEl    = document.getElementById("hours");
-  const minsEl     = document.getElementById("minutes");
-  const secsEl     = document.getElementById("seconds");
+        // Progress % from engagement→wedding
+        const span   = WEDDING_TS - ENGAGEMENT_TS;
+        const done   = now - ENGAGEMENT_TS;
+        const pct    = Math.min(100, Math.max(0, Math.round((done/span)*100)));
+        fillEl.style.width = pct + "%";
+        pctEl.innerText    = pct + "%";
+      }
 
-  function updateAll() {
-    const now    = Date.now();
-    const diff   = WEDDING_TS - now;
-    const totalD = Math.max(0, Math.ceil(diff / (1000*60*60*24))); // days left
+      // Build Google Calendar link
+      function setupSaveDate() {
+        const title   = encodeURIComponent("Meilech & Tzippy’s Wedding");
+        const details = encodeURIComponent(
+          "Join us for the chuppah, seudah, dancing & simcha!\nVenue: Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY"
+        );
+        const loc     = encodeURIComponent("Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY");
+        const start   = new Date(WEDDING_TS).toISOString().replace(/-|:|\.\d+/g,"");
+        const end     = new Date(WEDDING_TS + 4*60*60*1000).toISOString().replace(/-|:|\.\d+/g,"");
+        saveBtn.href  =
+          `https://calendar.google.com/calendar/render?action=TEMPLATE` +
+          `&text=${title}` +
+          `&dates=${start}/${end}` +
+          `&details=${details}` +
+          `&location=${loc}` +
+          `&sf=true&output=xml`;
+      }
 
-    // Breakdown
-    const w = Math.floor(totalD/7);
-    const d = totalD % 7;
-    const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-    const m = Math.floor((diff % (1000*60*60)) / (1000*60));
-    const s = Math.floor((diff % (1000*60)) / 1000);
-
-    // Update hero & total
-    daysLeftEl.innerText  = totalD;
-    totalEl.innerText     = totalD;
-    weeksEl.innerText     = w;
-    daysEl.innerText      = d;
-    hoursEl.innerText     = h;
-    minsEl.innerText      = m;
-    secsEl.innerText      = s;
-
-    // Compute percentage from engagement → wedding
-    const elapsed      = now - ENGAGEMENT_TS;
-    const fullSpan     = WEDDING_TS - ENGAGEMENT_TS;
-    const percentDone  = Math.min(100, Math.max(0, Math.round((elapsed/fullSpan)*100)));
-    fillEl.style.width = percentDone + "%";
-    pctEl.innerText    = percentDone + "%";
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    updateAll();
-    setInterval(updateAll, 1000);
-
-    // Google Calendar link
-    function setupSaveDate() {
-      const title    = encodeURIComponent("Meilech & Tzippy’s Wedding");
-      const details  = encodeURIComponent(
-        "Join us for the chuppah, seudah, dancing & simcha!\nVenue: Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY"
-      );
-      const loc      = encodeURIComponent("Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY");
-      const start    = new Date(WEDDING).toISOString().replace(/-|:|\.\d+/g,"");
-      const end      = new Date(WEDDING + 4*60*60*1000).toISOString().replace(/-|:|\.\d+/g,"");
-      const href = [
-        "https://calendar.google.com/calendar/render?action=TEMPLATE",
-        "text="+title,
-        "dates="+start+"/"+end,
-        "details="+details,
-        "location="+loc,
-        "sf=true&output=xml"
-      ].join("&");
-      document.getElementById("save-date").href = href;
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      setupSaveDate();
-      updateAll();
-      setInterval(updateAll, 1000);
-    });
-  })();
-</script>
+      document.addEventListener("DOMContentLoaded", () => {
+        setupSaveDate();
+        updateAll();
+        setInterval(updateAll, 1000);
+      });
+    })();
+  </script>
   
   <!-- Wedding Details Section -->
   <section id="details-section" class="text-center min-h-screen py-32 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6]">
