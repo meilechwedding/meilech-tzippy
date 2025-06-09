@@ -106,102 +106,83 @@
     </nav>
   </header>
 
-  <!-- Hero Section (drop-in replacement) -->
+<!-- Hero Section -->
 <section
   id="hero-section"
-  class="text-center min-h-screen py-32 px-6
+  class="text-center min-h-screen flex flex-col justify-center items-center
          bg-gradient-to-b from-[#fdfaf3] to-[#f5f2ea]
-         bg-[url('https://www.transparenttextures.com/patterns/white-wall-3.png')] bg-repeat"
+         px-6"
 >
   <!-- 1) Live Countdown Headline -->
   <h1 id="hero-countdown"
-      class="text-5xl md:text-6xl lg:text-7xl font-bold text-yellow-800 mb-6">
+      class="text-5xl md:text-6xl lg:text-7xl font-playfair text-yellow-800 mb-6">
     Only <span id="daysLeft">150</span> days to go until Meilech &amp; Tzippy’s wedding!
   </h1>
 
   <!-- 2) Save the Date Button -->
-  <div class="mb-10">
-    <a
-      id="save-date"
-      href="#"
-      target="_blank"
-      class="inline-block bg-yellow-700 hover:bg-yellow-800 text-white
-             px-8 py-3 rounded-full text-lg font-semibold transition"
-    >
-      Save the Date
-    </a>
-  </div>
+  <a
+    id="save-date"
+    href="#"
+    target="_blank"
+    class="bg-yellow-700 hover:bg-yellow-800 text-white
+           px-8 py-3 rounded-full text-lg font-semibold shadow-lg mb-10 transition"
+  >
+    Save the Date
+  </a>
 
-  <!-- 3) Heart Progress Grid -->
-  <div id="heart-grid"
-       class="grid grid-cols-7 gap-2 justify-center max-w-3xl mx-auto">
-    <!-- JS injects 154 hearts here -->
+  <!-- 3) Sleek Progress Bar -->
+  <div class="w-full max-w-2xl">
+    <div class="bg-gray-200 rounded-full h-4 overflow-hidden">
+      <div id="progress-fill" class="h-full bg-yellow-600 transition-all"></div>
+    </div>
+    <p class="mt-2 text-gray-700">
+      <span id="percentDone">0%</span> of the journey complete
+    </p>
   </div>
 </section>
-
 <script>
   (function() {
-    // — CONFIGURATION —
-    const WEDDING_DATE = new Date("2025-11-03T18:30:00"); // ceremony start
-    const START_COUNT  = 150;                            // baseline days
+    const WEDDING_DATE = new Date("2025-11-03T18:30:00");
+    const TOTAL_DAYS   = Math.ceil((WEDDING_DATE - new Date())/(1000*60*60*24)) + document.getElementById('daysLeft').innerText*0; // placeholder
 
-    // 1) Update the days‐left headline
-    function updateCountdown() {
-      const now  = new Date();
-      const diff = WEDDING_DATE - now;
-      const days = Math.max(0, Math.ceil(diff / (1000*60*60*24)));
-      document.getElementById("daysLeft").innerText = days;
+    function updateHero() {
+      const now        = new Date();
+      const diffMs     = WEDDING_DATE - now;
+      const daysLeft   = Math.max(0, Math.ceil(diffMs / (1000*60*60*24)));
+      const daysTotal  =  Math.ceil((WEDDING_DATE - new Date("2025-11-03T00:00:00"))/(1000*60*60*24));
+      const daysDone   = daysTotal - daysLeft;
+      const pctDone    = Math.floor((daysDone / daysTotal) * 100);
+
+      // Update headline
+      document.getElementById('daysLeft').innerText = daysLeft;
+      // Update progress bar fill
+      document.getElementById('progress-fill').style.width = pctDone + '%';
+      // Update percent text
+      document.getElementById('percentDone').innerText = pctDone + '%';
     }
 
-    // 2) Build & attach Google Calendar link
+    // Setup Save-the-Date link
     function setupSaveDate() {
       const title    = encodeURIComponent("Meilech & Tzippy’s Wedding");
-      const details  = encodeURIComponent(
-        "Join us for the chuppah, seudah, dancing & simcha!\n\n" +
-        "Venue: Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY"
-      );
+      const details  = encodeURIComponent("Join us for the chuppah, seudah, dancing & simcha!\nVenue: Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY");
       const location = encodeURIComponent("Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY");
-      const start    = WEDDING_DATE.toISOString().replace(/-|:|\.\d+/g,"");
-      const endDate  = new Date(WEDDING_DATE.getTime() + 4*60*60*1000); // 4-hour block
-      const end      = endDate.toISOString().replace(/-|:|\.\d+/g,"");
-      const href = 
-        `https://calendar.google.com/calendar/render?action=TEMPLATE` +
-        `&text=${title}` +
-        `&dates=${start}/${end}` +
-        `&details=${details}` +
-        `&location=${location}` +
-        `&sf=true&output=xml`;
-      document.getElementById("save-date").href = href;
+      const start    = WEDDING_DATE.toISOString().replace(/-|:|\.\d+/g, "");
+      const end      = new Date(WEDDING_DATE.getTime()+4*60*60*1000).toISOString().replace(/-|:|\.\d+/g, "");
+      const href = [
+        "https://calendar.google.com/calendar/render?action=TEMPLATE",
+        "text="+title,
+        "dates="+start+"/"+end,
+        "details="+details,
+        "location="+location,
+        "sf=true&output=xml"
+      ].join("&");
+      document.getElementById('save-date').href = href;
     }
 
-    // 3) Render a 7×22 grid of hearts (154 total)
-    function renderHearts() {
-      const now       = new Date();
-      const totalDays = START_COUNT; 
-      // days elapsed since our "day 150" baseline
-      const daysUntil = Math.ceil((WEDDING_DATE - now)/(1000*60*60*24));
-      const elapsed   = Math.min(totalDays, totalDays - daysUntil);
-      const container = document.getElementById("heart-grid");
-      container.innerHTML = "";
-
-      const totalCells = 7 * 22; 
-      for (let i = 1; i <= totalCells; i++) {
-        const filled = i <= elapsed;
-        const div    = document.createElement("div");
-        div.innerHTML = filled
-          ? `<svg class="w-6 h-6 text-yellow-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5c0-3.08 2.42-5.5 5.5-5.5 1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`
-          : `<svg class="w-6 h-6 text-yellow-600/30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5c0-3.08 2.42-5.5 5.5-5.5 1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
-        container.appendChild(div);
-      }
-    }
-
-    // Initialize on DOM ready
-    document.addEventListener("DOMContentLoaded", () => {
-      updateCountdown();
+    document.addEventListener('DOMContentLoaded', () => {
       setupSaveDate();
-      renderHearts();
-      // Refresh countdown hourly if page stays open
-      setInterval(updateCountdown, 3600*1000);
+      updateHero();
+      setInterval(updateHero, 60*60*1000); // refresh hourly
     });
   })();
 </script>
