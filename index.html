@@ -7,6 +7,9 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
   <style>
+    #progress-container {
+    margin-top: 1rem; /* space above the bar so it sits below the button */
+  }
     @keyframes pulse-grow {
       0%, 100% {
         transform: scale(1);
@@ -132,14 +135,13 @@
   </a>
 
   <!-- Progress Bar -->
-  <div class="w-full max-w-2xl mb-10">
+  <div id="progress-container" class="w-full max-w-2xl mb-12">
     <div class="bg-gray-200 rounded-full h-4 overflow-hidden">
       <div id="progress-fill" class="h-full bg-yellow-600 transition-all"></div>
     </div>
-    <p class="mt-2 text-gray-700">
-      <span id="percentDone">0%</span> of the journey complete
-    </p>
-  </div>
+    <p class="mt-2 text-yellow-700 font-medium">
+  Our hearts are <span id="percentDone">0%</span> full of love for the big day!
+</p>
   </section>
 
   <!-- Page 2: Detailed Countdown (uses the same timer script) -->
@@ -183,49 +185,54 @@
 </section>
 
 <script>
-  (function() {
-    // Configuration: wedding date & starting baseline
-    const WEDDING = new Date("2025-11-03T18:30:00").getTime();
-    const BASE_DAYS = Math.ceil((WEDDING - new Date("2025-11-03T00:00:00")) / (1000*60*60*24));
+(function(){
+  // 1) Dates:
+  const ENGAGEMENT_TS = new Date("2025-01-29T00:00:00").getTime();
+  const WEDDING_TS    = new Date("2025-11-03T18:30:00").getTime();
 
-    // Elements
-    const daysLeftEl = document.getElementById("daysLeft");
-    const fillEl     = document.getElementById("progress-fill");
-    const pctEl      = document.getElementById("percentDone");
+  // 2) Element references (hero + bar + detailed countdown):
+  const daysLeftEl = document.getElementById("daysLeft");
+  const pctEl      = document.getElementById("percentDone");
+  const fillEl     = document.getElementById("progress-fill");
+  const totalEl    = document.getElementById("totalDays");
+  const weeksEl    = document.getElementById("weeks");
+  const daysEl     = document.getElementById("days");
+  const hoursEl    = document.getElementById("hours");
+  const minsEl     = document.getElementById("minutes");
+  const secsEl     = document.getElementById("seconds");
 
-    const totalEl    = document.getElementById("totalDays");
-    const weeksEl    = document.getElementById("weeks");
-    const daysEl     = document.getElementById("days");
-    const hoursEl    = document.getElementById("hours");
-    const minsEl     = document.getElementById("minutes");
-    const secsEl     = document.getElementById("seconds");
+  function updateAll() {
+    const now    = Date.now();
+    const diff   = WEDDING_TS - now;
+    const totalD = Math.max(0, Math.ceil(diff / (1000*60*60*24))); // days left
 
-    function updateAll() {
-      const now     = Date.now();
-      const diff    = WEDDING - now;
-      const tDays   = Math.max(0, Math.floor(diff / (1000*60*60*24)));
-      const tWeeks  = Math.floor(tDays / 7);
-      const tRemDays= tDays % 7;
-      const tHours  = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-      const tMins   = Math.floor((diff % (1000*60*60)) / (1000*60));
-      const tSecs   = Math.floor((diff % (1000*60)) / 1000);
+    // Breakdown
+    const w = Math.floor(totalD/7);
+    const d = totalD % 7;
+    const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const s = Math.floor((diff % (1000*60)) / 1000);
 
-      // Hero
-      daysLeftEl.innerText = tDays;
-      // Progress bar
-      const done = BASE_DAYS - tDays;
-      const pct  = Math.min(100, Math.max(0, Math.round(done/BASE_DAYS*100)));
-      fillEl.style.width = pct + "%";
-      pctEl.innerText = pct + "%";
+    // Update hero & total
+    daysLeftEl.innerText  = totalD;
+    totalEl.innerText     = totalD;
+    weeksEl.innerText     = w;
+    daysEl.innerText      = d;
+    hoursEl.innerText     = h;
+    minsEl.innerText      = m;
+    secsEl.innerText      = s;
 
-      // Detailed
-      totalEl.innerText  = tDays;
-      weeksEl.innerText  = tWeeks;
-      daysEl.innerText   = tRemDays;
-      hoursEl.innerText  = tHours;
-      minsEl.innerText   = tMins;
-      secsEl.innerText   = tSecs;
-    }
+    // Compute percentage from engagement → wedding
+    const elapsed      = now - ENGAGEMENT_TS;
+    const fullSpan     = WEDDING_TS - ENGAGEMENT_TS;
+    const percentDone  = Math.min(100, Math.max(0, Math.round((elapsed/fullSpan)*100)));
+    fillEl.style.width = percentDone + "%";
+    pctEl.innerText    = percentDone + "%";
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    updateAll();
+    setInterval(updateAll, 1000);
 
     // Google Calendar link
     function setupSaveDate() {
