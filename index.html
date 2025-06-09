@@ -281,41 +281,43 @@
 </section>
 
 <script>
-  const form = document.getElementById('bruchaForm');
-  const messagesDiv = document.getElementById('messages');
-
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const name = form.name.value;
-    const message = form.message.value;
-
-    const data = {
-      contents: {
-        name: name,
-        message: message
-      }
-    };
-
-    const sheetEndpoint = 'https://script.google.com/macros/s/AKfycbzVRNF0j8vvXKT0JgA2IzT5uI1uDt2jRsGbLvChWVhvDUF4oNslNZqlm1XYdKn3sSre/exec';
-
-    const response = await fetch(sheetEndpoint, {
-      method: 'POST',
-      body: JSON.stringify(data)
-    });
-
-    if (response.ok) {
-      alert("Message sent!");
-      messagesDiv.innerHTML += `
-        <div class="bg-white bg-opacity-60 p-4 rounded shadow">
-          <p class="font-bold text-yellow-800">${name}</p>
-          <p class="text-yellow-900">${message}</p>
-        </div>
+  const ENDPOINT = 'https://script.google.com/macros/s/AKfycbyxn8nC3P8Xu1K2j9WV5Bv09gY_eNvPHiSl5NeO9OiiVxqeN9eMZKTpNdH4YWQ5AG4wJg/exec';
+  // 1) Fetch & display all messages on load
+  async function loadMessages() {
+    const res = await fetch(ENDPOINT);
+    const list = await res.json();
+    const container = document.getElementById('messages');
+    container.innerHTML = '';
+    list.reverse().forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'bg-white bg-opacity-60 p-4 rounded shadow';
+      div.innerHTML = `
+        <p class="font-bold text-yellow-800">${item.name}</p>
+        <p class="text-yellow-900">${item.message}</p>
+        <p class="text-xs text-gray-500 mt-1">
+          ${new Date(item.timestamp).toLocaleString()}
+        </p>
       `;
+      container.appendChild(div);
+    });
+  }
+
+  // 2) Hook the form to POST & then reload
+  document.addEventListener('DOMContentLoaded', () => {
+    loadMessages();
+    const form = document.getElementById('bruchaForm');
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const name    = form.name.value.trim();
+      const message = form.message.value.trim();
+      if (!name || !message) return;
+      await fetch(ENDPOINT, {
+        method: 'POST',
+        body: JSON.stringify({ contents: { name, message } })
+      });
       form.reset();
-    } else {
-      alert("Something went wrong. Please try again.");
-    }
+      loadMessages();
+    });
   });
 </script>
 
