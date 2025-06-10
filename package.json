@@ -1,0 +1,8 @@
+{
+  "name": "meilech-tzippy",
+  "version": "1.0.0",
+  "description": "Wedding website",
+  "scripts": {
+    "test": "node test.js"
+  }
+}
