@@ -31,7 +31,7 @@
         <li><a href="#details-section" class="hover:text-yellow-900">Details</a></li>
         <li><a href="#map-section" class="hover:text-yellow-900">Map</a></li>
         <li><a href="#shabbos-section" class="hover:text-yellow-900">Shabbos</a></li>
-        <li><a href="#bruchos-section" class="hover:text-yellow-900">Bruchos</a></li>
+        <li><a href="#blessings" class="hover:text-yellow-900">posts</a></li>
         <li><a href="#chat-section" class="hover:text-yellow-900">Chat</a></li>
         <li><a href="#thankyou-section" class="hover:text-yellow-900">Thanks</a></li>
       </ul>
@@ -47,7 +47,7 @@
     <!-- Hero Headline -->
     <h1 class="font-playfair text-yellow-800 text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight">
   Only <span id="daysLeft">150</span> days to go until<br/>
-  <span class="text-5xl md:text-6xl lg:text-7xl">Meilech</span> &amp; Tzippy’s<br/>
+  <span class="text-7xl md:text-6xl lg:text-7xl">Meilech</span> &amp; Tzippy’s<br/>
   wedding!
 </h1>
 
@@ -282,70 +282,101 @@
     </div>
   </section>
 
-<!-- Page 6: Bruchos & Wishes -->
-  <section id="bruchos-section" class="text-center py-16 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6] shadow-inner text-gray-900">
-  <h1 class="text-5xl md:text-6xl font-bold text-yellow-800 mb-6">Bruchos & Warm Wishes</h1>
-  <p class="text-xl text-yellow-700 mb-10">We would love to hear from you! Leave a heartfelt brocha or message for us to cherish.</p>
+<!-- Blessings Carousel Section -->
+<section id="blessings" class="min-h-screen py-32 px-6 bg-gradient-to-b from-[#fdfaf3] to-[#f5f2ea] text-center">
+  <h1 class="text-4xl md:text-5xl font-bold text-yellow-800 mb-6">Words From Our Loved Ones</h1>
+  <p class="text-lg text-yellow-700 mb-10">Sticky hearts of love and brachos from our family & friends</p>
 
-  <div class="max-w-2xl mx-auto">
-    <form id="bruchaForm" class="bg-white bg-opacity-80 p-8 rounded-xl shadow-md space-y-6">
-      <div>
-        <label for="name" class="block text-lg text-yellow-900 font-semibold mb-1">Your Name</label>
-        <input type="text" id="name" name="name" class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-600" required>
-      </div>
-      <div>
-        <label for="message" class="block text-lg text-yellow-900 font-semibold mb-1">Your Brucha / Message</label>
-        <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-600" required></textarea>
-      </div>
-      <button type="submit" class="bg-yellow-700 hover:bg-yellow-800 text-white px-6 py-2 rounded text-lg font-semibold">Post Brucha</button>
-    </form>
+  <div class="relative max-w-3xl mx-auto">
+    <div id="blessing-card" class="bg-yellow-100 text-yellow-900 p-6 rounded-xl shadow-lg text-xl transition-opacity duration-700 ease-in-out opacity-0 min-h-[140px] flex items-center justify-center">
+      <!-- Message will be inserted here -->
+    </div>
 
-    <div class="mt-12">
-      <h2 class="text-3xl font-bold text-yellow-900 mb-4">Public Messages</h2>
-      <p class="text-yellow-700 mb-6">Messages will appear here for everyone to read and enjoy.</p>
-      <div id="messages" class="space-y-4 text-left"></div>
+    <!-- Navigation buttons -->
+    <div class="flex justify-center gap-4 mt-6">
+      <button onclick="prevBlessing()" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded shadow">⬅ Previous</button>
+      <button onclick="nextBlessing()" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded shadow">Next ➡</button>
     </div>
   </div>
-</section>
 
-<script>
-  const ENDPOINT = 'https://script.google.com/macros/s/AKfycbyxn8nC3P8Xu1K2j9WV5Bv09gY_eNvPHiSl5NeO9OiiVxqeN9eMZKTpNdH4YWQ5AG4wJg/exec';
-  // 1) Fetch & display all messages on load
-  async function loadMessages() {
-    const res = await fetch(ENDPOINT);
-    const list = await res.json();
-    const container = document.getElementById('messages');
-    container.innerHTML = '';
-    list.reverse().forEach(item => {
-      const div = document.createElement('div');
-      div.className = 'bg-white bg-opacity-60 p-4 rounded shadow';
-      div.innerHTML = `
-        <p class="font-bold text-yellow-800">${item.name}</p>
-        <p class="text-yellow-900">${item.message}</p>
-        <p class="text-xs text-gray-500 mt-1">
-          ${new Date(item.timestamp).toLocaleString()}
-        </p>
-      `;
-      container.appendChild(div);
-    });
+  <!-- Brucha Button -->
+  <div class="mt-16">
+    <button onclick="showPopup(); scrollToBrucha();" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition">
+      💌 Send Your Brucha
+    </button>
+    <div id="popup" class="mt-4 text-yellow-800 font-medium text-lg hidden animate-bounce">Aww! That means so much to us – can't wait to read it! 🥰</div>
+  </div>
+</section>
+  <script>
+  const blessings = [
+  "💕 Such simcha! A bayis ne’eman full mit licht, sholom, un freid. – Hershy M",
+  "🎉 You should be zoche to build a gantz leben mit nachas un hatzlocha. – Suri T",
+  "🌟 A shidduch like this is a gilui from Shamayim! So beautiful. – Chaim Stern",
+  "💛 May your heiligeh journey together be with simcha every day. – Rivky Gross",
+  "🍩 I’m ready for the chupa, the seudah, and a shtickel dancing! – Moishy W.",
+  "💌 You’re the kind of couple that makes the olam smile. – Bluma",
+  "🕊️ Mazel and brocha b’rov! A gantzeh simcha mit achdus. – F Reich",
+  "📸 One picture can’t hold the simcha — this is real simchas chassan v'kallah! – i cant say my name",
+  "🎊 From the vort until now — wow. So much bracha. – Yisroel P",
+  "🫶 May your bayis be a dirah b’tachtonim mamash. – Mendy Silber",
+  "💬 No words... only tears of simcha. – Gold",
+  "💡 May you always be a licht for each other and the olam. – Sruly Schreiber",
+  "🎈 Chasuna vibes are strong! Let’s go! – Shprintzy Weisz",
+  "📝 May your story always have sholom, Torah, and laughter. – Anonymous",
+  "💥 A shidduch like this is mamash hashgocha protis. – Rochel L.",
+  "🎶 Music, dancing, and kavod — that's how we’ll celebrate you. – Menachem Deutsch",
+  "📖 A new sefer in your life — may every page be filled with goodness. – ",
+  "✨ May the shechinah rest in your home always. – ",
+  "🏡 May your home be a shtick gan eden. – guess who",
+  "📬 Chasuna season just got better — you guys shine! – Hershy Leifer",
+  "🎻 May your lives be in harmony with each other and with Hashem. – Shloimy Braun",
+  "🥳 So excited to share in this simcha — a true zechus. – Ehrenfeld",
+  "🎂 May you always have sweet times together — like a heimishe kugel with a crisp top. – M K",
+  "📿 May your table always be full of Torah, simcha, and lekach. – MEIR Y. Moster",
+  "🕯️ From the lecht to the dancing — may it all be a gilui of Hashem’s chesed. – L. F.",
+  "🧁 This is sweeter than a monsey bakery on Erev Shabbos! – ??????",
+  "🪗 Dancing mit gantz hartz — can’t wait for the simcha! – ",
+  "🪄 You two are mamash zivug rishon. May the brachos flow. – blah blah",
+  "🎈 A simcha full mit gilui, emes, and ahavas chinam. – Anonymous",
+  "💎 May every day be as precious as today. – Anonymous"
+];
+
+  let currentIndex = 0;
+  const card = document.getElementById("blessing-card");
+
+  function showBlessing(index) {
+    card.style.opacity = 0;
+    setTimeout(() => {
+      card.textContent = blessings[index];
+      card.style.opacity = 1;
+    }, 300);
   }
 
-  // 2) Hook the form to POST & then reload
+  function nextBlessing() {
+    currentIndex = (currentIndex + 1) % blessings.length;
+    showBlessing(currentIndex);
+  }
+
+  function prevBlessing() {
+    currentIndex = (currentIndex - 1 + blessings.length) % blessings.length;
+    showBlessing(currentIndex);
+  }
+
+  function showPopup() {
+    const popup = document.getElementById("popup");
+    popup.classList.remove("hidden");
+    setTimeout(() => popup.classList.add("hidden"), 3000);
+  }
+
+  function scrollToBrucha() {
+    const bruchaSection = document.getElementById("chat-section") || document.getElementById("contact");
+    if (bruchaSection) {
+      bruchaSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
-    loadMessages();
-    const form = document.getElementById('bruchaForm');
-    form.addEventListener('submit', async e => {
-      e.preventDefault();
-      const name    = form.name.value.trim();
-      const message = form.message.value.trim();
-      if (!name || !message) return;
-      await fetch(ENDPOINT, {
-        method: 'POST',
-        body: JSON.stringify({ contents: { name, message } })
-      });
-      form.reset();
-      loadMessages();
-    });
+    showBlessing(currentIndex);
   });
 </script>
 
