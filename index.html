@@ -25,37 +25,33 @@
   }
 
   .heart-note {
-    background-color: #FEF3C7;
-    padding: 1rem;
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-3deg);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    position: relative;
+    background: #FEF3C7;
+    color: #78350f;
+    font-weight: 600;
+    padding: 2rem 1rem;
+    clip-path: path("M24.8,2.6C21.9,-0.5,17.1,-0.8,13.9,2.2c-0.6,0.5-1.1,1-1.6,1.5c-0.5-0.5-1-1-1.6-1.5C7.6,-0.8,2.8,-0.5,0,2.6c-3.4,3.7-3.4,9.6,0,13.3l12.4,13.3c0.8,0.9,2.2,0.9,3,0l12.4-13.3C28.2,12.2,28.2,6.3,24.8,2.6z");
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     transition: transform 0.3s ease;
-    animation: float 4s ease-in-out infinite;
+    animation: float 6s ease-in-out infinite;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    background-size: cover;
   }
 
-  .heart-note::after {
-    content: '';
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    width: 20px;
-    height: 20px;
-    background: #facc15;
-    border-radius: 50%;
-    box-shadow: 0 0 0 3px white;
+  .heart-note:hover {
+    transform: scale(1.05) rotate(0deg);
   }
 
   .heart-note:nth-child(1) { animation-delay: 0s; }
   .heart-note:nth-child(2) { animation-delay: 0.3s; }
   .heart-note:nth-child(3) { animation-delay: 0.6s; }
   .heart-note:nth-child(4) { animation-delay: 0.9s; }
-
-  .heart-note:hover {
-    transform: rotate(0deg) scale(1.05);
-  }
 </style>
+  
 </head>
 <body class="bg-gradient-to-br from-[#fdfaf3] to-[#f5f2ea] text-gray-900">
 
@@ -320,17 +316,16 @@
     </div>
   </section>
 
-<!-- Blessings Heart Wall Section -->
 <section id="blessings" class="min-h-screen py-32 px-6 bg-gradient-to-b from-[#fdfaf3] to-[#f5f2ea] text-center">
-  <h1 class="text-4xl md:text-5xl font-bold text-yellow-800 mb-6">Words From Our Loved Ones</h1>
-  <p class="text-lg text-yellow-700 mb-10">Sticky hearts of love and brachos from our family & friends</p>
+  <h1 class="text-4xl md:text-5xl font-bold text-yellow-800 mb-4">💛 Messages of Simcha & Brachos</h1>
+  <p class="text-lg text-yellow-700 mb-12">From the people who love us most — now posted live</p>
 
   <div id="blessing-wall" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"></div>
 
   <!-- Brucha Button -->
   <div class="mt-16">
     <button onclick="showPopup(); scrollToBrucha();" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition">
-      💌 Send Your Brucha
+      Send Your Brucha
     </button>
     <div id="popup" class="mt-4 text-yellow-800 font-medium text-lg hidden animate-bounce">Aww! That means so much to us – can't wait to read it! 🥰</div>
   </div>
@@ -379,7 +374,7 @@
     for (let i = 0; i < 4; i++) {
       const blessingText = blessings[(index + i) % blessings.length];
       const div = document.createElement("div");
-      div.className = "heart-note text-yellow-900 text-center text-lg font-semibold";
+      div.className = "heart-note";
       div.textContent = blessingText;
       wall.appendChild(div);
     }
@@ -401,7 +396,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     renderBlessings();
-    setInterval(renderBlessings, 2000);
+    setInterval(renderBlessings, 6000); // ← slowed to 6 seconds
   });
 </script>
   
