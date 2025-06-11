@@ -325,28 +325,26 @@
     </div>
   </section>
 
+<!-- 💛 Blessings Section -->
 <section id="blessings" class="min-h-screen py-32 px-6 bg-gradient-to-b from-[#fdfaf3] to-[#f5f2ea] text-center">
   <h1 class="text-4xl md:text-5xl font-bold text-yellow-800 mb-4">💛 Messages of Simcha & Brachos</h1>
   <p class="text-lg text-yellow-700 mb-12">From the people who love us most — now posted live</p>
 
-  <div id="blessing-wall" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"></div>
-
-<section id="blessings" class="min-h-screen py-32 px-6 bg-gradient-to-b from-[#fdfaf3] to-[#f5f2ea] text-center">
-  <h1 class="text-4xl md:text-5xl font-bold text-yellow-800 mb-4">Messages of Simcha & Brachos</h1>
-  <p class="text-lg text-yellow-700 mb-12">From the people who love us most — now posted live</p>
-
+  <!-- Blessing Wall -->
   <div id="blessing-wall" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"></div>
 
   <!-- Brucha Button -->
   <div class="mt-16">
     <button onclick="showPopup(); scrollToBrucha();" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition">
-      💌 Send Your Brucha
+      Send Your Brucha
     </button>
-    <div id="popup" class="mt-4 text-yellow-800 font-medium text-lg hidden animate-bounce">Aww! That means so much to us – can't wait to read it! 🥰</div>
+    <div id="popup" class="mt-4 text-yellow-800 font-medium text-lg hidden animate-bounce">
+      Aww! That means so much to us – can't wait to read it! 🥰
+    </div>
   </div>
 </section>
 
-
+<!-- 💛 Blessings Script -->
 <script>
   const blessings = [
     "💕 Such simcha! A bayis ne’eman full mit licht, sholom, un freid. – Hershy M",
@@ -416,6 +414,7 @@
     setInterval(renderBlessings, 6000); // 6-second rotation
   });
 </script>
+
   
 <!-- Page 7: Chat & Questions -->
 <section id="chat-section" class="text-center py-16 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6] shadow-inner text-gray-900">
