@@ -18,38 +18,49 @@
     .font-playfair { font-family: 'Playfair Display', serif; }
     #progress-container { margin-top: 1rem; } /* Space below button */
   </style>
-  <style>
+<style>
   @keyframes float {
-    0%, 100% { transform: translateY(0) rotate(-3deg); }
-    50% { transform: translateY(-10px) rotate(-1deg); }
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-8px) rotate(0deg); }
   }
 
   .heart-note {
-    background: #FEF3C7;
+    background-color: #FEF9C3;
     color: #78350f;
     font-weight: 600;
-    padding: 2rem 1rem;
-    clip-path: path("M24.8,2.6C21.9,-0.5,17.1,-0.8,13.9,2.2c-0.6,0.5-1.1,1-1.6,1.5c-0.5-0.5-1-1-1.6-1.5C7.6,-0.8,2.8,-0.5,0,2.6c-3.4,3.7-3.4,9.6,0,13.3l12.4,13.3c0.8,0.9,2.2,0.9,3,0l12.4-13.3C28.2,12.2,28.2,6.3,24.8,2.6z");
-    width: 100%;
-    height: 200px;
+    padding: 2rem 1.25rem;
+    border-radius: 2rem 2rem 1.5rem 1.5rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    animation: float 6s ease-in-out infinite;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+    min-height: 200px;
+    font-size: 1.15rem; /* Bigger text */
+    line-height: 1.6;
     transition: transform 0.3s ease;
-    animation: float 6s ease-in-out infinite;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    background-size: cover;
   }
 
   .heart-note:hover {
-    transform: scale(1.05) rotate(0deg);
+    transform: scale(1.04) rotate(0deg);
   }
 
-  .heart-note:nth-child(1) { animation-delay: 0s; }
-  .heart-note:nth-child(2) { animation-delay: 0.3s; }
-  .heart-note:nth-child(3) { animation-delay: 0.6s; }
-  .heart-note:nth-child(4) { animation-delay: 0.9s; }
+  @media (min-width: 768px) {
+    .heart-note {
+      font-size: 1.25rem;
+      padding: 2.5rem 1.5rem;
+      min-height: 220px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .heart-note {
+      font-size: 1.3rem;
+      padding: 2.75rem 1.75rem;
+      min-height: 240px;
+    }
+  }
 </style>
   
 </head>
@@ -325,50 +336,56 @@
 
   <div id="blessing-wall" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"></div>
 
+<section id="blessings" class="min-h-screen py-32 px-6 bg-gradient-to-b from-[#fdfaf3] to-[#f5f2ea] text-center">
+  <h1 class="text-4xl md:text-5xl font-bold text-yellow-800 mb-4">Messages of Simcha & Brachos</h1>
+  <p class="text-lg text-yellow-700 mb-12">From the people who love us most — now posted live</p>
+
+  <div id="blessing-wall" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"></div>
+
   <!-- Brucha Button -->
   <div class="mt-16">
     <button onclick="showPopup(); scrollToBrucha();" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition">
-      Send Your Brucha
+      💌 Send Your Brucha
     </button>
     <div id="popup" class="mt-4 text-yellow-800 font-medium text-lg hidden animate-bounce">Aww! That means so much to us – can't wait to read it! 🥰</div>
   </div>
 </section>
-  
-  <script>
-  const blessings = [
-  "💕 Such simcha! A bayis ne’eman full mit licht, sholom, un freid. – Hershy M",
-  "🎉 You should be zoche to build a gantz leben mit nachas un hatzlocha. – Suri T",
-  "🌟 A shidduch like this is a gilui from Shamayim! So beautiful. – Chaim Stern",
-  "💛 May your heiligeh journey together be with simcha every day. – Rivky Gross",
-  "🍩 I’m ready for the chupa, the seudah, and a shtickel dancing! – Moishy W.",
-  "💌 You’re the kind of couple that makes the olam smile. – Bluma",
-  "🕊️ Mazel and brocha b’rov! A gantzeh simcha mit achdus. – F Reich",
-  "📸 One picture can’t hold the simcha — this is real simchas chassan v'kallah! – i cant say my name",
-  "🎊 From the vort until now — wow. So much bracha. – Yisroel P",
-  "🫶 May your bayis be a dirah b’tachtonim mamash. – Mendy Silber",
-  "💬 No words... only tears of simcha. – Gold",
-  "💡 May you always be a licht for each other and the olam. – Sruly Schreiber",
-  "🎈 Chasuna vibes are strong! Let’s go! – Shprintzy Weisz",
-  "📝 May your story always have sholom, Torah, and laughter. – Anonymous",
-  "💥 A shidduch like this is mamash hashgocha protis. – Rochel L.",
-  "🎶 Music, dancing, and kavod — that's how we’ll celebrate you. – Menachem Deutsch",
-  "📖 A new sefer in your life — may every page be filled with goodness. – ",
-  "✨ May the shechinah rest in your home always. – ",
-  "🏡 May your home be a shtick gan eden. – guess who",
-  "📬 Chasuna season just got better — you guys shine! – Hershy Leifer",
-  "🎻 May your lives be in harmony with each other and with Hashem. – Shloimy Braun",
-  "🥳 So excited to share in this simcha — a true zechus. – Ehrenfeld",
-  "🎂 May you always have sweet times together — like a heimishe kugel with a crisp top. – M K",
-  "📿 May your table always be full of Torah, simcha, and lekach. – MEIR Y. Moster",
-  "🕯️ From the lecht to the dancing — may it all be a gilui of Hashem’s chesed. – L. F.",
-  "🧁 This is sweeter than a monsey bakery on Erev Shabbos! – ??????",
-  "🪗 Dancing mit gantz hartz — can’t wait for the simcha! – ",
-  "🪄 You two are mamash zivug rishon. May the brachos flow. – blah blah",
-  "🎈 A simcha full mit gilui, emes, and ahavas chinam. – Anonymous",
-  "💎 May every day be as precious as today. – Anonymous"
-];
 
-  
+
+<script>
+  const blessings = [
+    "💕 Such simcha! A bayis ne’eman full mit licht, sholom, un freid. – Hershy M",
+    "🎉 You should be zoche to build a gantz leben mit nachas un hatzlocha. – Suri T",
+    "🌟 A shidduch like this is a gilui from Shamayim! So beautiful. – Chaim Stern",
+    "💛 May your heiligeh journey together be with simcha every day. – Rivky Gross",
+    "🍩 I’m ready for the chupa, the seudah, and a shtickel dancing! – Moishy W.",
+    "💌 You’re the kind of couple that makes the olam smile. – Bluma",
+    "🕊️ Mazel and brocha b’rov! A gantzeh simcha mit achdus. – F Reich",
+    "📸 Real simchas chassan v'kallah! – Anonymous",
+    "🎊 From the vort until now — wow. So much bracha. – Yisroel P",
+    "🫶 May your bayis be a dirah b’tachtonim mamash. – Mendy Silber",
+    "💬 No words... only tears of simcha. – Gold",
+    "💡 May you always be a licht for each other and the olam. – Sruly Schreiber",
+    "🎈 Chasuna vibes are strong! Let’s go! – Shprintzy Weisz",
+    "📝 May your story always have sholom, Torah, and laughter. – Anonymous",
+    "💥 Mamash hashgocha protis. – Rochel L.",
+    "🎶 Music, dancing, and kavod — that's how we’ll celebrate you. – Menachem Deutsch",
+    "📖 A new sefer in your life — may every page be filled with goodness. – Chaya R.",
+    "✨ May the shechinah rest in your home always. – Faigy K.",
+    "🏡 May your home be a shtick gan eden. – Yanky R.",
+    "📬 You guys shine! – Hershy Leifer",
+    "🎻 May your lives be in harmony with each other and with Hashem. – Shloimy Braun",
+    "🥳 So excited to share in this simcha — a true zechus. – Ehrenfeld",
+    "🎂 May you always have sweet times together — like a heimishe kugel with a crisp top. – M K",
+    "📿 May your table always be full of Torah, simcha, and lekach. – Meir Y. Moster",
+    "🕯️ From the lecht to the dancing — may it all be a gilui of Hashem’s chesed. – L. F.",
+    "🧁 This is sweeter than a Monsey bakery on Erev Shabbos! – Leeba",
+    "🪗 Dancing mit gantz hartz — can’t wait for the simcha! – Esty B.",
+    "🪄 You two are mamash zivug rishon. May the brachos flow. – Dassy H.",
+    "🎈 A simcha full mit gilui, emes, and ahavas chinam. – Yanky Rosenberg",
+    "💎 May every day be as precious as today. – Meir Pinter"
+  ];
+
   let index = 0;
 
   function renderBlessings() {
@@ -376,10 +393,12 @@
     wall.innerHTML = '';
     for (let i = 0; i < 4; i++) {
       const blessingText = blessings[(index + i) % blessings.length];
-      const div = document.createElement("div");
-      div.className = "heart-note";
-      div.textContent = blessingText;
-      wall.appendChild(div);
+      if (blessingText && blessingText.trim() !== "") {
+        const div = document.createElement("div");
+        div.className = "heart-note";
+        div.textContent = blessingText;
+        wall.appendChild(div);
+      }
     }
     index = (index + 4) % blessings.length;
   }
@@ -399,7 +418,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     renderBlessings();
-    setInterval(renderBlessings, 6000); // ← slowed to 6 seconds
+    setInterval(renderBlessings, 6000); // 6-second rotation
   });
 </script>
   
