@@ -3,231 +3,1682 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Meilech & Tzippy's Wedding</title>
-  <link
-    href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-    rel="stylesheet"
-  />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap"
-    rel="stylesheet"
-  />
-  <style>
-    body { font-family: 'Open Sans', sans-serif; scroll-behavior: smooth; }
-    h1,h2,h3 { font-family: 'Playfair Display', serif; }
-    .font-playfair { font-family: 'Playfair Display', serif; }
-    #progress-container { margin-top: 1rem; } /* Space below button */
+  <title>Meilech & Tzippy - The Big Day!</title>
+
+  <!-- Google Fonts - Lora (for headings) and Lato (for body) -->
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN - Provides utility classes for rapid styling -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+
+  <!-- Main CSS Styling - This is where all custom styles and color variables are defined -->
+  <style id="main-css">
+    /* Color Variables (Moody Navy & Copper Chic) */
+    :root {
+      --color-base-light: #F2F4F7; /* Light grey-blue background for base sections */
+      --color-base-dark: #EDF2F7; /* Slightly darker light base for details/chat/map sections */
+      --color-primary-navy: #1E2C4F; /* Deep Navy Blue - main bold accent for text/buttons */
+      --color-accent-copper: #B85C3A; /* Rich Copper/Burnt Orange - highlight for links/progress */
+      --color-secondary-sage: #84A98C; /* Soft Sage Green - secondary balance/subtle accents */
+      --color-text-dark: #1A202C; /* Very dark grey for main text */
+      --color-text-medium: #4A5568; /* Medium grey for secondary text/paragraphs */
+      --color-white: #FFFFFF; /* Pure white for backgrounds of cards, etc. */
+
+      /* Dynamic Countdown Specific Colors - Will be set inline by JS, removed global fallbacks */
+    }
+
+    /* Global Base Styles */
+    body {
+      font-family: 'Lato', sans-serif;
+      scroll-behavior: smooth;
+      color: var(--color-text-dark);
+      direction: ltr; /* Ensure LTR for the whole body */
+      text-align: left; /* Default text alignment for LTR */
+    }
+
+    /* Custom Background Gradients for Sections */
+    .bg-gradient-base {
+      background: linear-gradient(to bottom right, var(--color-base-light), var(--color-base-dark));
+    }
+    .bg-gradient-details {
+      background: linear-gradient(to bottom right, var(--color-base-dark), var(--color-base-light));
+    }
+    .bg-gradient-accent {
+      background: linear-gradient(to bottom right, var(--color-primary-navy), #0A1C3E); /* Slightly darker navy for depth */
+      color: var(--color-white); /* White text on dark background */
+    }
+
+    /* Font Classes */
+    .font-heading { font-family: 'Lora', serif; }
+    .font-body { font-family: 'Lato', sans-serif; }
+
+    /* Custom Tailwind Overrides / New Classes */
+    .text-primary-navy { color: var(--color-primary-navy); }
+    .text-accent-copper { color: var(--color-accent-copper); }
+    .text-secondary-sage { color: var(--color-secondary-sage); }
+    .text-text-dark { color: var(--color-text-dark); }
+    .text-text-medium { color: var(--color-text-medium); }
+    .bg-primary-navy { background-color: var(--color-primary-navy); }
+    .bg-accent-copper { background-color: var(--color-accent-copper); }
+    .bg-secondary-sage { background-color: var(--color-secondary-sage); }
+    .bg-card { background-color: var(--color-white); } /* For info cards, etc. */
+    .text-white { color: var(--color-white); } /* Explicitly white text for dark backgrounds */
+
+
+    /* Navigation Header */
+    .header-nav {
+      background-color: var(--color-white);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease-in-out; /* Smooth transition for background/shadow changes */
+    }
+    .header-nav.scrolled {
+        background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white */
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        border-bottom-color: var(--color-base-dark);
+    }
+    .nav-link {
+      position: relative;
+      padding-bottom: 0.25rem; /* Space for underline */
+      font-weight: 500; /* Slightly bolder */
+      transition: color 0.3s ease-out; /* Smooth color transition */
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 50%; /* Center alignment based on LTR */
+      right: auto; /* Unset right */
+      background-color: var(--color-accent-copper);
+      transition: width 0.3s ease-out, left 0.3s ease-out; /* Transition 'left' */
+    }
+    .nav-link:hover::after {
+      width: 100%;
+      left: 0; /* Extends from left */
+      right: auto; /* Unset right */
+    }
+    .nav-link.active { /* For highlighting active link */
+      color: var(--color-primary-navy);
+      font-weight: 700;
+    }
+    .nav-link.active::after {
+      width: 100%;
+      left: 0;
+      right: auto;
+    }
+
+    /* Hero Section Specifics */
+    .hero-section {
+      /* Using a subtle, elegant gradient for the background */
+      background: linear-gradient(135deg, #F2F4F7 0%, #E0E7EB 50%, #F2F4F7 100%);
+      position: relative;
+      min-height: 100vh;
+      padding-top: 8rem;
+      padding-bottom: 8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Add a pseudo-element overlay for better text contrast if needed, or if an image were used */
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.2); /* Very light white overlay */
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative; /* Bring content above the pseudo-element overlay */
+      z-index: 1; /* Ensure content is above the overlay */
+      animation: fadeInScaleUp 1.2s ease-out forwards 0.5s;
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+    @keyframes fadeInScaleUp {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Enhanced Hero Names Styling */
+    .hero-names {
+      font-family: 'Lora', serif;
+      font-size: 3.5rem; /* Base size, will scale up */
+      letter-spacing: 0.05em; /* Add subtle letter spacing */
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* Soft shadow for depth */
+      color: var(--color-primary-navy); /* Default color */
+      margin-bottom: 0.5rem; /* Adjust spacing */
+      line-height: 1.1;
+      font-weight: 700;
+    }
+    @media (min-width: 768px) { /* md breakpoint */
+      .hero-names { font-size: 5.5rem; } /* Larger on medium screens */
+    }
+    @media (min-width: 1024px) { /* lg breakpoint */
+      .hero-names { font-size: 7rem; } /* Even larger on large screens */
+    }
+
+    /* Monogram styling */
+    .monogram-svg {
+      width: 4rem; /* Adjust size as needed */
+      height: 4rem;
+      margin-top: -1rem; /* Pull it closer to the names */
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease-in-out;
+      /* Ensure text direction is LTR within SVG if letters are English, or rely on x positioning */
+      direction: ltr;
+      text-align: left;
+    }
+    .monogram-svg:hover {
+      transform: rotate(360deg) scale(1.1); /* Spins 360 degrees and scales up */
+    }
+    .monogram-initial {
+      fill: var(--color-accent-copper); /* Use copper for the letters */
+      font-family: 'Lora', serif; /* Ensure Lora for consistency with names */
+    }
+    .monogram-ampersand {
+      fill: var(--color-primary-navy); /* Use navy for the ampersand */
+      font-family: 'Lora', serif; /* Ensure Lora for consistency with names */
+    }
+
+
+    /* General Button Styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 2rem;
+      border-radius: 9999px; /* Full rounded */
+      font-weight: 600;
+      text-align: center;
+      white-space: nowrap;
+      border: none;
+      cursor: pointer;
+      font-family: 'Lato', sans-serif;
+      text-decoration: none; /* For anchor buttons */
+    }
+    .btn-primary {
+      background-color: var(--color-primary-navy);
+      color: var(--color-white);
+    }
+    .btn-primary:hover {
+      background-color: var(--color-accent-copper);
+      color: var(--color-white);
+    }
+    .btn-secondary {
+      background-color: var(--color-secondary-sage);
+      color: var(--color-white);
+    }
+    .btn-secondary:hover {
+      background-color: var(--color-primary-navy);
+      color: var(--color-white);
+    }
+
+    /* Countdown Card Styles */
+    .countdown-card {
+      background-color: var(--color-white);
+      border: 2px solid transparent; /* Default transparent border, set by JS */
+      transition: all 0.5s ease-in-out; /* Smooth transitions for dynamic changes */
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Default shadow, set by JS */
+      cursor: pointer; /* Indicate clickability */
+    }
+    .countdown-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12); /* Slightly more prominent shadow on hover */
+    }
+    .countdown-value {
+      color: var(--color-secondary-sage); /* Default color for numbers, set by JS */
+      font-weight: bold;
+      font-family: 'Lora', serif; /* Ensure Lora for numbers */
+      transition: color 0.5s ease-in-out; /* Smooth color transition for numbers */
+    }
+
+    /* Ultra-close Countdown Flash Animation */
+    @keyframes countdownFlash {
+      0%, 100% {
+        border-color: var(--color-accent-copper);
+        box-shadow: 0 0 10px var(--color-accent-copper), 0 0 20px var(--color-accent-copper);
+      }
+      50% {
+        border-color: var(--color-primary-navy);
+        box-shadow: 0 0 15px var(--color-primary-navy), 0 0 25px var(--color-primary-navy);
+      }
+    }
+    @keyframes textFlash {
+        0%, 100% { color: var(--color-primary-navy); }
+        50% { color: var(--color-accent-copper); }
+    }
+
+    /* Apply flashing to cards and their values when .countdown-flash is present */
+    .countdown-card.countdown-flash {
+      animation: countdownFlash 0.8s infinite alternate; /* Fast pulsing */
+    }
+    .countdown-card.countdown-flash .countdown-value {
+        animation: textFlash 0.8s infinite alternate; /* Flash the numbers too */
+    }
+
+
+    /* Section Common Styles - Increased Padding */
+    .section-padding {
+      padding-top: 8rem; /* Increased from 5rem (py-32 equivalent) */
+      padding-bottom: 8rem; /* Increased from 5rem (py-32 equivalent) */
+      padding-left: 1.5rem; /* px-6 */
+      padding-right: 1.5rem; /* px-6 */
+      min-height: 100vh; /* Ensure sections take full viewport height */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: left; /* Default text alignment for LTR */
+    }
+    .section-title {
+      font-family: 'Lora', serif;
+      font-size: 2.5rem; /* md:text-5xl lg:text-6xl equivalent */
+      line-height: 1.2;
+      font-weight: 700;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.05); /* Subtle text shadow */
+    }
+    @media (min-width: 768px) { /* md breakpoint */
+      .section-title { font-size: 3.5rem; }
+    }
+    @media (min-width: 1024px) { /* lg breakpoint */
+      .section-title { font-size: 4rem; }
+    }
+
+    /* New style for the prominent total days display */
+    .total-days-display {
+      font-family: 'Lora', serif;
+      font-size: 4rem; /* Even larger on desktop */
+      font-weight: 700;
+      color: var(--color-primary-navy);
+      margin-bottom: 2rem;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    }
+    @media (min-width: 768px) {
+      .total-days-display {
+        font-size: 6rem;
+      }
+    }
+
+
+    /* Info Cards (Details, Map, Shabbos) */
+    .info-card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem; /* gap-8 */
+      max-width: 72rem; /* mx-auto */
+      width: 100%;
+    }
+    @media (min-width: 768px) {
+      .info-card-grid {
+        grid-template-columns: repeat(2, 1fr); /* md:grid-cols-2 */
+        gap: 3rem; /* md:gap-12 */
+      }
+    }
+
+    .info-card {
+      background-color: var(--color-white);
+      border-radius: 1.5rem; /* rounded-2xl */
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* shadow-2xl */
+      padding: 2.5rem; /* p-10 */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center; /* Center text within card */
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    .info-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+    .icon-wrapper {
+      margin-bottom: 1rem;
+      background-color: var(--color-secondary-sage); /* Background for icon */
+      border-radius: 50%;
+      padding: 0.75rem;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .icon-large {
+      width: 2.5rem; /* h-10 w-10 */
+      height: 2.5rem;
+      color: var(--color-white); /* Icon color */
+    }
+
+    /* Fun Facts Section */
+    .fun-fact-grid {
+      grid-template-columns: repeat(1, 1fr);
+      gap: 1.5rem; /* gap-6 */
+    }
+    @media (min-width: 768px) {
+      .fun-fact-grid {
+        grid-template-columns: repeat(2, 1fr); /* md:grid-cols-2 */
+      }
+    }
+    @media (min-width: 1024px) {
+      .fun-fact-grid {
+        grid-template-columns: repeat(3, 1fr); /* lg:grid-cols-3 */
+      }
+    }
+
+    .fun-fact-card {
+      background-color: var(--color-white);
+      border-radius: 1.5rem; /* rounded-2xl */
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 2rem; /* p-8 */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    .fun-fact-card:hover {
+      transform: translateY(-5px) rotate(1deg); /* Slight rotation on hover */
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+    .fun-fact-title {
+      color: var(--color-primary-navy);
+      font-size: 1.75rem; /* text-2xl */
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .fun-fact-text {
+      color: var(--color-text-medium);
+      font-size: 1.125rem; /* text-lg */
+      line-height: 1.6;
+    }
+
+    /* FAQ Section */
+    .faq-container {
+      max-width: 48rem; /* mx-auto */
+      width: 100%;
+    }
+    .faq-item {
+      background-color: var(--color-white);
+      border-radius: 1rem; /* rounded-lg */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      overflow: hidden; /* Hide overflow when closed */
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--color-base-dark); /* Subtle border */
+      transition: all 0.3s ease;
+    }
+    .faq-item:hover {
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    }
+    .faq-question {
+      background-color: var(--color-white);
+      font-weight: 600;
+      font-size: 1.25rem; /* text-xl */
+      padding: 1rem 1.5rem; /* py-4 px-6 */
+      color: var(--color-primary-navy);
+      cursor: pointer;
+      user-select: none; /* Prevent text selection on click */
+      transition: background-color 0.3s ease;
+      text-align: left; /* Ensure text is left-aligned in summary */
+    }
+    .faq-question:hover {
+      background-color: var(--color-base-light);
+    }
+    .faq-item[open] .faq-question {
+      background-color: var(--color-base-light);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .faq-arrow {
+      color: var(--color-accent-copper);
+    }
+    .faq-answer {
+      background-color: var(--color-base-light);
+      padding: 0.5rem 1.5rem 1.5rem; /* pb-4 pt-2 px-6 */
+      color: var(--color-text-medium);
+      font-size: 1.125rem; /* text-lg */
+      border-top: 1px solid var(--color-base-dark);
+      text-align: left; /* Ensure text is left-aligned in answer */
+    }
+
+    /* Map Section Specifics */
+    .map-embed {
+      border: 4px solid var(--color-primary-navy); /* Stronger border for map */
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Blessings Section */
+    .heart-note {
+      background-color: var(--color-secondary-sage);
+      color: var(--color-white); /* Text color on sage background */
+      font-weight: 600;
+      padding: 2rem 1.25rem;
+      border-radius: 2rem 2rem 1.5rem 1.5rem;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      animation: float 6s ease-in-out infinite;
+      display: flex;
+      flex-direction: column; /* Ensure text is aligned vertically */
+      align-items: center; /* Center horizontally */
+      justify-content: center;
+      text-align: center; /* Center text within heart note */
+      min-height: 200px;
+      font-size: 1.15rem;
+      line-height: 1.6;
+      transition: transform 0.3s ease, background-color 0.3s ease; /* Add transition for background */
+    }
+    .heart-note:hover {
+      transform: scale(1.04) rotate(0deg);
+      background-color: var(--color-accent-copper); /* Change color on hover */
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-8px) rotate(0deg); }
+    }
+    @media (min-width: 768px) {
+      .heart-note { font-size: 1.25rem; padding: 2.5rem 1.5rem; min-height: 220px; }
+    }
+    @media (min-width: 1024px) {
+      .heart-note { font-size: 1.3rem; padding: 2.75rem 1.75rem; min-height: 240px; }
+    }
+
+    /* Pop-up message for blessings - REMOVED, now using generic message-box */
+    /* #popup-message {
+      animation: bounce 0.5s infinite alternate;
+      color: var(--color-primary-navy);
+    }
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-5px); }
+    } */
+
+    /* Chat & Questions Form */
+    .input-field {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem; /* rounded-lg */
+      border: 1px solid var(--color-base-dark);
+      background-color: var(--color-base-light);
+      transition: all 0.3s ease;
+      text-align: left; /* Align input text left */
+    }
+    .input-field:focus {
+      outline: none;
+      border-color: var(--color-accent-copper);
+      box-shadow: 0 0 0 3px rgba(184, 92, 58, 0.2); /* Copper shadow */
+    }
+
+    /* Footer */
+    footer {
+      color: var(--color-text-medium);
+      border-color: var(--color-base-dark);
+    }
+    footer a {
+      color: var(--color-primary-navy);
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* General Animations (can be used for hidden elements) */
+    /* Fade-in for scroll animation */
+    .fade-in-hidden {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .fade-in-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Styles for the secret message reveal */
+    #secret-message-content {
+      opacity: 0;
+      transform: scaleY(0);
+      transition: all 0.5s ease;
+      transform-origin: top;
+    }
+
+    #secret-message-content.revealed {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+
+
+    /* Utility classes for dynamic colors */
+    .text-primary-navy { color: var(--color-primary-navy); }
+    .text-accent-copper { color: var(--color-accent-copper); }
+    .text-secondary-sage { color: var(--color-secondary-sage); }
+
+
+    /* LLM Blessing Generator Specific Styles */
+    .llm-generator-card {
+        background-color: var(--color-white);
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        padding: 2.5rem;
+        margin-top: 4rem; /* Space below existing content */
+        text-align: left; /* Ensure text is left-aligned */
+    }
+
+    .llm-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        color: var(--color-primary-navy);
+        font-weight: 600;
+        font-size: 1.125rem;
+        direction: ltr; /* Ensure loading text is LTR */
+    }
+
+    .llm-loading span {
+        animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 0.5; transform: scale(0.9); }
+        50% { opacity: 1; transform: scale(1); }
+    }
+
+    .llm-generated-output {
+        background-color: var(--color-base-light);
+        border: 1px solid var(--color-base-dark);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+        font-family: 'Lora', serif; /* Use heading font for generated text */
+        color: var(--color-text-dark);
+        line-height: 1.7;
+        font-size: 1.125rem;
+        white-space: pre-wrap; /* Preserve formatting from LLM */
+        word-wrap: break-word; /* Ensure long words break */
+        text-align: left; /* Align generated text left */
+    }
+
+    .copy-btn {
+        background-color: var(--color-secondary-sage);
+        color: var(--color-white);
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        font-weight: 600;
+        margin-top: 1rem;
+        font-size: 0.875rem;
+        transition: background-color 0.3s ease;
+    }
+    .copy-btn:hover {
+        background-color: var(--color-primary-navy);
+    }
+
+    .message-box {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: var(--color-primary-navy);
+        color: var(--color-white);
+        padding: 15px 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        direction: ltr; /* Ensure message box text is LTR */
+        text-align: left;
+    }
+    .message-box.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Guestbook Specific Styles */
+    .guestbook-message-card {
+        background-color: var(--color-white);
+        border-left: 4px solid var(--color-accent-copper); /* Border on left for LTR */
+        border-right: none; /* Remove right border */
+        border-radius: 0.75rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease-in-out;
+        text-align: left; /* Ensure text is left-aligned */
+    }
+    .guestbook-message-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .guestbook-message-text {
+        color: var(--color-text-dark);
+        font-size: 1.05rem;
+        line-height: 1.6;
+        margin-bottom: 0.75rem;
+    }
+    .guestbook-message-author {
+        font-size: 0.9rem;
+        color: var(--color-text-medium);
+        font-style: italic;
+        text-align: right; /* Author name can be right-aligned for LTR */
+        direction: ltr; /* Ensure author name is LTR */
+    }
+    .guestbook-loading {
+        text-align: center;
+        color: var(--color-primary-navy);
+        font-weight: 600;
+        margin-top: 2rem;
+        direction: ltr;
+    }
+    .current-user-id-display {
+      font-size: 0.8rem;
+      color: var(--color-text-medium);
+      text-align: center;
+      margin-top: 1rem;
+      word-break: break-all;
+      direction: ltr; /* Keep User ID LTR */
+    }
   </style>
-<style>
-  @keyframes float {
-    0%, 100% { transform: translateY(0) rotate(-2deg); }
-    50% { transform: translateY(-8px) rotate(0deg); }
-  }
 
-  .heart-note {
-    background-color: #FEF9C3;
-    color: #78350f;
-    font-weight: 600;
-    padding: 2rem 1.25rem;
-    border-radius: 2rem 2rem 1.5rem 1.5rem;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    animation: float 6s ease-in-out infinite;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    min-height: 200px;
-    font-size: 1.15rem; /* Bigger text */
-    line-height: 1.6;
-    transition: transform 0.3s ease;
-  }
-
-  .heart-note:hover {
-    transform: scale(1.04) rotate(0deg);
-  }
-
-  @media (min-width: 768px) {
-    .heart-note {
-      font-size: 1.25rem;
-      padding: 2.5rem 1.5rem;
-      min-height: 220px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .heart-note {
-      font-size: 1.3rem;
-      padding: 2.75rem 1.75rem;
-      min-height: 240px;
-    }
-  }
-</style>
-  
 </head>
-<body class="bg-gradient-to-br from-[#fdfaf3] to-[#f5f2ea] text-gray-900">
+<body class="antialiased bg-gradient-base text-text-dark min-h-screen">
 
-  <!-- Navigation (unchanged) -->
-  <header class="bg-white shadow-md sticky top-0 z-10">
-    <nav class="container mx-auto flex justify-between items-center p-4">
-      <h1 class="text-xl font-bold text-yellow-800">Meilech & Tzippy</h1>
-      <ul class="flex space-x-6 text-yellow-700 font-medium text-sm md:text-base">
-        <li><a href="#" class="hover:text-yellow-900">Home</a></li>
-        <li><a href="#countdown-hero" class="hover:text-yellow-900">Countdown</a></li>
-        <li><a href="#details-section" class="hover:text-yellow-900">Details</a></li>
-        <li><a href="#map-section" class="hover:text-yellow-900">Map</a></li>
-        <li><a href="#shabbos-section" class="hover:text-yellow-900">Shabbos</a></li>
-        <li><a href="#blessings" class="hover:text-yellow-900">posts</a></li>
-        <li><a href="#chat-section" class="hover:text-yellow-900">Chat</a></li>
-        <li><a href="#thankyou-section" class="hover:text-yellow-900">Thanks</a></li>
+  <!-- Navigation Header - Sticky to remain visible while scrolling -->
+  <header class="header-nav sticky top-0 z-50 transition-all duration-300">
+    <nav class="container mx-auto flex justify-between items-center py-4 px-6">
+      <!-- Site Title / Couple's Names (Moved monogram to hero) -->
+      <a href="#hero-section" class="flex items-center space-x-2 text-primary-navy font-heading text-2xl font-bold tracking-tight hover:text-accent-copper transition-colors duration-300">
+          <svg class="h-8 w-8 text-accent-copper" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/>
+          </svg>
+          <span>Meilech & Tzippy</span>
+      </a>
+      <!-- Navigation Links -->
+      <ul class="flex space-x-6 nav-links text-text-medium font-body text-sm md:text-base">
+        <li><a href="#hero-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Home</a></li>
+        <li><a href="#countdown-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Countdown</a></li>
+        <li><a href="#details-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Details</a></li>
+        <li><a href="#fun-facts-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Fun Facts</a></li>
+        <li><a href="#faq-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Q&A</a></li>
+        <li><a href="#map-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Map</a></li>
+        <li><a href="#shabbos-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Shabbos</a></li>
+        <li><a href="#blessings-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Brachos</a></li>
+        <li><a href="#chat-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Chat</a></li>
       </ul>
     </nav>
   </header>
 
-  <!-- ▶ Unified Countdown Section ▶ -->
-<section
-  id="countdown-hero"
-  class="text-center min-h-screen py-32 px-6 flex flex-col justify-center items-center bg-[url('https://www.transparenttextures.com/patterns/white-wall-3.png')] bg-repeat text-gray-900"
->
-  <!-- Main Headline -->
-  <h1 class="font-playfair text-yellow-800 text-3xl md:text-5xl lg:text-6xl mb-6 leading-tight max-w-3xl animate-fade-in-up">
-    Only <span id="daysLeft">150</span> days to go until<br/>
-    <span class="inline-block bg-yellow-100 px-4 py-2 rounded-xl shadow font-bold text-5xl md:text-6xl lg:text-7xl text-yellow-900 mt-4">
-      Meilech & Tzippy’s
-    </span><br/>
-    wedding!
-  </h1>
+  <!-- Hero Section - The main welcoming and initial call to action -->
+  <section id="hero-section" class="hero-section relative overflow-hidden flex flex-col justify-center items-center text-center px-6 py-20 md:py-32">
+    <!-- Main content container with a "frosted glass" effect -->
+    <div class="relative z-10 p-8 rounded-2xl bg-white bg-opacity-90 shadow-2xl backdrop-filter backdrop-blur-sm transform transition-all duration-700 ease-in-out scale-95 opacity-0 hero-content">
+      <!-- Monogram -->
+      <div class="mb-4">
+        <svg class="monogram-svg mx-auto" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="70" font-family="Lora, serif" font-size="60" font-weight="bold" class="monogram-initial">M</text>
+          <text x="45" y="70" font-family="Lora, serif" font-size="35" font-weight="bold" class="monogram-ampersand">&</text>
+          <text x="65" y="70" font-family="Lora, serif" font-size="60" font-weight="bold" class="monogram-initial">T</text>
+        </svg>
+      </div>
 
-  <!-- Save the Date Button -->
-  <a
-    id="save-date"
-    href="#"
-    class="bg-yellow-700 hover:bg-yellow-800 text-white px-8 py-3 rounded-full text-lg font-semibold shadow-lg mt-8 transition"
-  >
-    Save the Date
-  </a>
+      <!-- Main Heading for the couple's names -->
+      <h1 class="hero-names text-primary-navy leading-tight mb-4 tracking-wide">
+        Meilech & Tzippy
+      </h1>
+      <!-- Engaging tagline -->
+      <p class="text-lg md:text-xl text-text-medium mb-4">
+        Are Tying the Knot!
+      </p>
+      <!-- New descriptive text -->
+      <p class="text-md md:text-lg text-text-medium mb-8 max-w-2xl mx-auto">
+        With hearts full of joy and excitement, we invite you to join us as we embark on our greatest adventure yet:
+        building a shared future together! Your presence would make our celebration truly complete.
+      </p>
 
-  <!-- Progress Bar -->
-  <div id="progress-container" class="w-full max-w-2xl mt-10">
-    <div class="bg-gray-200 rounded-full h-4 overflow-hidden">
-      <div id="progress-fill" class="h-full bg-yellow-600 transition-all"></div>
+      <!-- Save the Date Button - Links to add event to Google Calendar -->
+      <div class="mb-10 w-full max-w-sm mx-auto">
+        <a id="save-date" href="#" class="btn btn-primary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center space-x-2">
+          <!-- Calendar SVG Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span>Save the Date!</span>
+        </a>
+      </div>
+
+      <!-- Progress Bar - Now a button! -->
+      <button id="progress-button" class="w-full max-w-xl mx-auto mt-6 bg-transparent border-none cursor-pointer p-0">
+        <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
+          <div id="progress-fill" class="h-full bg-accent-copper transition-all duration-1000 ease-out"></div>
+        </div>
+        <p class="mt-3 text-text-medium text-sm md:text-base font-body">
+          Our hearts are <span id="percentDone" class="font-semibold">0%</span> full of love for the big day!
+        </p>
+      </button>
+
+      <!-- New Hidden Interactive Element -->
+      <div class="mt-12">
+        <button id="secret-message-trigger" class="text-text-medium hover:text-accent-copper transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-accent-copper focus:ring-opacity-50 rounded-full px-4 py-2 text-sm italic">
+          Discover a Little Secret... ❤️
+        </button>
+        <div id="secret-message-content" class="hidden mt-4 p-4 bg-secondary-sage text-white rounded-lg shadow-md max-w-sm mx-auto text-base text-center transform scale-y-0 opacity-0 transition-all duration-500 origin-top">
+          <!-- Secret message will be injected here by JavaScript -->
+        </div>
+      </div>
     </div>
-    <p class="mt-2 text-yellow-700 font-medium">
-      Our hearts are <span id="percentDone">0%</span> full of love for the big day!
+
+    <!-- Hidden confetti trigger spot (Easter egg) -->
+    <div id="confetti-trigger-spot" class="absolute top-1/4 right-1/4 w-12 h-12 cursor-pointer opacity-0 z-30"></div>
+  </section>
+
+  <!-- Countdown Section - Dedicated page for detailed countdown -->
+  <section id="countdown-section" class="section-padding bg-gradient-base text-center">
+    <h2 class="section-title text-primary-navy mb-10">The Countdown Is On!</h2>
+
+    <!-- Prominent "Total Days" display at the top of the countdown page -->
+    <p class="total-days-display text-primary-navy mb-12">
+      Only <span id="daysLeftCountdown" class="text-secondary-sage">0</span> Days to Go!
     </p>
-  </div>
 
-  <!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Lora&display=swap" rel="stylesheet">
-
-<!-- Refresh Notice -->
-<div class="mx-auto max-w-3xl mt-6 px-6 py-5 bg-[#5D3A66] text-[#FFF8F1] rounded-xl shadow-lg animate-fade-in" style="font-family: 'Lora', serif;">
-  <h2 class="text-2xl md:text-3xl mb-3 font-semibold tracking-wide" style="font-family: 'Cinzel', serif;">
-    Something Beautiful is in the Works
-  </h2>
-  <p class="text-base md:text-lg leading-relaxed">
-    With less than <strong>150 days</strong> to go, our site is getting a refresh to match the excitement.
-    Stay tuned for stunning new sections, smoother features, and a full glow-up in honor of the big day.
-  </p>
-</div>
-
-  <!-- Countdown Title -->
-  <h2 class="text-4xl font-semibold text-yellow-800 mt-20 mb-4">Countdown to the Chasunah</h2>
-  <p class="text-lg text-yellow-700 mb-10">The excitement is building…</p>
-
-  <!-- Total Days Card -->
-  <div class="mx-auto mb-12 bg-white bg-opacity-90 p-10 rounded-xl shadow-lg w-full max-w-md">
-    <p class="text-yellow-800 text-md mb-2">Time left until the big day:</p>
-    <p class="text-6xl font-bold text-yellow-900" id="totalDays">0</p>
-    <p class="text-yellow-800 mt-2 text-lg">Total Days</p>
-  </div>
-
-  <!-- Countdown Grid -->
-  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 max-w-5xl w-full mx-auto text-center">
-    <div class="bg-white bg-opacity-90 p-6 rounded-xl shadow hover:shadow-md transition">
-      <div class="text-yellow-700 text-sm mb-1">Weeks</div>
-      <div id="weeks" class="text-4xl font-bold text-yellow-900">0</div>
-      <div class="text-yellow-700 text-sm">Remaining</div>
+    <!-- Detailed Countdown Timer Grid -->
+    <div id="countdown-grid-wrapper" class="w-full max-w-5xl px-6 z-20">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6 text-center">
+        <!-- Each div is a countdown card with dynamic styling via 'countdown-card' and 'countdown-value' -->
+        <div class="countdown-card p-4 md:p-6 rounded-xl shadow-md transition-all duration-500 ease-in-out hover:scale-105">
+          <div class="text-text-medium text-sm md:text-base mb-1">Weeks</div>
+          <div id="weeks" class="text-4xl md:text-5xl font-bold countdown-value">0</div>
+        </div>
+        <div class="countdown-card p-4 md:p-6 rounded-xl shadow-md transition-all duration-500 ease-in-out hover:scale-105">
+          <div class="text-text-medium text-sm md:text-base mb-1">Days</div>
+          <div id="days" class="text-4xl md:text-5xl font-bold countdown-value">0</div>
+        </div>
+        <div class="countdown-card p-4 md:p-6 rounded-xl shadow-md transition-all duration-500 ease-in-out hover:scale-105">
+          <div class="text-text-medium text-sm md:text-base mb-1">Hours</div>
+          <div id="hours" class="text-4xl md:text-5xl font-bold countdown-value">0</div>
+        </div>
+        <div class="countdown-card p-4 md:p-6 rounded-xl shadow-md transition-all duration-500 ease-in-out hover:scale-105">
+          <div class="text-text-medium text-sm md:text-base mb-1">Minutes</div>
+          <div id="minutes" class="text-4xl md:text-5xl font-bold countdown-value">0</div>
+        </div>
+        <div class="countdown-card p-4 md:p-6 rounded-xl shadow-md transition-all duration-500 ease-in-out hover:scale-105">
+          <div class="text-text-medium text-sm md:text-base mb-1">Seconds</div>
+          <div id="seconds" class="text-4xl md:text-5xl font-bold countdown-value">0</div>
+        </div>
+      </div>
+      <!-- Hidden total days for confetti trigger (Easter egg) - kept here for easy access with related elements -->
+      <p class="sr-only" id="totalDays">0</p>
     </div>
-    <div class="bg-white bg-opacity-90 p-6 rounded-xl shadow hover:shadow-md transition">
-      <div class="text-yellow-700 text-sm mb-1">Days</div>
-      <div id="days" class="text-4xl font-bold text-yellow-900">0</div>
-      <div class="text-yellow-700 text-sm">Remaining</div>
-    </div>
-    <div class="bg-white bg-opacity-90 p-6 rounded-xl shadow hover:shadow-md transition">
-      <div class="text-yellow-700 text-sm mb-1">Hours</div>
-      <div id="hours" class="text-4xl font-bold text-yellow-900">0</div>
-      <div class="text-yellow-700 text-sm">Remaining</div>
-    </div>
-    <div class="bg-white bg-opacity-90 p-6 rounded-xl shadow hover:shadow-md transition">
-      <div class="text-yellow-700 text-sm mb-1">Minutes</div>
-      <div id="minutes" class="text-4xl font-bold text-yellow-900">0</div>
-      <div class="text-yellow-700 text-sm">Remaining</div>
-    </div>
-    <div class="bg-white bg-opacity-90 p-6 rounded-xl shadow hover:shadow-md transition">
-      <div class="text-yellow-700 text-sm mb-1">Seconds</div>
-      <div id="seconds" class="text-4xl font-bold text-yellow-900">0</div>
-      <div class="text-yellow-700 text-sm">Remaining</div>
-    </div>
-  </div>
-</section>
+  </section>
 
-  <!-- ▶ Unified Countdown Script ▶ -->
-  <script>
+  <!-- Wedding Details Section - Core information about the event -->
+  <section id="details-section" class="section-padding bg-gradient-details text-center">
+    <h2 class="section-title text-primary-navy mb-10">Wedding Day Details</h2>
+
+    <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 info-card-grid">
+
+      <!-- Venue Card -->
+      <div class="info-card fade-in-hidden">
+        <div class="icon-wrapper">
+          <!-- House/Building SVG Icon for Venue -->
+          <svg class="icon-large text-accent-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M5 10v9a2 2 0 002 2h10a2 2 0 002-2v-9"/>
+          </svg>
+        </div>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">The Grand Venue</h3>
+        <p class="text-text-medium text-lg">
+          Ateres Chaya Surah<br/>
+          106 S Madison Ave<br/>
+          Spring Valley, NY
+        </p>
+        <p class="text-text-medium text-md mt-2 italic">
+          Where the magic happens, and the good vibes are contagious!
+        </p>
+      </div>
+
+      <!-- Date Card -->
+      <div class="info-card fade-in-hidden">
+        <div class="icon-wrapper">
+          <!-- Calendar SVG Icon -->
+          <svg class="icon-large text-accent-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">The Big Day</h3>
+        <p class="text-text-medium text-lg">
+          Monday, November 3, 2025<br/>
+          י"ב חשון תשפ"ו
+        </p>
+        <p class="text-text-medium text-md mt-2 italic">
+          Mark your calendars (seriously, it's gonna be epic!)
+        </p>
+      </div>
+
+      <!-- Schedule Card - Spans two columns on larger screens -->
+      <div class="info-card md:col-span-2 fade-in-hidden">
+        <div class="icon-wrapper">
+          <!-- Clock SVG Icon -->
+          <svg class="icon-large text-accent-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">The Flow of Simcha</h3>
+        <p class="text-text-medium text-lg leading-relaxed">
+          <strong>Kabulas Panim</strong> – 6:30 PM (Arrive early, good food starts punctually!)<br/>
+          <strong>Chuppah</strong> – 7:30 PM (Prepare for happy tears and timeless moments!)<br/>
+          <strong>Seudah</strong> – 8:30 PM (Let the feasting begin! You'll be glad you wore stretchy pants.)<br/>
+          <strong>Dancing Begins</strong> – 10:00 PM (Bring your dancing shoes – and maybe some band-aids!)
+        </p>
+      </div>
+
+      <!-- Vibe Card -->
+      <div class="info-card fade-in-hidden">
+        <div class="icon-wrapper">
+          <!-- Happy Face SVG Icon for Vibe -->
+          <svg class="icon-large text-accent-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">The Vibe</h3>
+        <p class="text-text-medium text-lg">
+          Come ready to celebrate in joy and dignity. The evening will be full of music, warmth, and true simcha – expect some serious dancing!
+        </p>
+      </div>
+
+      <!-- Transportation Card -->
+      <div class="info-card fade-in-hidden">
+        <div class="icon-wrapper">
+          <!-- Car SVG Icon for Transportation -->
+          <svg class="icon-large text-accent-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5a2 2 0 00-2 2v2a2 2 0 002 2h14a2 2 0 002-2v-2a2 2 0 00-2-2zM7 11V7a2 2 0 012-2h6a2 2 0 012 2v4M12 17v2m-2-2h4"/>
+          </svg>
+        </div>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">Getting There</h3>
+        <p class="text-text-medium text-lg">
+          Parking is available on-site. Consider carpooling – good simcha energy is always contagious!
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fun Facts Section - New section with playful trivia -->
+  <section id="fun-facts-section" class="section-padding bg-gradient-accent text-center">
+    <h2 class="section-title text-white mb-10">Fun Facts & Funtastic Tidbits!</h2>
+    <p class="text-lg text-white opacity-80 mb-12 max-w-2xl mx-auto">
+      Because every epic love story deserves a few surprising footnotes and random trivia. Prepare to be amused!
+    </p>
+
+    <!-- Grid for fun fact cards -->
+    <div class="max-w-5xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6 fun-fact-grid">
+
+      <div class="fun-fact-card fade-in-hidden">
+        <h3 class="fun-fact-title font-heading text-primary-navy">Did You Know?</h3>
+        <p class="fun-fact-text text-text-medium">
+          Our wedding day, November 3rd, is also **National Sandwich Day!** We're taking a big bite out of forever.
+        </p>
+      </div>
+
+      <div class="fun-fact-card fade-in-hidden">
+        <h3 class="fun-fact-title font-heading text-primary-navy">Musical Interlude</h3>
+        <p class="fun-fact-text text-text-medium">
+          The number of times "Mazel Tov!" is expected to be shouted: approximately **1,000,000!** Start practicing your vocal chords.
+        </p>
+      </div>
+
+      <div class="fun-fact-card fade-in-hidden">
+        <h3 class="fun-fact-title font-heading text-primary-navy">Royal Status</h3>
+        <p class="fun-fact-text text-text-medium">
+          Jewish tradition says the Kallah is a queen and the Chassan is a king on their wedding day. Bow down, peasants! (Just kidding... mostly.)
+        </p>
+      </div>
+
+      <div class="fun-fact-card fade-in-hidden">
+        <h3 class="fun-fact-title font-heading text-primary-navy">Sweet Predictions</h3>
+        <p class="fun-fact-text text-text-medium">
+          Experts predict our wedding cake will magically disappear faster than a plate of kugel at a simcha.
+        </p>
+      </div>
+
+      <div class="fun-fact-card fade-in-hidden">
+        <h3 class="fun-fact-title font-heading text-primary-navy">Dancing Shoes Alert</h3>
+        <p class="fun-fact-text text-text-medium">
+          We've measured the dance floor: it's big enough for *everyone* to get down. Don't be shy!
+        </p>
+      </div>
+
+      <div class="fun-fact-card fade-in-hidden">
+        <h3 class="fun-fact-title font-heading text-primary-navy">Historic Day</h3>
+        <p class="fun-fact-text text-text-medium">
+          On November 3rd, 1957, the Soviet Union launched Sputnik 2, carrying the dog Laika into space. We're launching into marriage – slightly less space, more love!
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAQ Section - New section for common questions with humorous answers -->
+  <section id="faq-section" class="section-padding bg-gradient-base text-center">
+    <h2 class="section-title text-primary-navy mb-10">Your Burning Questions (and Our Honest Answers)</h2>
+    <p class="text-lg text-text-medium mb-12 max-w-2xl mx-auto">
+      We know you've got 'em. Here are the answers to the questions you're *actually* thinking.
+    </p>
+
+    <!-- Accordion-style FAQ using <details> and <summary> tags -->
+    <div class="max-w-3xl mx-auto text-left space-y-6 faq-container">
+
+      <details class="faq-item group">
+        <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
+          What time should I arrive?
+          <!-- Arrow icon for accordion toggle -->
+          <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
+          <p>We'd love to see you for Kabulas Panim at <strong>6:30 PM</strong>. Don't miss the Chuppah at 7:30 PM – it's the main event! Seriously, the good parts (and food!) start punctually.</p>
+        </div>
+      </details>
+
+      <details class="faq-item group">
+        <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
+          What's the dress code?
+          <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
+          <p>Dress to impress, but also dress to dance! Formal, modest attire is appreciated. Think "Simcha Chic" – because comfort meets elegance when you're celebrating!</p>
+        </div>
+      </details>
+
+      <details class="faq-item group">
+        <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
+          Can I bring my kids?
+          <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
+          <p>Absolutely! The more simcha, the merrier. Just remember to keep them away from the band's drum set and the dessert table (unless you brought extra for us!).</p>
+        </div>
+      </details>
+
+      <details class="faq-item group">
+        <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
+          Is there food?
+          <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
+          <p>Is the sky blue?! We're having a wedding, so yes, there will be plenty of delicious food. Come hungry, leave happy!</p>
+        </div>
+      </details>
+
+      <details class="faq-item group">
+        <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
+          Where can I park?
+          <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </summary>
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
+          <p>Ample parking is available on-site. For the full Monsey experience, allow an extra 15 minutes for unexpected traffic (especially on simcha days!).</p>
+        </div>
+      </details>
+
+      <details class="faq-item group">
+        <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
+          Can I take photos?
+          <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
+          <p>We kindly request no flash photography during the Chuppah. Otherwise, snap away and share the simcha! Just don't block the professional photographers – they've got a job to do!</p>
+        </div>
+      </details>
+
+      <!-- NEW: Flashmob FAQ -->
+      <details class="faq-item group">
+        <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
+          Can I be part of the flashmob?
+          <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
+          <p>You're asking the real questions! Absolutely! If you've got moves (or even just enthusiasm!), we'd love to have you. Just reach out to Tzippy's sister, Rivky, and she'll share all the secret steps and make sure you're ready to bust a move! Get ready to dance the night away!</p>
+        </div>
+      </details>
+
+      <details class="faq-item group">
+        <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
+          What if I have a question not listed here?
+          <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
+          <p>No worries! Scroll down to our "Chat" section – we're (virtually) here to help with almost anything. Or just find us at the dessert table on the night!</p>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- Map Section - Provides directions and key locations -->
+  <section id="map-section" class="section-padding bg-gradient-details text-center">
+    <h2 class="section-title text-primary-navy mb-10">Simcha Trail Map</h2>
+    <p class="text-lg text-text-medium mb-4 max-w-2xl mx-auto">
+      Lost? Don’t worry! We've pinned all the essential simcha stops just for you.
+    </p>
+    <p class="text-md text-text-medium mb-10 italic max-w-2xl mx-auto">
+      Need help finding us? Just follow the music and smiles — we’ll be there!
+    </p>
+    <!-- Embedded Google Map -->
+    <div class="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-2xl mb-10 aspect-video map-embed">
+      <!-- IMPORTANT: Replace the 'src' with your actual Google Maps Embed API URL. This is a placeholder. -->
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11977.830604163914!2d-74.02058300000001!3d41.1396113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2c19a9a9a9a9f%3A0x123456789abcdef0!2sAteres%20Chaya%20Surah!5e0!3m2!1sen!2suk!4v1689254321000!5m2=1sen!2suk"
+        style="width: 100%; height: 100%; border: 0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+    <!-- Pinned locations and tip -->
+    <div class="max-w-4xl mx-auto text-left info-card-grid grid md:grid-cols-2 gap-8 md:gap-12">
+      <div class="info-card fade-in-hidden">
+        <!-- Corrected HTML structure: icon-wrapper outside h3 -->
+        <div class="icon-wrapper">
+          <!-- List/Clipboard SVG Icon for "What's Pinned" -->
+          <svg class="icon-large text-accent-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M12 16h.01" />
+          </svg>
+        </div>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-3">What’s Pinned?</h3>
+        <ul class="list-disc list-inside text-text-medium space-y-2">
+          <li><strong>Wedding Venue:</strong> Ateres Chaya Surah, Spring Valley</li>
+          <li><strong>Oifruf:</strong> 3 Harvest Ct, Monsey</li>
+          <li><strong>Bogleiten:</strong> 15 Sophia St, Monsey</li>
+          <li><strong>Bovarfen:</strong> Belz Shul, 1 Harvest Ct</li>
+          <li><strong>Shabbos Sheva Brachas:</strong> Bobov Shul, Jill Ln</li>
+        </ul>
+      </div>
+      <div class="info-card fade-in-hidden">
+        <!-- Corrected HTML structure: icon-wrapper outside h3 -->
+        <div class="icon-wrapper">
+          <!-- Lightbulb SVG Icon for "Top Tip" -->
+          <svg class="icon-large text-accent-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17H5.93a2 2 0 00-1.932 2.56L5 21h14a2 2 0 001.932-2.56L14.337 17H9.663zM12 7a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </div>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-3">Top Tip:</h3>
+        <p class="text-text-medium">
+          Leave a few minutes early. Monsey traffic likes to surprise you—especially on simcha days! Better safe than sorry (and missing the good appetizers!).
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shabbos Events Section - Details for surrounding Shabbos gatherings -->
+  <section id="shabbos-section" class="section-padding bg-gradient-accent text-center">
+    <h2 class="section-title text-white mb-10">Shabbos Oifruf & Sheva Brachas</h2>
+    <p class="text-lg text-white opacity-80 mb-12 max-w-2xl mx-auto">
+      The simcha continues! Join us for these special Shabbos gatherings surrounding our wedding celebration.
+    </p>
+    <!-- Grid for Shabbos event cards -->
+    <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 info-card-grid">
+
+      <!-- Oifruf Card -->
+      <div class="info-card fade-in-hidden">
+        <div class="icon-wrapper">
+          <!-- Book/Torah scroll SVG Icon -->
+          <svg class="icon-large text-accent-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253" />
+          </svg>
+        </div>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">Shabbos Oifruf Seudah</h3>
+        <p class="text-text-medium text-lg">
+          Beth Medrash D'Monsey Simcha Hall<br/>
+          3 Harvest Ct.<br/>
+          Monsey, NY 10952
+        </p>
+        <p class="text-text-medium text-md mt-2 italic">
+          Come wish the chassan Mazel Tov before the big day! It's going to be packed with good vibes.
+        </p>
+      </div>
+
+      <!-- Bogleiten Card -->
+      <div class="info-card fade-in-hidden">
+        <div class="icon-wrapper">
+          <!-- People Walking SVG Icon -->
+          <svg class="icon-large text-accent-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292V15a4 4 0 010 5.292V21m0-16V3a1 1 0 00-1-1H4a1 1 0 00-1 1v2m0 13V9a1 1 0 011-1h7a1 1 0 011 1v7m0 0a1 1 0 001 1h7a1 1 0 001-1v-2m0 0a1 1 0 011-1h7a1 1 0 011 1v2" />
+          </svg>
+        </div>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">Bogleiten</h3>
+        <p class="text-text-medium text-lg">
+          Departing from:<br/>
+          15 Sophia St.<br/>
+          Monsey, NY 10952
+        </p>
+        <p class="text-text-medium text-md mt-2 italic">
+          The grand send-off for the kallah – bring your singing voices and prepare for a joyful walk!
+        </p>
+      </div>
+
+      <!-- Bovarfen Card -->
+      <div class="info-card fade-in-hidden">
+        <div class="icon-wrapper">
+          <!-- Food/Candy SVG Icon for Bovarfen (representing treats/candy) -->
+          <svg class="icon-large text-accent-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c1.657 0 3-4.5 3-9S13.657 0 12 0 9 4.5 9 9s1.343 9 3 9zM12 21a2 2 0 100-4 2 2 0 000 4zM12 17a2 2 0 100-4 2 2 0 000 4zM12 13a2 2 0 100-4 2 2 0 000 4z" />
+          </svg>
+        </div>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">Bovarfen</h3>
+        <p class="text-text-medium text-lg">
+          Belz Shul<br/>
+          1 Harvest Ct.<br/>
+          Monsey, NY 10952
+        </p>
+        <p class="text-text-medium text-md mt-2 italic">
+          Prepare for some sweet treats and even sweeter moments! (And maybe a few friendly shoves.)
+        </p>
+      </div>
+
+      <!-- Sheva Brachas Card -->
+      <div class="info-card fade-in-hidden">
+        <div class="icon-wrapper">
+          <!-- Star/Sparkle SVG Icon for Sheva Brachas -->
+          <svg class="icon-large text-accent-copper" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.324 1.114l1.519 4.674c.3.921-.755 1.688-1.539 1.114l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.574-1.839-.193-1.539-1.114l1.519-4.674a1 1 0 00-.324-1.114L2.093 10.09c-.783-.57-.381-1.81.588-1.81h4.915a1 1 0 00.95-.69l1.519-4.674z" />
+          </svg>
+        </div>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">Shabbos Sheva Brachas</h3>
+        <p class="text-text-medium text-lg">
+          Bobov Shul<br/>
+          20 Jill Ln.<br/>
+          Monsey, NY 10952
+        </p>
+        <p class="text-text-medium text-md mt-2 italic">
+          Continue the simcha with us on Shabbos! More good food and even better company.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blessings Section - Displays rotating blessings from family/friends -->
+  <section id="blessings-section" class="section-padding bg-gradient-base text-center">
+    <h2 class="section-title text-primary-navy mb-10">Messages of Simcha & Brachos!</h2>
+    <p class="text-lg text-text-medium mb-12 max-w-2xl mx-auto">
+      From the people who love us most — now proudly displayed for all to see (and smile at!).
+    </p>
+
+    <!-- Blessing Wall - Content injected by JavaScript -->
+    <div id="blessing-wall" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"></div>
+
+    <!-- Call to Action button for sharing blessings -->
+    <div class="mt-16">
+      <button id="send-brucha-btn" class="btn btn-secondary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+        Share Your Simcha!
+      </button>
+      <!-- Removed old popup message element -->
+      <!-- <div id="popup-message" class="mt-4 text-primary-navy font-body font-semibold text-lg hidden animate-bounce">
+        Aww! That means so much to us – can't wait to read it! 🥰
+      </div> -->
+    </div>
+
+    <!-- ✨ LLM Blessing Generator Feature ✨ -->
+    <div class="max-w-3xl mx-auto w-full llm-generator-card mb-12">
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-4 text-center">✨ Need Help Crafting a Blessing? ✨</h3>
+        <p class="text-text-medium mb-6 text-center">
+            Type a few keywords, and our AI will help you sparkle up your message for the happy couple!
+        </p>
+        <div class="space-y-4">
+            <div>
+                <label for="blessing-input" class="block text-lg text-primary-navy font-semibold mb-2">Your Blessing Idea (e.g., "much nachas", "happy life", "joyous home")</label>
+                <textarea id="blessing-input" rows="3" class="input-field" placeholder="Enter your blessing keywords here..."></textarea>
+            </div>
+            <button id="generate-blessing-btn" class="btn btn-primary w-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center justify-content-center space-x-2">
+                <span>Sparkle My Blessing! ✨</span>
+            </button>
+
+            <!-- Loading Indicator -->
+            <div id="blessing-loading" class="llm-loading hidden mt-4">
+                <span>Generating a truly special blessing...</span>
+                <svg class="animate-spin h-5 w-5 text-primary-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </div>
+
+            <!-- Generated Blessing Output Area -->
+            <div id="generated-blessing-output" class="llm-generated-output hidden">
+                <!-- LLM generated text will be inserted here -->
+            </div>
+            <button id="copy-blessing-btn" class="copy-btn hidden">Copy Blessing</button>
+        </div>
+    </div>
+
+    <!-- Interactive Guestbook Section -->
+    <div class="max-w-3xl mx-auto w-full bg-card rounded-2xl shadow-2xl p-8 md:p-10 mt-12">
+      <h3 class="font-heading text-2xl font-bold text-primary-navy mb-4 text-center">Guestbook: Leave Your Mark! ✍️</h3>
+      <p class="text-text-medium mb-6 text-center">
+          Share your well wishes, a favorite memory, or just a simple "Mazel Tov!" with Meilech & Tzippy!
+      </p>
+
+      <form id="guestbook-form" class="space-y-4 text-left mb-8">
+        <div>
+          <label for="guestbook-name" class="block text-lg text-primary-navy font-semibold mb-2">Your Name</label>
+          <input type="text" id="guestbook-name" required class="input-field" placeholder="Your Name">
+        </div>
+        <div>
+          <label for="guestbook-message" class="block text-lg text-primary-navy font-semibold mb-2">Your Message</label>
+          <textarea id="guestbook-message" rows="4" required class="input-field" placeholder="Write your heartfelt message here..."></textarea>
+        </div>
+        <button type="submit" id="submit-guestbook-btn" class="btn btn-primary w-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+          Send Your Message!
+        </button>
+      </form>
+
+      <div class="guestbook-loading hidden" id="guestbook-loading">
+        Loading messages...
+      </div>
+
+      <div id="guestbook-messages-display" class="mt-8 space-y-4 text-left">
+        <!-- Guestbook messages will be loaded here -->
+      </div>
+      <p class="current-user-id-display">Your User ID: <span id="current-user-id">Loading...</span></p>
+    </div>
+
+  </section>
+
+  <!-- Chat & Questions Section - Form for guests to ask questions -->
+  <section id="chat-section" class="section-padding bg-gradient-details text-center">
+    <h2 class="section-title text-primary-navy mb-10">Got a Burning Question?</h2>
+    <p class="text-lg text-text-medium mb-10 max-w-2xl mx-auto">
+      Whether it's about directions, what time to show up, or where to find the best kugel — we’re (virtually) here to help!
+    </p>
+
+    <!-- Contact Form -->
+    <div class="max-w-2xl mx-auto bg-card rounded-2xl shadow-2xl p-8 md:p-10">
+      <!-- Form points to Formsubmit.co for easy backend handling -->
+      <form id="contact-form" action="https://formsubmit.co/elimelechmoster@gmail.com" method="POST" class="space-y-6 text-left">
+        <!-- Hidden inputs for Formsubmit.co functionality -->
+        <input type="hidden" name="_autoresponse" value="Thank you for your message! We'll be in touch soon.">
+        <input type="hidden" name="_template" value="table">
+        <!-- IMPORTANT: Replace with your actual website URL for successful redirect after submission -->
+        <input type="hidden" name="_next" value="https://yourwebsite.com/#thankyou-section">
+
+        <!-- Honeypot field for basic bot spam protection (visually hidden) -->
+        <div style="display: none;">
+          <label for="hp_field">Leave this blank</label>
+          <input type="text" id="hp_field" name="hp_field" autocomplete="off">
+        </div>
+
+        <!-- Name Input -->
+        <div>
+          <label for="chat-name" class="block text-lg text-primary-navy font-semibold mb-2">Your Name</label>
+          <input type="text" id="chat-name" name="name" required class="input-field">
+        </div>
+
+        <!-- Email Input -->
+        <div>
+          <label for="chat-email" class="block text-lg text-primary-navy font-semibold mb-2">Your Email</label>
+          <input type="email" id="chat-email" name="email" required class="input-field">
+        </div>
+
+        <!-- Message/Question Textarea -->
+        <div>
+          <label for="question" class="block text-lg text-primary-navy font-semibold mb-2">Your Question / Message</label>
+          <textarea id="question" name="question" rows="5" required class="input-field"></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="submit-contact-btn" class="btn btn-primary w-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+          Send Your Message!
+        </button>
+      </form>
+
+      <!-- Humorous closing note -->
+      <div class="mt-10 text-text-medium italic text-lg">
+        <p>We’ll reply soon — or you can just come find us by the food table 😉</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Thank You Section - A heartfelt message to guests -->
+  <section id="thankyou-section" class="section-padding bg-gradient-base text-center">
+    <h2 class="section-title text-primary-navy mb-8">Thank You for Being Part of Our Simcha!</h2>
+    <!-- Thank you message container -->
+    <div class="max-w-4xl mx-auto text-lg text-text-medium space-y-6 bg-card rounded-2xl shadow-2xl p-8 md:p-10">
+      <p>Dear family and friends, </p>
+      <p>We’re so excited as we count down the days to our wedding, and we feel incredibly lucky to be surrounded by such immense love and support. Your warm wishes, thoughtful messages, and bubbling excitement mean more than we can possibly say.</p>
+      <p>Thank you for joining us on this beautiful journey. Whether you’ll be dancing with us in person or celebrating from afar, your presence in our lives is a true blessing (a "bracha" for those who know the lingo!).</p>
+      <p class="text-2xl md:text-3xl font-bold font-heading text-primary-navy mt-8">With all our love and excitement,</p>
+      <p class="text-3xl md:text-4xl font-bold font-heading text-primary-navy">Meilech & Tzippy</p>
+    </div>
+
+    <!-- Button to navigate back to the chat section -->
+    <div class="mt-12">
+      <a href="#chat-section" class="btn btn-secondary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+        Still Have a Question? Chat With Us!
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer - Copyright and contact information -->
+  <footer class="text-center py-8 text-text-medium text-sm border-t border-gray-200">
+    <p class="mb-2">&copy; 2025 Meilech & Tzippy. Built with love, laughter, and a touch of magic.</p>
+    <p>Questions? Reach out to us at <a href="mailto:elimelechmoster@gmail.com" class="text-primary-navy hover:underline">elimelechmoster@gmail.com</a></p>
+  </footer>
+
+  <!-- Message box for copy confirmation -->
+  <div id="message-box" class="message-box"></div>
+
+  <!-- Confetti.js CDN - Required for confetti effects -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // --- Main JavaScript (Encapsulated) ---
     (function(){
+      // --- Configuration & Elements ---
       // Dates
       const ENGAGEMENT_TS = new Date("2025-01-29T00:00:00").getTime();
-      const WEDDING_TS    = new Date("2025-11-03T18:30:00").getTime();
+      const WEDDING_TS    = new Date("2025-11-03T18:30:00").getTime(); // Nov 3, 2025 at 6:30 PM
 
-      // Elements
-      const daysLeftEl = document.getElementById("daysLeft");
-      const totalEl    = document.getElementById("totalDays");
-      const weeksEl    = document.getElementById("weeks");
-      const daysEl     = document.getElementById("days");
-      const hoursEl    = document.getElementById("hours");
-      const minsEl     = document.getElementById("minutes");
-      const secsEl     = document.getElementById("seconds");
-      const fillEl     = document.getElementById("progress-fill");
-      const pctEl      = document.getElementById("percentDone");
-      const saveBtn    = document.getElementById("save-date");
+      // DOM Elements
+      const daysLeftCountdownEl = document.getElementById("daysLeftCountdown"); // Prominent display on the countdown page
+      const totalDaysHiddenEl   = document.getElementById("totalDays"); // Hidden for confetti trigger from Hero
+      const weeksEl             = document.getElementById("weeks");
+      const daysEl              = document.getElementById("days");
+      const hoursEl             = document.getElementById("hours");
+      const minsEl              = document.getElementById("minutes");
+      const secsEl              = document.getElementById("seconds");
+      const progressFillEl      = document.getElementById("progress-fill");
+      const percentDoneEl       = document.getElementById("percentDone");
+      const saveDateBtn         = document.getElementById("save-date");
+      const blessingWall        = document.getElementById("blessing-wall");
+      const sendBruchaBtn       = document.getElementById("send-brucha-btn");
+      // const popupMessageEl      = document.getElementById("popup-message"); // Removed
+      const heroContent         = document.querySelector(".hero-content");
+      const confettiTriggerSpot = document.getElementById("confetti-trigger-spot");
+      const navHeader           = document.querySelector(".header-nav");
+      const progressButton      = document.getElementById("progress-button"); // Progress bar button
 
-      // Update all countdowns & progress
+      // LLM Blessing Generator Elements
+      const blessingInput       = document.getElementById('blessing-input');
+      const generateBlessingBtn = document.getElementById('generate-blessing-btn');
+      const blessingLoading     = document.getElementById('blessing-loading');
+      const generatedBlessingOutput = document.getElementById('generated-blessing-output');
+      const copyBlessingBtn     = document.getElementById('copy-blessing-btn');
+      const messageBox          = document.getElementById('message-box');
+
+      // Elements for scroll-fade-in
+      const elementsToFadeIn = document.querySelectorAll('.info-card, .fun-fact-card');
+
+      // Guestbook Elements
+      const guestbookForm          = document.getElementById('guestbook-form');
+      const guestbookNameInput     = document.getElementById('guestbook-name');
+      const guestbookMessageInput  = document.getElementById('guestbook-message');
+      const guestbookMessagesDisplay = document.getElementById('guestbook-messages-display');
+      const guestbookLoading       = document.getElementById('guestbook-loading');
+      const currentUserIdDisplay   = document.getElementById('current-user-id');
+
+      // Contact Form Elements
+      const contactForm            = document.getElementById('contact-form');
+      const submitContactBtn       = document.getElementById('submit-contact-btn');
+
+
+      // New hidden message elements
+      const secretMessageTrigger = document.getElementById('secret-message-trigger');
+      const secretMessageContent = document.getElementById('secret-message-content');
+      let secretMessageTimeout; // To store the timeout ID for auto-hiding
+      let currentSecretMessageIndex = 0; // To track which secret message to show
+
+      // Array of secret messages
+      const secretMessages = [
+        "Did you know Meilech proposed at their favorite park bench? Shhh!",
+        "Tzippy's favorite part of wedding planning? Definitely the cake tasting!",
+        "Meilech secretly practices his dance moves when no one's watching. You heard it here first!",
+        "Their first date was a spontaneous picnic under the stars.",
+        "They bonded over a shared love for obscure 80s music.",
+        "The rings have a tiny, hidden inscription only they know about. ✨"
+      ];
+
+      // Get references to the countdown card elements for confetti
+      const weeksCard   = weeks.parentElement;
+      const daysCard    = days.parentElement;
+      const hoursCard   = hours.parentElement;
+      const minutesCard = minutes.parentElement;
+      const secondsCard = seconds.parentElement;
+
+
+      // Root for CSS variables - no longer directly used for countdown colors as they are inline/class-based
+      // const root = document.documentElement;
+
+      // Firebase variables (initialized later)
+      let app, db, auth, userId;
+      let isAuthReady = false;
+
+      // --- Pre-saved Blessings for Display ---
+      const blessingsData = [
+        { name: "The Kugel Connoisseur", text: "May your life together be as sweet and abundant as a double-batch kugel! Mazel Tov!" },
+        { name: "A Well-Wisher from Afar", text: "Though miles may separate us, our hearts are with you. Wishing you a truly joyous union!" },
+        { name: "That Guy from Cheder", text: "From the old days till now, so proud to see you build this beautiful life! Mazel Tov!" },
+        { name: "The Couple's Biggest Fans", text: "You two are seriously the best! Wishing you endless laughter and happiness. Party on!" },
+        { name: "Auntie Mameleh", text: "May your home be filled with only good things, from now until forever! Much nachas and simcha!" },
+        { name: "The Mensch Family", text: "To a truly special couple: May you always find strength, love, and comfort in each other. Brachos!" },
+        { name: "Your Go-To Babysitter", text: "So excited for your future! Remember me when you need a night out. 😉 Mazel Tov!" },
+        { name: "The One Who Knows All Your Secrets", text: "May your love story continue to be the most exciting chapter yet. And yes, I'll keep your secrets! 😉" },
+        { name: "The Matchmaker's Apprentice", text: "Another perfect match! Wishing you both a lifetime of happiness. Don't forget who brought you together (kinda)!" },
+        { name: "Your Favorite Cousin (Probably)", text: "Beyond thrilled for you both! May your days be filled with simcha and your nights with peace. See you on the dance floor!" },
+        { name: "A Friend from the Old Neighborhood", text: "From backyard games to wedding bells – so happy for you two. Wishing you all the best!" },
+        { name: "The Mystery Mazel Tov Sender", text: "Wishing you a home filled with light, joy, and the constant presence of the Shechinah. Mazel Tov!" }
+      ];
+
+
+      let currentBlessingIndex = 0;
+      let blessingInterval;
+
+      // --- Utility Functions ---
+
+      /**
+       * Shows a temporary message box.
+       * @param {string} message - The message to display.
+       * @param {number} duration - How long to display the message in milliseconds.
+       */
+      function showMessageBox(message, duration = 3000) {
+          messageBox.textContent = message;
+          messageBox.classList.add('show');
+          setTimeout(() => {
+              messageBox.classList.remove('show');
+          }, duration);
+      }
+
+      /**
+       * Triggers a confetti animation.
+       * @param {Object} [options] - Optional parameters for confetti.
+       * @param {number} [options.x] - Normalized x-coordinate (0-1).
+       * @param {number} [options.y] - Normalized y-coordinate (0-1).
+       * @param {Array<string>} [options.colors] - Array of hex color codes.
+       */
+      function triggerConfetti(options = {}) {
+        confetti({
+          particleCount: options.particleCount || 100,
+          spread: options.spread || 70,
+          origin: options.origin || { y: 0.6 },
+          colors: options.colors || ['#B85C3A', '#1E2C4F', '#84A98C', '#F2F4F7']
+        });
+      }
+
+      /**
+       * Copies text to clipboard.
+       * @param {string} text - The text to copy.
+       */
+      function copyTextToClipboard(text) {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          document.body.appendChild(textarea);
+          textarea.select();
+          try {
+              document.execCommand('copy'); // Deprecated but widely supported in iframes
+              showMessageBox('Copied to clipboard! 🎉');
+          } catch (err) {
+              console.error('Failed to copy text: ', err);
+              showMessageBox('Failed to copy. Please try again manually.');
+          }
+          document.body.removeChild(textarea);
+      }
+
+      // --- Countdown & Progress Logic ---
+
+      /**
+       * Applies dynamic styles to individual countdown cards based on their own value.
+       * Also applies a global flashing effect when very close to 0 seconds.
+       * @param {number} weeksVal - Current weeks value.
+       * @param {number} daysVal - Current days (remainder) value.
+       * @param {number} hoursVal - Current hours value.
+       * @param {number} minutesVal - Current minutes value.
+       * @param {number} secondsVal - Current seconds value.
+       * @param {number} totalDiffMs - Total milliseconds remaining until wedding.
+       */
+      function applyIndividualCountdownStyles(weeksVal, daysVal, hoursVal, minutesVal, secondsVal, totalDiffMs) {
+        const countdownElements = [
+          { card: weeksCard, value: weeksVal },
+          { card: daysCard, value: daysVal },
+          { card: hoursCard, value: hoursVal },
+          { card: minutesCard, value: minutesVal },
+          { card: secondsCard, value: secondsVal }
+        ];
+
+        // Define color and shadow properties for different intensity levels
+        const intensityColors = {
+            default: { color: 'var(--color-secondary-sage)', border: 'transparent', shadow: '0 6px 20px rgba(0, 0, 0, 0.08)' },
+            lessIntense: { color: 'var(--color-accent-copper)', border: 'var(--color-accent-copper)', shadow: '0 0 8px rgba(0,0,0,0.1), 0 0 10px var(--color-accent-copper)' }, // For < 20
+            mediumIntense: { color: 'var(--color-primary-navy)', border: 'var(--color-primary-navy)', shadow: '0 0 10px rgba(0,0,0,0.15), 0 0 15px var(--color-primary-navy)' }, // For < 10
+            mostIntense: { color: 'var(--color-accent-copper)', border: 'var(--color-primary-navy)', shadow: '0 0 15px rgba(0,0,0,0.2), 0 0 20px var(--color-primary-navy)' } // For < 5
+        };
+
+        // Apply styles based on individual value thresholds
+        countdownElements.forEach(item => {
+          const card = item.card;
+          const val = item.value; // The current number in the box
+          const valueEl = card.querySelector('.countdown-value');
+
+          // Reset styles first to ensure changes are applied correctly
+          card.style.borderColor = '';
+          card.style.boxShadow = '';
+          valueEl.style.color = '';
+          card.classList.remove('countdown-flash'); // Remove flash for individual logic first
+
+          let currentStyle = intensityColors.default;
+
+          if (val <= 4 && val >= 0) { // 0 to 4 (most intense before flashing)
+            currentStyle = intensityColors.mostIntense;
+          } else if (val <= 9 && val >= 5) { // 5 to 9
+            currentStyle = intensityColors.mediumIntense;
+          } else if (val <= 19 && val >= 10) { // 10 to 19
+            currentStyle = intensityColors.lessIntense;
+          }
+          // If none of the above, it remains default (sage)
+
+          // Apply individual styles
+          card.style.setProperty('border-color', currentStyle.border);
+          card.style.setProperty('box-shadow', currentStyle.shadow);
+          valueEl.style.setProperty('color', currentStyle.color);
+        });
+
+        // Global flashing for less than 20 seconds total, overriding individual animations if active
+        const twentySecondsInMs = 20 * 1000;
+        if (totalDiffMs > 0 && totalDiffMs < twentySecondsInMs) {
+          countdownElements.forEach(item => {
+            item.card.classList.add('countdown-flash');
+            // The CSS animation `textFlash` will handle the color for `.countdown-value` when `.countdown-flash` is present
+          });
+        }
+      }
+
+      /**
+       * Calculates and updates all countdown elements and the progress bar.
+       */
       function updateAll() {
         const now    = Date.now();
-        const diff   = WEDDING_TS - now;
-        const dTotal = Math.max(0, Math.ceil(diff / (1000*60*60*24)));
-        const w      = Math.floor(dTotal/7);
-        const dRem   = dTotal % 7;
+        const diff   = WEDDING_TS - now; // Time remaining in milliseconds
+        const dTotal = Math.max(0, Math.floor(diff / (1000*60*60*24))); // Total full days remaining
+
+        const w      = Math.floor(dTotal / 7); // Weeks
+        const dRem   = dTotal % 7; // Remaining days in current week
         const h      = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
         const m      = Math.floor((diff % (1000*60*60)) / (1000*60));
         const s      = Math.floor((diff % (1000*60)) / 1000);
 
-        // Hero & detailed
-        daysLeftEl.innerText = dTotal;
-        totalEl.innerText    = dTotal;
+        // Update prominent total days on countdown page
+        if (daysLeftCountdownEl) {
+          daysLeftCountdownEl.innerText = dTotal;
+        }
+
+        // Update detailed countdown numbers
         weeksEl.innerText    = w;
         daysEl.innerText     = dRem;
         hoursEl.innerText    = h;
         minsEl.innerText     = m;
         secsEl.innerText     = s;
 
+        // Update hidden total days for confetti trigger (still uses totalEl)
+        totalDaysHiddenEl.innerText = dTotal;
+
         // Progress % from engagement→wedding
         const span   = WEDDING_TS - ENGAGEMENT_TS;
         const done   = now - ENGAGEMENT_TS;
         const pct    = Math.min(100, Math.max(0, Math.round((done/span)*100)));
-        fillEl.style.width = pct + "%";
-        pctEl.innerText    = pct + "%";
+        progressFillEl.style.width = pct + "%";
+        percentDoneEl.innerText    = pct + "%";
+
+        // Apply dynamic styles based on individual and total remaining time
+        applyIndividualCountdownStyles(w, dRem, h, m, s, diff);
+
+        // If wedding passed, stop interval and show message
+        if (diff <= 0) {
+          clearInterval(countdownInterval);
+          if (daysLeftCountdownEl) daysLeftCountdownEl.innerText = "0";
+          totalDaysHiddenEl.innerText = "0";
+          weeksEl.innerText = "0";
+          daysEl.innerText = "0";
+          hoursEl.innerText = "0";
+          minsEl.innerText = "0";
+          secsEl.innerText = "0";
+          percentDoneEl.innerText = "100%";
+          progressFillEl.style.width = "100%";
+          heroContent.querySelector('p:first-of-type').textContent = "They tied the knot! 🎉";
+          saveDateBtn.style.display = "none"; // Hide save date button after wedding
+          triggerConfetti(); // Final burst of confetti
+        }
       }
 
-      // Build Google Calendar link
+      /**
+       * Sets up the Google Calendar "Save the Date" link.
+       */
       function setupSaveDate() {
-        const title   = encodeURIComponent("Meilech & Tzippy’s Wedding");
+        const title    = encodeURIComponent("Meilech & Tzippy’s Wedding!");
         const details = encodeURIComponent(
           "Join us for the chuppah, seudah, dancing & simcha!\nVenue: Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY"
         );
-        const loc     = encodeURIComponent("Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY");
-        const start   = new Date(WEDDING_TS).toISOString().replace(/-|:|\.\d+/g,"");
-        const end     = new Date(WEDDING_TS + 4*60*60*1000).toISOString().replace(/-|:|\.\d+/g,"");
-        saveBtn.href  =
+        const loc      = encodeURIComponent("Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY");
+        // Dates format:YYYYMMDDTHHMMSSZ/YYYYMMDDTHHMMSSZ
+        const start    = new Date(WEDDING_TS).toISOString().replace(/-|:|\.\d+/g,"");
+        const end      = new Date(WEDDING_TS + 4*60*60*1000).toISOString().replace(/-|:|\.\d+/g,""); // 4 hours after wedding start
+
+        saveDateBtn.href  =
           `https://calendar.google.com/calendar/render?action=TEMPLATE` +
           `&text=${title}` +
           `&dates=${start}/${end}` +
@@ -236,382 +1687,421 @@
           `&sf=true&output=xml`;
       }
 
+      // --- Blessings Wall Logic ---
+
+      /**
+       * Creates and appends a blessing card to the wall.
+       * @param {object} blessing - The blessing object {name, text}.
+       */
+      function createBlessingCard(blessing) {
+        const div = document.createElement('div');
+        div.className = 'heart-note relative overflow-hidden group';
+        div.innerHTML = `
+          <p class="relative z-10 text-center font-body text-lg">${blessing.text}</p>
+          <p class="relative z-10 text-center text-sm font-semibold mt-4 text-primary-navy group-hover:text-white transition-colors duration-300">- ${blessing.name}</p>
+          <div class="absolute inset-0 bg-accent-copper opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform scale-x-0 group-hover:scale-x-100 origin-left rounded-2xl"></div>
+        `;
+        blessingWall.appendChild(div);
+      }
+
+      /**
+       * Displays a batch of blessings on the wall.
+       * Clears previous ones if any.
+       */
+      function displayBlessings() {
+        blessingWall.innerHTML = ''; // Clear existing blessings
+        const numToDisplay = Math.min(blessingsData.length, 8); // Display up to 8
+        const startIndex = currentBlessingIndex;
+        for (let i = 0; i < numToDisplay; i++) {
+          const blessing = blessingsData[(startIndex + i) % blessingsData.length];
+          createBlessingCard(blessing);
+        }
+      }
+
+      /**
+       * Starts the automatic rotation of blessings.
+       */
+      function startBlessingRotation() {
+        blessingInterval = setInterval(() => {
+          currentBlessingIndex = (currentBlessingIndex + 1) % blessingsData.length;
+          displayBlessings();
+        }, 3500); // Rotate every 3.5 seconds
+      }
+
+      // --- LLM Blessing Generator Logic ---
+
+      /**
+       * Calls the Gemini API to generate a blessing.
+       * @param {string} promptText - The user's input/keywords for the blessing.
+       * @returns {Promise<string>} - The generated blessing text.
+       */
+      async function generateBlessing(promptText) {
+          blessingLoading.classList.remove('hidden');
+          generatedBlessingOutput.classList.add('hidden');
+          copyBlessingBtn.classList.add('hidden');
+          generatedBlessingOutput.innerHTML = ''; // Clear previous output
+
+          try {
+              let chatHistory = [];
+              chatHistory.push({ role: "user", parts: [{ text: `Generate a warm, heartfelt, and slightly humorous wedding blessing for a couple named Meilech and Tzippy, based on the following keywords: "${promptText}". The blessing should be in a friendly, appreciative tone, suitable for close family and friends. Keep it concise, around 50-70 words. Avoid overly formal or religious language unless directly implied by keywords. End with a general well-wish. Example: "Wishing Meilech & Tzippy a lifetime of shared laughter, deep happiness, and endless simcha! May your home be a sanctuary of love and joy, always. Mazel Tov!"` }] });
+
+              const payload = { contents: chatHistory };
+              const apiKey = ""; // Canvas will inject this at runtime.
+              const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+              const response = await fetch(apiUrl, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(payload)
+              });
+
+              if (!response.ok) {
+                  const errorData = await response.json();
+                  throw new Error(`API error: ${response.status} - ${errorData.error.message}`);
+              }
+
+              const result = await response.json();
+              if (result.candidates && result.candidates.length > 0 &&
+                  result.candidates[0].content && result.candidates[0].content.parts &&
+                  result.candidates[0].content.parts.length > 0) {
+                  const text = result.candidates[0].content.parts[0].text;
+                  return text;
+              } else {
+                  throw new Error("Invalid response structure from LLM.");
+              }
+          } catch (error) {
+              console.error("Error generating blessing:", error);
+              return "Oops! Ran into a little AI hiccup. Please try a different idea or refresh the page!";
+          } finally {
+              blessingLoading.classList.add('hidden');
+          }
+      }
+
+      /**
+       * Handles the click event for the blessing generation button.
+       */
+      async function handleGenerateBlessingClick() {
+          const promptText = blessingInput.value.trim();
+          if (!promptText) {
+              showMessageBox("Please type in some keywords for your blessing!", 2000);
+              return;
+          }
+
+          const generatedText = await generateBlessing(promptText);
+          generatedBlessingOutput.textContent = generatedText;
+          generatedBlessingOutput.classList.remove('hidden');
+          copyBlessingBtn.classList.remove('hidden');
+      }
+
+      // --- Guestbook Logic ---
+
+      /**
+       * Displays a single guestbook message.
+       * @param {object} message - The message object {author, text, timestamp}.
+       */
+      function displayGuestbookMessage(message) {
+          const messageDiv = document.createElement('div');
+          messageDiv.className = 'guestbook-message-card fade-in-hidden';
+          const date = message.timestamp ? new Date(message.timestamp.seconds * 1000).toLocaleString('en-US') : 'N/A'; // Use en-US for English locale
+          messageDiv.innerHTML = `
+              <p class="guestbook-message-text">${message.message}</p>
+              <p class="guestbook-message-author" style="direction: ltr; text-align: right;">- ${message.name} <span class="text-xs">(${date})</span></p>
+          `;
+          guestbookMessagesDisplay.prepend(messageDiv); // Add new messages to the top
+          // Trigger fade-in animation
+          setTimeout(() => {
+            messageDiv.classList.add('fade-in-visible');
+            messageDiv.classList.remove('fade-in-hidden');
+          }, 100); // Small delay to allow element to be added to DOM
+      }
+
+      /**
+       * Fetches and listens for real-time updates to guestbook messages.
+       */
+      function setupGuestbookListener() {
+        if (!db || !isAuthReady) {
+            console.warn("Firestore not initialized or auth not ready for guestbook listener.");
+            return;
+        }
+
+        guestbookLoading.classList.remove('hidden');
+        guestbookMessagesDisplay.innerHTML = ''; // Clear existing messages
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const q = query(collection(db, `/artifacts/${appId}/public/data/guestbook_messages`));
+
+        onSnapshot(q, (snapshot) => {
+            guestbookLoading.classList.add('hidden');
+            // Clear existing messages before re-rendering to prevent duplicates if data changes
+            guestbookMessagesDisplay.innerHTML = '';
+            // Sort by timestamp if needed for consistent display (Firestore orderBy not used for flexibility)
+            const messages = [];
+            snapshot.forEach(doc => {
+                messages.push(doc.data());
+            });
+            messages.sort((a, b) => {
+                const tsA = a.timestamp ? a.timestamp.seconds : 0;
+                const tsB = b.timestamp ? b.timestamp.seconds : 0;
+                return tsB - tsA; // Newest first
+            });
+
+            messages.forEach(msg => displayGuestbookMessage(msg));
+
+            // Ensure newly added elements also get the fade-in class
+            guestbookMessagesDisplay.querySelectorAll('.fade-in-hidden').forEach(el => {
+                el.classList.add('fade-in-visible');
+                el.classList.remove('fade-in-hidden');
+            });
+        }, (error) => {
+            console.error("Error listening to guestbook messages: ", error);
+            guestbookLoading.textContent = "Error loading messages. Please refresh.";
+        });
+      }
+
+      /**
+       * Handles guestbook form submission.
+       * @param {Event} event - The form submission event.
+       */
+      async function handleGuestbookSubmit(event) {
+          event.preventDefault();
+
+          if (!db || !isAuthReady) {
+              showMessageBox("Authentication not ready. Please try again in a moment.", 3000);
+              return;
+          }
+
+          const name = guestbookNameInput.value.trim();
+          const message = guestbookMessageInput.value.trim();
+
+          if (!name || !message) {
+              showMessageBox("Please fill in both your name and message!", 2000);
+              return;
+          }
+
+          try {
+              const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+              await addDoc(collection(db, `/artifacts/${appId}/public/data/guestbook_messages`), {
+                  name: name,
+                  message: message,
+                  timestamp: serverTimestamp(), // Firestore automatically adds a server-side timestamp
+                  userId: userId // Store the user ID for debugging/moderation
+              });
+              showMessageBox("Your message landed straight in our hearts! Thank you! 😊"); // Existing message, confirmed
+              guestbookNameInput.value = '';
+              guestbookMessageInput.value = '';
+          } catch (e) {
+              console.error("Error adding document: ", e);
+              showMessageBox("Failed to send message. Please try again.", 3000);
+          }
+      }
+
+      /**
+       * Handles contact form submission.
+       * Added a local message box for immediate feedback, before formsubmit.co redirects.
+       * @param {Event} event - The form submission event.
+       */
+      function handleContactSubmit(event) {
+          // The form will still submit and redirect via Formsubmit.co action
+          // This message will appear briefly before the redirect.
+          showMessageBox("Message sent! We'll be in touch faster than you can say 'Mazel Tov!' 🥳");
+          // Optionally, you could add event.preventDefault() here and handle the submission
+          // via Fetch API if you don't want a redirect, but Formsubmit.co requires it by default.
+      }
+
+
+      // --- Firebase Initialization and Auth ---
+      async function initializeFirebase() {
+          try {
+              const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+              app = initializeApp(firebaseConfig);
+              db = getFirestore(app);
+              auth = getAuth(app);
+
+              currentUserIdDisplay.textContent = 'Authenticating...';
+
+              // Listen for auth state changes
+              onAuthStateChanged(auth, async (user) => {
+                  if (user) {
+                      // User is signed in.
+                      userId = user.uid;
+                      currentUserIdDisplay.textContent = userId;
+                      isAuthReady = true;
+                      setupGuestbookListener(); // Start listening for messages once authenticated
+                  } else {
+                      // User is signed out, try to sign in anonymously
+                      try {
+                          if (typeof __initial_auth_token !== 'undefined') {
+                              await signInWithCustomToken(auth, __initial_auth_token);
+                          } else {
+                              await signInAnonymously(auth);
+                          }
+                          // This will trigger onAuthStateChanged again
+                      } catch (error) {
+                          console.error("Firebase Auth Error:", error);
+                          currentUserIdDisplay.textContent = "Auth Error!";
+                          showMessageBox("Failed to authenticate. Guestbook may not function.", 5000);
+                          isAuthReady = false;
+                      }
+                  }
+              });
+          } catch (error) {
+              console.error("Firebase initialization failed:", error);
+              showMessageBox("Failed to load Firebase. Guestbook may not function.", 5000);
+              isAuthReady = false;
+          }
+      }
+
+
+      // --- Intersection Observer for Scroll Fade-in ---
+      const observerOptions = {
+        root: null, // viewport
+        rootMargin: '0px',
+        threshold: 0.1 // Trigger when 10% of the item is visible
+      };
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('fade-in-visible');
+            entry.target.classList.remove('fade-in-hidden');
+            // No unobserve here for guestbook messages, as new ones can appear and need animation
+            // For other elements, like info-cards, you can unobserve after animation
+            if (entry.target.classList.contains('info-card') || entry.target.classList.contains('fun-fact-card')) {
+                observer.unobserve(entry.target);
+            }
+          }
+        });
+      }, observerOptions);
+
+
+      // --- Event Listeners ---
       document.addEventListener("DOMContentLoaded", () => {
+        // Initialize hero content fade-in
+        heroContent.classList.add('opacity-100', 'scale-100');
+
+        // Set up countdown and start updating every second
         setupSaveDate();
         updateAll();
-        setInterval(updateAll, 1000);
+        const countdownInterval = setInterval(updateAll, 1000);
+
+        // Display initial blessings and start rotation
+        displayBlessings();
+        startBlessingRotation();
+
+        // Confetti trigger for total days remaining (hidden element)
+        totalDaysHiddenEl.addEventListener('click', triggerConfetti);
+
+        // Confetti trigger for the couple's names in the hero section
+        heroContent.querySelector('h1').addEventListener('click', triggerConfetti);
+
+        // Hidden confetti trigger spot
+        confettiTriggerSpot.addEventListener('click', triggerConfetti);
+
+        // Add click listeners to each countdown card for confetti
+        function triggerLocalizedConfetti(targetElement, colors) {
+            const rect = targetElement.getBoundingClientRect();
+            const originX = (rect.left + rect.right) / 2 / window.innerWidth;
+            const originY = (rect.top + rect.bottom) / 2 / window.innerHeight;
+
+            confetti({
+                particleCount: 50,
+                spread: 90,
+                origin: { x: originX, y: originY },
+                colors: colors || ['#B85C3A', '#1E2C4F', '#84A98C']
+            });
+        }
+
+        weeksCard.addEventListener('click', () => triggerLocalizedConfetti(weeksCard, ['#84A98C', '#F2F4F7'])); // Sage, light
+        daysCard.addEventListener('click', () => triggerLocalizedConfetti(daysCard, ['#B85C3A', '#1E2C4F']));   // Copper, navy
+        hoursCard.addEventListener('click', () => triggerLocalizedConfetti(hoursCard, ['#1E2C4F', '#B85C3A']));  // Navy, copper
+        minutesCard.addEventListener('click', () => triggerLocalizedConfetti(minutesCard, ['#84A98C', '#1E2C4F']));// Sage, navy
+        secondsCard.addEventListener('click', () => triggerLocalizedConfetti(secondsCard, ['#B85C3A', '#F2F4F7']));// Copper, light
+
+        // Event listener for the progress bar button
+        progressButton.addEventListener('click', () => {
+          const rect = progressButton.getBoundingClientRect();
+          triggerConfetti({
+            origin: {
+              x: (rect.left + rect.right) / 2 / window.innerWidth,
+              y: (rect.top + rect.bottom) / 2 / window.innerHeight
+            },
+            particleCount: 75,
+            spread: 60,
+            colors: ['#B85C3A', '#1E2C4F', '#84A98C']
+          });
+          showMessageBox("Hearts are full of love! 🎉", 2500);
+        });
+
+        // New: Event listener for Save the Date button
+        saveDateBtn.addEventListener('click', () => {
+            showMessageBox("Can't wait to celebrate with you! Thanks for marking your calendar! ✨", 3000);
+        });
+
+        // New: Event listener for Share Your Simcha! button
+        sendBruchaBtn.addEventListener('click', () => {
+            showMessageBox("Your beautiful blessing warmed our hearts! Thank you for sharing! ❤️", 3000);
+        });
+
+        // Sticky nav class on scroll
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 50) { // After scrolling 50px
+            navHeader.classList.add('scrolled');
+          } else {
+            navHeader.classList.remove('scrolled');
+          }
+        });
+
+        // LLM Blessing Generator Event Listeners
+        generateBlessingBtn.addEventListener('click', handleGenerateBlessingClick);
+        copyBlessingBtn.addEventListener('click', () => {
+            copyTextToClipboard(generatedBlessingOutput.textContent);
+        });
+
+        // Guestbook Event Listener
+        guestbookForm.addEventListener('submit', handleGuestbookSubmit);
+
+        // New: Contact Form Event Listener
+        contactForm.addEventListener('submit', handleContactSubmit);
+
+
+        // Secret message trigger
+        secretMessageTrigger.addEventListener('click', () => {
+            // Clear any existing timeout to prevent previous message from disappearing
+            if (secretMessageTimeout) {
+                clearTimeout(secretMessageTimeout);
+            }
+
+            // Update content with the next message
+            secretMessageContent.textContent = secretMessages[currentSecretMessageIndex];
+            currentSecretMessageIndex = (currentSecretMessageIndex + 1) % secretMessages.length; // Cycle through messages
+
+            // Reveal the message
+            secretMessageContent.classList.remove('hidden');
+            // Force reflow for transition to work if it was hidden
+            void secretMessageContent.offsetWidth;
+            secretMessageContent.classList.add('revealed');
+
+            // Set timeout to hide message after 10 seconds
+            secretMessageTimeout = setTimeout(() => {
+                secretMessageContent.classList.remove('revealed');
+                setTimeout(() => {
+                    secretMessageContent.classList.add('hidden');
+                }, 500); // Matches transition duration for smooth fade-out
+            }, 10000); // 10 seconds
+        });
+
+
+        // Observe elements for scroll fade-in
+        elementsToFadeIn.forEach(el => {
+            el.classList.add('fade-in-hidden'); // Ensure initial hidden state
+            observer.observe(el);
+        });
+
+        // Initialize Firebase and Auth
+        initializeFirebase();
       });
     })();
   </script>
-  
-  <!-- Wedding Details Section -->
-  <section id="details-section" class="text-center min-h-screen py-32 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6]">
-    <h1 class="text-5xl md:text-6xl font-bold text-yellow-800 mb-6">Wedding Day Details</h1>
-    <p class="text-xl text-yellow-700 mb-10">Here’s everything you need to know to celebrate with us!</p>
-<div class="max-w-3xl mx-auto text-center bg-white bg-opacity-80 p-10 rounded-xl shadow-lg space-y-12">
-      <div>
-        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Venue</h2>
-        <p class="text-xl text-yellow-800">Ateres Chaya Surah<br>106 S Madison Ave<br>Spring Valley, NY</p>
-      </div>
 
-      <div>
-        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Date</h2>
-        <p class="text-xl text-yellow-800">Monday, November 3, 2025<br>י"ב חשון תשפ"ו</p>
-      </div>
-
-      <div>
-        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Schedule</h2>
-        <p class="text-xl text-yellow-800">
-          Kabulas Panim – 6:30 PM<br>
-          Chuppah – 7:30 PM<br>
-          Seudah – 8:30 PM<br>
-          Dancing Begins – 10:00 PM
-        </p>
-      </div>
-
-      <div>
-        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Atmosphere</h2>
-        <p class="text-xl text-yellow-800">Come ready to celebrate in joy and dignity. The evening will be full of music, warmth, and true simcha.</p>
-      </div>
-
-      <div>
-        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Transportation & Parking</h2>
-        <p class="text-xl text-yellow-800">There is parking available on-site. Please allow extra time for arrival as we expect a full house.</p>
-      </div>
-    </div>
-    <p class="mt-12 text-yellow-700 text-xl">We can't wait to see you and celebrate this special day together!</p>
-  </section>
-
-  <!-- Page 4: Map Section -->
-  <section id="map-section" class="text-center py-16 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6] shadow-inner">
-    <h1 class="text-5xl md:text-6xl font-bold text-yellow-800 mb-6">Getting Around</h1>
-    <p class="text-xl text-yellow-700 mb-4">Lost? Don’t worry. We pinned the simcha trail just for you.</p>
-    <p class="text-md text-yellow-700 mb-10 italic">Need help finding us? Just follow the music and smiles — we’ll be there!</p>
-    <div class="max-w-4xl mx-auto rounded-xl overflow-hidden shadow-lg mb-10">
-    <iframe 
-  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2941.136193816545!2d-74.0368994845449!3d41.12197257616733!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2d2f1dcd99fd9%3A0x624c15339e147dc9!2s106%20S%20Madison%20Ave%2C%20Spring%20Valley%2C%20NY%2010977!5e0!3m2!1sen!2sus!4v1716400551096!5m2!1sen!2sus" 
-  style="width: 100%; height: 480px; border: 0;" 
-  allowfullscreen="" 
-  loading="lazy" 
-  referrerpolicy="no-referrer-when-downgrade">
-</iframe>
-
-    </div>
-    <div class="max-w-3xl mx-auto text-left bg-white bg-opacity-80 p-8 rounded-xl shadow space-y-8 text-lg">
-   <div>
-        <h2 class="text-2xl font-bold text-yellow-900">🗺️ What’s Pinned?</h2>
-        <ul class="list-disc list-inside text-yellow-800">
-                    <li><strong>Wedding Venue:</strong> Ateres Chaya Surah, Spring Valley</li>
-          <li><strong>Oifruf:</strong> 3 Harvest Ct, Monsey</li>
-          <li><strong>Bogleiten:</strong> 15 Sophia St, Monsey</li>
-          <li><strong>Bovarfen:</strong> Belz Shul, 1 Harvest Ct</li>
-          <li><strong>Shabbos Sheva Brachas:</strong> Bobov Shul, Jill Ln</li>
-        </ul>
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-yellow-900">🧭 Tip:</h2>
-        <p class="text-yellow-800">Leave a few minutes early. Monsey traffic likes to surprise you—especially on simcha days!</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Page 5: Shabbos Events -->
-  <section id="shabbos-section" class="text-center py-16 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6] shadow-inner">
-    <h1 class="text-5xl md:text-6xl font-bold text-yellow-800 mb-6">Shabbos Oifruf & Sheva Brachas</h1>
-    <p class="text-xl text-yellow-700 mb-10">Join us for the special Shabbos events surrounding our wedding celebration.</p>
-    <div class="max-w-3xl mx-auto text-center bg-white bg-opacity-80 p-10 rounded-xl shadow-lg space-y-12">
-      <div>
-        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Shabbos Oifruf Seudah</h2>
-        <p class="text-xl text-yellow-800">Beth Medrash D'Monsey Simcha Hall<br>3 Harvest Ct.<br>Monsey, NY 10952</p>
-      </div>
-      <div>
-        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Bogleiten</h2>
-        <p class="text-xl text-yellow-800">Departing from:<br>15 Sophia St.<br>Monsey, NY 10952</p>
-      </div>
-      <div>
-        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Bovarfen</h2>
-        <p class="text-xl text-yellow-800">Belz Shul<br>1 Harvest Ct.<br>Monsey, NY 10952</p>
-      </div>
-      <div>
-        <h2 class="text-3xl font-bold text-yellow-900 mb-3">Shabbos Sheva Brachas</h2>
-        <p class="text-xl text-yellow-800">Bobov Shul<br>20 Jill Ln.<br>Monsey, NY 10952</p>
-      </div>
-    </div>
-  </section>
-
-<!-- 💛 Blessings Section -->
-<section id="blessings" class="min-h-screen py-32 px-6 bg-gradient-to-b from-[#fdfaf3] to-[#f5f2ea] text-center">
-  <h1 class="text-4xl md:text-5xl font-bold text-yellow-800 mb-4">💛 Messages of Simcha & Brachos</h1>
-  <p class="text-lg text-yellow-700 mb-12">From the people who love us most — now posted live</p>
-
-  <!-- Blessing Wall -->
-  <div id="blessing-wall" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"></div>
-
-  <!-- Brucha Button -->
-  <div class="mt-16">
-    <button onclick="showPopup(); scrollToBrucha();" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition">
-      Send Your Brucha
-    </button>
-    <div id="popup" class="mt-4 text-yellow-800 font-medium text-lg hidden animate-bounce">
-      Aww! That means so much to us – can't wait to read it! 🥰
-    </div>
-  </div>
-</section>
-
-<!-- 💛 Blessings Script -->
-<script>
-  const blessings = [
-    "💕 Such simcha! A bayis ne’eman full mit licht, sholom, un freid. – Hershy M",
-    "🎉 You should be zoche to build a gantz leben mit nachas un hatzlocha. – Suri T",
-    "🌟 A shidduch like this is a gilui from Shamayim! So beautiful. – Chaim Stern",
-    "💛 May your heiligeh journey together be with simcha every day. – Rivky Gross",
-    "🍩 I’m ready for the chupa, the seudah, and a shtickel dancing! – Moishy W.",
-    "💌 You’re the kind of couple that makes the olam smile. – Bluma",
-    "🕊️ Mazel and brocha b’rov! A gantzeh simcha mit achdus. – F Reich",
-    "📸 Real simchas chassan v'kallah! – Anonymous",
-    "🎊 From the vort until now — wow. So much bracha. – Yisroel P",
-    "🫶 May your bayis be a dirah b’tachtonim mamash. – Mendy Silber",
-    "💬 No words... only tears of simcha. – Gold",
-    "💡 May you always be a licht for each other and the olam. – Sruly Schreiber",
-    "🎈 Chasuna vibes are strong! Let’s go! – Shprintzy Weisz",
-    "📝 May your story always have sholom, Torah, and laughter. – Anonymous",
-    "💥 Mamash hashgocha protis. – Rochel L.",
-    "🎶 Music, dancing, and kavod — that's how we’ll celebrate you. – Menachem Deutsch",
-    "📖 A new sefer in your life — may every page be filled with goodness. – Chaya R.",
-    "✨ May the shechinah rest in your home always. – Faigy K.",
-    "🏡 May your home be a shtick gan eden. – Yanky R.",
-    "📬 You guys shine! – Hershy Leifer",
-    "🎻 May your lives be in harmony with each other and with Hashem. – Shloimy Braun",
-    "🥳 So excited to share in this simcha — a true zechus. – Ehrenfeld",
-    "🎂 May you always have sweet times together — like a heimishe kugel with a crisp top. – M K",
-    "📿 May your table always be full of Torah, simcha, and lekach. – Meir Y. Moster",
-    "🕯️ From the lecht to the dancing — may it all be a gilui of Hashem’s chesed. – L. F.",
-    "🧁 This is sweeter than a Monsey bakery on Erev Shabbos! – Leeba",
-    "🪗 Dancing mit gantz hartz — can’t wait for the simcha! – Esty B.",
-    "🪄 You two are mamash zivug rishon. May the brachos flow. – Dassy H.",
-    "🎈 A simcha full mit gilui, emes, and ahavas chinam. – Yanky Rosenberg",
-    "💎 May every day be as precious as today. – Meir Pinter"
-  ];
-
-  let index = 0;
-
-  function renderBlessings() {
-    const wall = document.getElementById("blessing-wall");
-    wall.innerHTML = '';
-    for (let i = 0; i < 4; i++) {
-      const blessingText = blessings[(index + i) % blessings.length];
-      if (blessingText && blessingText.trim() !== "") {
-        const div = document.createElement("div");
-        div.className = "heart-note";
-        div.textContent = blessingText;
-        wall.appendChild(div);
-      }
-    }
-    index = (index + 4) % blessings.length;
-  }
-
-  function showPopup() {
-    const popup = document.getElementById("popup");
-    popup.classList.remove("hidden");
-    setTimeout(() => popup.classList.add("hidden"), 3000);
-  }
-
-  function scrollToBrucha() {
-    const bruchaSection = document.getElementById("chat-section") || document.getElementById("contact");
-    if (bruchaSection) {
-      bruchaSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    renderBlessings();
-    setInterval(renderBlessings, 6000); // 6-second rotation
-  });
-</script>
-
-  
-<!-- Page 7: Chat & Questions -->
-<section id="chat-section" class="text-center py-16 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6] shadow-inner text-gray-900">
-  <h1 class="text-5xl md:text-6xl font-bold text-yellow-800 mb-6">Have a Question?</h1>
-  <p class="text-xl text-yellow-700 mb-10">
-    Whether it's about directions, what time to show up, or where to park — we’re (virtually) here to help!
-  </p>
-
-  <div class="max-w-2xl mx-auto bg-white bg-opacity-80 p-8 rounded-xl shadow-md">
-    <form action="https://formsubmit.co/elimelechmoster@gmail.com" method="POST" class="space-y-6">
-      <!-- Auto-reply message -->
-      <input type="hidden" name="_autoresponse" value="Thank you for your message! We'll be in touch soon.">
-      <!-- Display message as a table -->
-      <input type="hidden" name="_template" value="table">
-
-      <!-- honeypot (invisible to real users) -->
-      <div style="display: none;">
-        <label for="hp_field">Leave this blank</label>
-        <input type="text" id="hp_field" name="hp_field" autocomplete="off">
-      </div>
-
-      <!-- Name Field -->
-      <div>
-        <label for="chat-name" class="block text-lg text-yellow-900 font-semibold mb-1">Your Name</label>
-        <input type="text" id="chat-name" name="name" required class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-600">
-      </div>
-
-      <!-- Email Field -->
-      <div>
-        <label for="chat-email" class="block text-lg text-yellow-900 font-semibold mb-1">Your Email</label>
-        <input type="email" id="chat-email" name="email" required class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-600">
-      </div>
-
-      <!-- Question / Message Field -->
-      <div>
-        <label for="question" class="block text-lg text-yellow-900 font-semibold mb-1">Your Question</label>
-        <textarea id="question" name="question" rows="4" required class="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-600"></textarea>
-      </div>
-
-      <!-- Submit Button -->
-      <button type="submit" class="bg-yellow-700 hover:bg-yellow-800 text-white px-6 py-2 rounded text-lg font-semibold">
-        Send Message
-      </button>
-    </form>
-
-    <div class="mt-10 text-yellow-700">
-      <p class="text-lg italic">We’ll reply soon — or you can just come find us by the food table 😉</p>
-    </div>
-  </div>
-</section>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const chatForm = document.querySelector('#chat-section form');
-    const startTime = Date.now();
-
-    chatForm.addEventListener('submit', function(e) {
-      // 1) Honeypot check
-      const hp = document.getElementById('hp_field').value;
-      if (hp) {
-        e.preventDefault();
-        console.warn('Spam detected: honeypot was filled.');
-        return;
-      }
-      // 2) Minimum fill-time check (3 seconds)
-      const elapsed = Date.now() - startTime;
-      if (elapsed < 3000) {
-        e.preventDefault();
-        console.warn('Form submitted too quickly—likely a bot.');
-        return;
-      }
-      // Otherwise allow the form to submit normally
-    });
-  });
-</script>
-
-<!-- Page 8: Thank You -->
-<section id="thankyou-section" class="text-center py-20 px-6 bg-gradient-to-br from-[#fdfaf3] via-[#ece7d9] to-[#d9d4c6] shadow-inner text-gray-900">
-  <h1 class="text-5xl md:text-6xl font-bold text-yellow-800 mb-8">Thank You for Being Part of Our Simcha</h1>
-  <div class="max-w-3xl mx-auto text-xl text-yellow-800 space-y-6 bg-white bg-opacity-80 p-10 rounded-xl shadow-lg">
-    <p>Dear family and friends, </p>
-    <p>We’re so excited as we count down the days to our wedding, and we feel incredibly lucky to be surrounded by such love and support. Your warm wishes, thoughtful messages, and excitement mean more than we can say.</p>
-    <p>Thank you for joining us on this beautiful journey. Whether you’ll be dancing with us in person or celebrating from afar, your presence in our lives is a true bracha.</p>
-    <p>We can’t wait to celebrate together with joy, music, and lots of smiles!</p>
-    <p class="text-2xl font-bold text-yellow-900">With love and excitement,</p>
-    <p class="text-2xl font-bold text-yellow-900">Meilech & Tzippy</p>
-  </div>
-
-  <div class="mt-10">
-    <a href="#chat-section" class="inline-block bg-yellow-700 hover:bg-yellow-800 text-white text-lg font-semibold px-6 py-3 rounded shadow">Send Us a Message</a>
-  </div>
-</section>
-
-<footer class="text-center py-6 text-yellow-700 text-sm">
-  <p>© 2025 Meilech & Tzippy. Built with love and simcha.</p>
-  <p>Contact us at <a href="mailto:elimelechmoster@gmail.com" class="underline">elimelechmoster@gmail.com</a></p>
-</footer>
-
-
-  <!-- Brucha Form Script -->
-  <script>
-    const form = document.getElementById('bruchaForm');
-    const messagesDiv = document.getElementById('messages');
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const name = document.getElementById('name').value.trim();
-      const message = document.getElementById('message').value.trim();
-
-      if (name && message) {
-        const newMsg = document.createElement('div');
-        newMsg.className = 'bg-white bg-opacity-60 p-4 rounded shadow fade-enter';
-        newMsg.innerHTML = `<p class='font-bold text-yellow-800'>${name}</p><p class='text-yellow-900'>${message}</p>`;
-
-        messagesDiv.insertBefore(newMsg, messagesDiv.firstChild);
-
-        setTimeout(() => {
-          newMsg.classList.add('fade-enter-active');
-        }, 10);
-
-        form.reset();
-      }
-    });
-  </script>
-
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-<script>
-  const totalDaysEl = document.getElementById("totalDays");
-
-  totalDaysEl.style.cursor = "pointer";
-  totalDaysEl.addEventListener("click", () => {
-    const end = Date.now() + 1500; // 1.5 seconds
-
-    const colors = ['#92400e', '#ca8a04', '#fef9c3', '#fde68a'];
-
-    (function frame() {
-      confetti({
-        particleCount: 5,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: colors
-      });
-      confetti({
-        particleCount: 5,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: colors
-      });
-
-      if (Date.now() < end) {
-        requestAnimationFrame(frame);
-      }
-    })();
-  });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-<script>
-  window.addEventListener('load', () => {
-    const duration = 2000;
-    const end = Date.now() + duration;
-    const colors = ['#ca8a04', '#fef9c3', '#fde68a'];
-
-    (function frame() {
-      confetti({
-        particleCount: 5,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: colors,
-      });
-      confetti({
-        particleCount: 5,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: colors,
-      });
-      if (Date.now() < end) requestAnimationFrame(frame);
-    })();
-  });
-</script>
 </body>
 </html>
