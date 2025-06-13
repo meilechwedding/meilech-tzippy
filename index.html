@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -1073,7 +1073,8 @@
       Need help finding us? Just follow the music and smiles — we’ll be there!
     </p>
     <!-- Embedded Google Map -->
-    <div class="max-w-6xl w-full mx-auto rounded-2xl overflow-hidden shadow-2xl mb-10 map-embed">
+    <div class="max-w-4xl w-full mx-auto rounded-2xl overflow-hidden shadow-2xl mb-10 map-embed">
+      <!-- Changed max-w-6xl to max-w-4xl -->
       <!-- IMPORTANT: Replace the 'src' with your actual Google Maps Embed API URL. This is a placeholder. -->
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11977.830604163914!2d-74.02058300000001!3d41.1396113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2c19a9a9a9a9f%3A0x123456789abcdef0!2sAteres%20Chaya%20Surah!5e0!3m2!1sen!2suk!4v1689254321000!5m2=1sen%2suk"
@@ -1288,7 +1289,6 @@
     <div class="max-w-4xl mx-auto text-lg text-text-medium space-y-6 bg-card rounded-2xl shadow-2xl p-8 md:p-10">
       <p>Dear family and friends, </p>
       <p>We’re so excited as we count down the days to our wedding, and we feel incredibly lucky to be surrounded by such immense love and support. Your warm wishes, thoughtful messages, and bubbling excitement mean more than we can possibly say.</p>
-      <p>Thank you for joining us on this beautiful journey. Whether you’ll be dancing with us in person or celebrating from afar, your presence in our lives is a true blessing (a "bracha" for those who know the lingo!).</p>
       <p class="text-2xl md:text-3xl font-bold font-heading text-primary-navy mt-8">With all our love and excitement,</p>
       <p class="text-3xl md:text-4xl font-bold font-heading text-primary-navy">Meilech & Tzippy</p>
     </div>
@@ -1374,11 +1374,12 @@
       const elementsToFadeIn = document.querySelectorAll('.info-card, .fun-fact-card');
 
       // Guestbook Elements (removed from HTML, but keep vars for cleanup)
-      const guestbookForm          = null; // document.getElementById('guestbook-form');
-      const guestbookNameInput     = null; // document.getElementById('guestbook-name');
-      const guestbookMessageInput  = null; // document.getElementById('guestbook-message');
-      const guestbookMessagesDisplay = null; // document.getElementById('guestbook-messages-display');
-      const guestbookLoading       = document.getElementById('guestbook-loading'); // Still exists for now, removed later
+      // These are now explicitly null because the guestbook section was removed.
+      const guestbookForm          = null;
+      const guestbookNameInput     = null;
+      const guestbookMessageInput  = null;
+      const guestbookMessagesDisplay = null;
+      const guestbookLoading       = null;
 
       // Contact Form Elements
       const contactForm            = document.getElementById('contact-form');
@@ -1434,6 +1435,9 @@
       ];
       let initialBlessingsInterval = null; // To store the interval ID for initial blessings rotation
       let currentHighlightedBlessingIndex = 0;
+
+      // Current User ID Display - Moved up to ensure it's defined before initializeFirebase
+      const currentUserIdDisplay   = document.getElementById('current-user-id');
 
 
       // --- Utility Functions ---
@@ -1916,7 +1920,7 @@
             spread: 60,
             colors: ['#B85C3A', '#1E2C4F', '#84A98C']
           });
-          showMessageBox("Hearts are full of love! 🎉", 2500);
+          showMessageBox("Hearts are full of love! �", 2500);
         });
 
         // New: Event listener for Save the Date button
@@ -2005,4 +2009,3 @@
 
 </body>
 </html>
-
