@@ -32,6 +32,8 @@
       font-family: 'Lato', sans-serif;
       scroll-behavior: smooth;
       color: var(--color-text-dark);
+      direction: ltr; /* Ensure LTR for the whole body */
+      text-align: left; /* Default text alignment for LTR */
     }
 
     /* Custom Background Gradients for Sections */
@@ -87,13 +89,15 @@
       width: 0;
       height: 2px;
       bottom: 0;
-      left: 50%;
+      left: 50%; /* Center alignment based on LTR */
+      right: auto; /* Unset right */
       background-color: var(--color-accent-copper);
-      transition: width 0.3s ease-out, left 0.3s ease-out;
+      transition: width 0.3s ease-out, left 0.3s ease-out; /* Transition 'left' */
     }
     .nav-link:hover::after {
       width: 100%;
-      left: 0;
+      left: 0; /* Extends from left */
+      right: auto; /* Unset right */
     }
     .nav-link.active { /* For highlighting active link */
       color: var(--color-primary-navy);
@@ -102,6 +106,7 @@
     .nav-link.active::after {
       width: 100%;
       left: 0;
+      right: auto;
     }
 
     /* Hero Section Specifics */
@@ -167,15 +172,20 @@
       margin-top: -1rem; /* Pull it closer to the names */
       margin-bottom: 1rem;
       transition: transform 0.3s ease-in-out;
+      /* Ensure text direction is LTR within SVG if letters are English, or rely on x positioning */
+      direction: ltr;
+      text-align: left;
     }
     .monogram-svg:hover {
       transform: rotate(360deg) scale(1.1); /* Spins 360 degrees and scales up */
     }
     .monogram-initial {
       fill: var(--color-accent-copper); /* Use copper for the letters */
+      font-family: 'Lora', serif; /* Ensure Lora for consistency with names */
     }
     .monogram-ampersand {
       fill: var(--color-primary-navy); /* Use navy for the ampersand */
+      font-family: 'Lora', serif; /* Ensure Lora for consistency with names */
     }
 
 
@@ -266,6 +276,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      text-align: left; /* Default text alignment for LTR */
     }
     .section-title {
       font-family: 'Lora', serif;
@@ -320,7 +331,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      text-align: center;
+      text-align: center; /* Center text within card */
       transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     }
     .info-card:hover {
@@ -412,6 +423,7 @@
       cursor: pointer;
       user-select: none; /* Prevent text selection on click */
       transition: background-color 0.3s ease;
+      text-align: left; /* Ensure text is left-aligned in summary */
     }
     .faq-question:hover {
       background-color: var(--color-base-light);
@@ -430,6 +442,7 @@
       color: var(--color-text-medium);
       font-size: 1.125rem; /* text-lg */
       border-top: 1px solid var(--color-base-dark);
+      text-align: left; /* Ensure text is left-aligned in answer */
     }
 
     /* Map Section Specifics */
@@ -448,9 +461,10 @@
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
       animation: float 6s ease-in-out infinite;
       display: flex;
-      align-items: center;
+      flex-direction: column; /* Ensure text is aligned vertically */
+      align-items: center; /* Center horizontally */
       justify-content: center;
-      text-align: center;
+      text-align: center; /* Center text within heart note */
       min-height: 200px;
       font-size: 1.15rem;
       line-height: 1.6;
@@ -489,6 +503,7 @@
       border: 1px solid var(--color-base-dark);
       background-color: var(--color-base-light);
       transition: all 0.3s ease;
+      text-align: left; /* Align input text left */
     }
     .input-field:focus {
       outline: none;
@@ -548,7 +563,7 @@
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         padding: 2.5rem;
         margin-top: 4rem; /* Space below existing content */
-        text-align: left;
+        text-align: left; /* Ensure text is left-aligned */
     }
 
     .llm-loading {
@@ -559,6 +574,7 @@
         color: var(--color-primary-navy);
         font-weight: 600;
         font-size: 1.125rem;
+        direction: ltr; /* Ensure loading text is LTR */
     }
 
     .llm-loading span {
@@ -582,6 +598,7 @@
         font-size: 1.125rem;
         white-space: pre-wrap; /* Preserve formatting from LLM */
         word-wrap: break-word; /* Ensure long words break */
+        text-align: left; /* Align generated text left */
     }
 
     .copy-btn {
@@ -612,6 +629,8 @@
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        direction: ltr; /* Ensure message box text is LTR */
+        text-align: left;
     }
     .message-box.show {
         opacity: 1;
@@ -621,12 +640,14 @@
     /* Guestbook Specific Styles */
     .guestbook-message-card {
         background-color: var(--color-white);
-        border-left: 4px solid var(--color-accent-copper);
+        border-left: 4px solid var(--color-accent-copper); /* Border on left for LTR */
+        border-right: none; /* Remove right border */
         border-radius: 0.75rem;
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         padding: 1.5rem;
         margin-bottom: 1rem;
         transition: all 0.3s ease-in-out;
+        text-align: left; /* Ensure text is left-aligned */
     }
     .guestbook-message-card:hover {
         transform: translateY(-2px);
@@ -642,13 +663,15 @@
         font-size: 0.9rem;
         color: var(--color-text-medium);
         font-style: italic;
-        text-align: right;
+        text-align: right; /* Author name can be right-aligned for LTR */
+        direction: ltr; /* Ensure author name is LTR */
     }
     .guestbook-loading {
         text-align: center;
         color: var(--color-primary-navy);
         font-weight: 600;
         margin-top: 2rem;
+        direction: ltr;
     }
     .current-user-id-display {
       font-size: 0.8rem;
@@ -656,6 +679,7 @@
       text-align: center;
       margin-top: 1rem;
       word-break: break-all;
+      direction: ltr; /* Keep User ID LTR */
     }
   </style>
 
@@ -681,7 +705,7 @@
         <li><a href="#faq-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Q&A</a></li>
         <li><a href="#map-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Map</a></li>
         <li><a href="#shabbos-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Shabbos</a></li>
-        <li><a href="#blessings-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Blessings</a></li>
+        <li><a href="#blessings-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Brachos</a></li>
         <li><a href="#chat-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Chat</a></li>
       </ul>
     </nav>
@@ -1189,7 +1213,7 @@
 
   <!-- Blessings Section - Displays rotating blessings from family/friends -->
   <section id="blessings-section" class="section-padding bg-gradient-base text-center">
-    <h2 class="section-title text-primary-navy mb-10">Messages of Simcha & Blessings</h2>
+    <h2 class="section-title text-primary-navy mb-10">Messages of Simcha & Brachos!</h2>
     <p class="text-lg text-text-medium mb-12 max-w-2xl mx-auto">
       From the people who love us most — now proudly displayed for all to see (and smile at!).
     </p>
@@ -1335,8 +1359,6 @@
       <p>Dear family and friends, </p>
       <p>We’re so excited as we count down the days to our wedding, and we feel incredibly lucky to be surrounded by such immense love and support. Your warm wishes, thoughtful messages, and bubbling excitement mean more than we can possibly say.</p>
       <p>Thank you for joining us on this beautiful journey. Whether you’ll be dancing with us in person or celebrating from afar, your presence in our lives is a true blessing (a "bracha" for those who know the lingo!).</p>
-      <p>We can’t wait to celebrate together with joy, music, and enough smiles to last a lifetime!</p>
-      <!-- Couple's names in a prominent style -->
       <p class="text-2xl md:text-3xl font-bold font-heading text-primary-navy mt-8">With all our love and excitement,</p>
       <p class="text-3xl md:text-4xl font-bold font-heading text-primary-navy">Meilech & Tzippy</p>
     </div>
@@ -1450,15 +1472,20 @@
 
       // --- Pre-saved Blessings for Display ---
       const blessingsData = [
-        { name: "Bubby & Zaidy Greenberg", text: "May your home be filled with endless laughter and abundant Nachas! We love you!" },
-        { name: "Uncle Moishe", text: "Wishing you a lifetime of happiness, health, and a fridge always stocked with kugel!" },
-        { name: "Aunt Sarah", text: "May your journey together be as sweet as challah on Shabbos, and as bright as the northern star. Mazel Tov!" },
-        { name: "Cousin Chaim", text: "To the coolest couple: May your life together be a continuous simcha! Don't forget us at the next Bar Mitzvah!" },
-        { name: "Family Cohen", text: "May you build a Bayis Ne'eman B'Yisrael, founded on Torah, Chesed, and boundless joy. So much love!" },
-        { name: "Rebbetzin Golding", text: "May Hashem bless you with true shalom bayis, health, and children who follow in your beautiful path. Mazel Tov!" },
-        { name: "The Goldfarb Crew", text: "From our family to yours, may your home be a beacon of light and happiness for generations to come. Mazel Tov!" },
-        { name: "Grandma Rose", text: "My dears, may you always cherish each other and build a life even more beautiful than your wedding day!" }
+        { name: "The Kugel Connoisseur", text: "May your life together be as sweet and abundant as a double-batch kugel! Mazel Tov!" },
+        { name: "A Well-Wisher from Afar", text: "Though miles may separate us, our hearts are with you. Wishing you a truly joyous union!" },
+        { name: "That Guy from Cheder", text: "From the old days till now, so proud to see you build this beautiful life! Mazel Tov!" },
+        { name: "The Couple's Biggest Fans", text: "You two are seriously the best! Wishing you endless laughter and happiness. Party on!" },
+        { name: "Auntie Mameleh", text: "May your home be filled with only good things, from now until forever! Much nachas and simcha!" },
+        { name: "The Mensch Family", text: "To a truly special couple: May you always find strength, love, and comfort in each other. Brachos!" },
+        { name: "Your Go-To Babysitter", text: "So excited for your future! Remember me when you need a night out. 😉 Mazel Tov!" },
+        { name: "The One Who Knows All Your Secrets", text: "May your love story continue to be the most exciting chapter yet. And yes, I'll keep your secrets! 😉" },
+        { name: "The Matchmaker's Apprentice", text: "Another perfect match! Wishing you both a lifetime of happiness. Don't forget who brought you together (kinda)!" },
+        { name: "Your Favorite Cousin (Probably)", text: "Beyond thrilled for you both! May your days be filled with simcha and your nights with peace. See you on the dance floor!" },
+        { name: "A Friend from the Old Neighborhood", text: "From backyard games to wedding bells – so happy for you two. Wishing you all the best!" },
+        { name: "The Mystery Mazel Tov Sender", text: "Wishing you a home filled with light, joy, and the constant presence of the Shechinah. Mazel Tov!" }
       ];
+
 
       let currentBlessingIndex = 0;
       let blessingInterval;
@@ -1698,7 +1725,7 @@
         blessingInterval = setInterval(() => {
           currentBlessingIndex = (currentBlessingIndex + 1) % blessingsData.length;
           displayBlessings();
-        }, 5000); // Rotate every 5 seconds
+        }, 3500); // Rotate every 3.5 seconds
       }
 
       // --- LLM Blessing Generator Logic ---
@@ -1775,10 +1802,10 @@
       function displayGuestbookMessage(message) {
           const messageDiv = document.createElement('div');
           messageDiv.className = 'guestbook-message-card fade-in-hidden';
-          const date = message.timestamp ? new Date(message.timestamp.seconds * 1000).toLocaleString() : 'N/A';
+          const date = message.timestamp ? new Date(message.timestamp.seconds * 1000).toLocaleString('en-US') : 'N/A'; // Use en-US for English locale
           messageDiv.innerHTML = `
               <p class="guestbook-message-text">${message.message}</p>
-              <p class="guestbook-message-author">- ${message.name} <span class="text-xs">(${date})</span></p>
+              <p class="guestbook-message-author" style="direction: ltr; text-align: right;">- ${message.name} <span class="text-xs">(${date})</span></p>
           `;
           guestbookMessagesDisplay.prepend(messageDiv); // Add new messages to the top
           // Trigger fade-in animation
@@ -2002,7 +2029,7 @@
             spread: 60,
             colors: ['#B85C3A', '#1E2C4F', '#84A98C']
           });
-          showMessageBox("Hearts are full of love! �", 2500);
+          showMessageBox("Hearts are full of love! 🎉", 2500);
         });
 
         // New: Event listener for Save the Date button
