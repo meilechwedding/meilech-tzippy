@@ -24,10 +24,7 @@
       --color-text-medium: #4A5568; /* Medium grey for secondary text/paragraphs */
       --color-white: #FFFFFF; /* Pure white for backgrounds of cards, etc. */
 
-      /* Dynamic Countdown Specific Colors - will change via JS */
-      --countdown-accent-color: var(--color-secondary-sage); /* Default before nearing */
-      --countdown-card-border: transparent; /* Default border color for countdown cards */
-      --countdown-card-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Default shadow */
+      /* Dynamic Countdown Specific Colors - Will be set inline by JS, removed global fallbacks */
     }
 
     /* Global Base Styles */
@@ -71,10 +68,18 @@
       background-color: var(--color-white);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease-in-out; /* Smooth transition for background/shadow changes */
+    }
+    .header-nav.scrolled {
+        background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white */
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        border-bottom-color: var(--color-base-dark);
     }
     .nav-link {
       position: relative;
       padding-bottom: 0.25rem; /* Space for underline */
+      font-weight: 500; /* Slightly bolder */
+      transition: color 0.3s ease-out; /* Smooth color transition */
     }
     .nav-link::after {
       content: '';
@@ -87,6 +92,14 @@
       transition: width 0.3s ease-out, left 0.3s ease-out;
     }
     .nav-link:hover::after {
+      width: 100%;
+      left: 0;
+    }
+    .nav-link.active { /* For highlighting active link */
+      color: var(--color-primary-navy);
+      font-weight: 700;
+    }
+    .nav-link.active::after {
       width: 100%;
       left: 0;
     }
@@ -129,6 +142,43 @@
       to { opacity: 1; transform: scale(1); }
     }
 
+    /* Enhanced Hero Names Styling */
+    .hero-names {
+      font-family: 'Lora', serif;
+      font-size: 3.5rem; /* Base size, will scale up */
+      letter-spacing: 0.05em; /* Add subtle letter spacing */
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* Soft shadow for depth */
+      color: var(--color-primary-navy); /* Default color */
+      margin-bottom: 0.5rem; /* Adjust spacing */
+      line-height: 1.1;
+      font-weight: 700;
+    }
+    @media (min-width: 768px) { /* md breakpoint */
+      .hero-names { font-size: 5.5rem; } /* Larger on medium screens */
+    }
+    @media (min-width: 1024px) { /* lg breakpoint */
+      .hero-names { font-size: 7rem; } /* Even larger on large screens */
+    }
+
+    /* Monogram styling */
+    .monogram-svg {
+      width: 4rem; /* Adjust size as needed */
+      height: 4rem;
+      margin-top: -1rem; /* Pull it closer to the names */
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease-in-out;
+    }
+    .monogram-svg:hover {
+      transform: rotate(360deg) scale(1.1); /* Spins 360 degrees and scales up */
+    }
+    .monogram-initial {
+      fill: var(--color-accent-copper); /* Use copper for the letters */
+    }
+    .monogram-ampersand {
+      fill: var(--color-primary-navy); /* Use navy for the ampersand */
+    }
+
+
     /* General Button Styles */
     .btn {
       display: inline-flex;
@@ -164,9 +214,9 @@
     /* Countdown Card Styles */
     .countdown-card {
       background-color: var(--color-white);
-      border: 2px solid var(--countdown-card-border); /* Dynamic border */
+      border: 2px solid transparent; /* Default transparent border, set by JS */
       transition: all 0.5s ease-in-out; /* Smooth transitions for dynamic changes */
-      box-shadow: var(--countdown-card-shadow); /* Dynamic shadow */
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Default shadow, set by JS */
       cursor: pointer; /* Indicate clickability */
     }
     .countdown-card:hover {
@@ -174,7 +224,7 @@
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12); /* Slightly more prominent shadow on hover */
     }
     .countdown-value {
-      color: var(--countdown-accent-color); /* Dynamic color for numbers */
+      color: var(--color-secondary-sage); /* Default color for numbers, set by JS */
       font-weight: bold;
       font-family: 'Lora', serif; /* Ensure Lora for numbers */
       transition: color 0.5s ease-in-out; /* Smooth color transition for numbers */
@@ -191,12 +241,14 @@
         box-shadow: 0 0 15px var(--color-primary-navy), 0 0 25px var(--color-primary-navy);
       }
     }
-    .countdown-card.countdown-flash {
-      animation: countdownFlash 0.8s infinite alternate; /* Fast pulsing */
-    }
     @keyframes textFlash {
         0%, 100% { color: var(--color-primary-navy); }
         50% { color: var(--color-accent-copper); }
+    }
+
+    /* Apply flashing to cards and their values when .countdown-flash is present */
+    .countdown-card.countdown-flash {
+      animation: countdownFlash 0.8s infinite alternate; /* Fast pulsing */
     }
     .countdown-card.countdown-flash .countdown-value {
         animation: textFlash 0.8s infinite alternate; /* Flash the numbers too */
@@ -419,15 +471,15 @@
       .heart-note { font-size: 1.3rem; padding: 2.75rem 1.75rem; min-height: 240px; }
     }
 
-    /* Pop-up message for blessings */
-    #popup-message {
-      animation: bounce 0.5s infinite alternate; /* Keep existing bounce */
-      color: var(--color-primary-navy); /* Use new color */
+    /* Pop-up message for blessings - REMOVED, now using generic message-box */
+    /* #popup-message {
+      animation: bounce 0.5s infinite alternate;
+      color: var(--color-primary-navy);
     }
     @keyframes bounce {
       from { transform: translateY(0); }
       to { transform: translateY(-5px); }
-    }
+    } */
 
     /* Chat & Questions Form */
     .input-field {
@@ -613,10 +665,13 @@
   <!-- Navigation Header - Sticky to remain visible while scrolling -->
   <header class="header-nav sticky top-0 z-50 transition-all duration-300">
     <nav class="container mx-auto flex justify-between items-center py-4 px-6">
-      <!-- Site Title / Couple's Names -->
-      <h1 class="text-2xl font-bold font-heading text-primary-navy tracking-tight">
-        Meilech & Tzippy
-      </h1>
+      <!-- Site Title / Couple's Names (Moved monogram to hero) -->
+      <a href="#hero-section" class="flex items-center space-x-2 text-primary-navy font-heading text-2xl font-bold tracking-tight hover:text-accent-copper transition-colors duration-300">
+          <svg class="h-8 w-8 text-accent-copper" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/>
+          </svg>
+          <span>Meilech & Tzippy</span>
+      </a>
       <!-- Navigation Links -->
       <ul class="flex space-x-6 nav-links text-text-medium font-body text-sm md:text-base">
         <li><a href="#hero-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Home</a></li>
@@ -636,8 +691,17 @@
   <section id="hero-section" class="hero-section relative overflow-hidden flex flex-col justify-center items-center text-center px-6 py-20 md:py-32">
     <!-- Main content container with a "frosted glass" effect -->
     <div class="relative z-10 p-8 rounded-2xl bg-white bg-opacity-90 shadow-2xl backdrop-filter backdrop-blur-sm transform transition-all duration-700 ease-in-out scale-95 opacity-0 hero-content">
+      <!-- Monogram -->
+      <div class="mb-4">
+        <svg class="monogram-svg mx-auto" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="70" font-family="Lora, serif" font-size="60" font-weight="bold" class="monogram-initial">M</text>
+          <text x="45" y="70" font-family="Lora, serif" font-size="35" font-weight="bold" class="monogram-ampersand">&</text>
+          <text x="65" y="70" font-family="Lora, serif" font-size="60" font-weight="bold" class="monogram-initial">T</text>
+        </svg>
+      </div>
+
       <!-- Main Heading for the couple's names -->
-      <h1 class="font-heading text-4xl md:text-6xl lg:text-7xl font-bold text-primary-navy leading-tight mb-4 tracking-wide">
+      <h1 class="hero-names text-primary-navy leading-tight mb-4 tracking-wide">
         Meilech & Tzippy
       </h1>
       <!-- Engaging tagline -->
@@ -661,15 +725,15 @@
         </a>
       </div>
 
-      <!-- Progress Bar - Shows how full hearts are towards the wedding -->
-      <div id="progress-container" class="w-full max-w-xl mx-auto mt-6">
-        <div class="bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
+      <!-- Progress Bar - Now a button! -->
+      <button id="progress-button" class="w-full max-w-xl mx-auto mt-6 bg-transparent border-none cursor-pointer p-0">
+        <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
           <div id="progress-fill" class="h-full bg-accent-copper transition-all duration-1000 ease-out"></div>
         </div>
         <p class="mt-3 text-text-medium text-sm md:text-base font-body">
           Our hearts are <span id="percentDone" class="font-semibold">0%</span> full of love for the big day!
         </p>
-      </div>
+      </button>
 
       <!-- New Hidden Interactive Element -->
       <div class="mt-12">
@@ -933,7 +997,7 @@
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
           Where can I park?
           <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
           </svg>
         </summary>
         <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
@@ -1138,10 +1202,10 @@
       <button id="send-brucha-btn" class="btn btn-secondary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
         Share Your Simcha!
       </button>
-      <!-- Pop-up message after clicking the button -->
-      <div id="popup-message" class="mt-4 text-primary-navy font-body font-semibold text-lg hidden animate-bounce">
+      <!-- Removed old popup message element -->
+      <!-- <div id="popup-message" class="mt-4 text-primary-navy font-body font-semibold text-lg hidden animate-bounce">
         Aww! That means so much to us – can't wait to read it! 🥰
-      </div>
+      </div> -->
     </div>
 
     <!-- ✨ LLM Blessing Generator Feature ✨ -->
@@ -1219,7 +1283,7 @@
     <!-- Contact Form -->
     <div class="max-w-2xl mx-auto bg-card rounded-2xl shadow-2xl p-8 md:p-10">
       <!-- Form points to Formsubmit.co for easy backend handling -->
-      <form action="https://formsubmit.co/elimelechmoster@gmail.com" method="POST" class="space-y-6 text-left">
+      <form id="contact-form" action="https://formsubmit.co/elimelechmoster@gmail.com" method="POST" class="space-y-6 text-left">
         <!-- Hidden inputs for Formsubmit.co functionality -->
         <input type="hidden" name="_autoresponse" value="Thank you for your message! We'll be in touch soon.">
         <input type="hidden" name="_template" value="table">
@@ -1251,7 +1315,7 @@
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary w-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+        <button type="submit" id="submit-contact-btn" class="btn btn-primary w-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
           Send Your Message!
         </button>
       </form>
@@ -1323,10 +1387,11 @@
       const saveDateBtn         = document.getElementById("save-date");
       const blessingWall        = document.getElementById("blessing-wall");
       const sendBruchaBtn       = document.getElementById("send-brucha-btn");
-      const popupMessageEl      = document.getElementById("popup-message");
+      // const popupMessageEl      = document.getElementById("popup-message"); // Removed
       const heroContent         = document.querySelector(".hero-content");
       const confettiTriggerSpot = document.getElementById("confetti-trigger-spot");
       const navHeader           = document.querySelector(".header-nav");
+      const progressButton      = document.getElementById("progress-button"); // Progress bar button
 
       // LLM Blessing Generator Elements
       const blessingInput       = document.getElementById('blessing-input');
@@ -1346,6 +1411,11 @@
       const guestbookMessagesDisplay = document.getElementById('guestbook-messages-display');
       const guestbookLoading       = document.getElementById('guestbook-loading');
       const currentUserIdDisplay   = document.getElementById('current-user-id');
+
+      // Contact Form Elements
+      const contactForm            = document.getElementById('contact-form');
+      const submitContactBtn       = document.getElementById('submit-contact-btn');
+
 
       // New hidden message elements
       const secretMessageTrigger = document.getElementById('secret-message-trigger');
@@ -1371,8 +1441,8 @@
       const secondsCard = seconds.parentElement;
 
 
-      // Root for CSS variables
-      const root = document.documentElement;
+      // Root for CSS variables - no longer directly used for countdown colors as they are inline/class-based
+      // const root = document.documentElement;
 
       // Firebase variables (initialized later)
       let app, db, auth, userId;
@@ -1410,13 +1480,17 @@
 
       /**
        * Triggers a confetti animation.
+       * @param {Object} [options] - Optional parameters for confetti.
+       * @param {number} [options.x] - Normalized x-coordinate (0-1).
+       * @param {number} [options.y] - Normalized y-coordinate (0-1).
+       * @param {Array<string>} [options.colors] - Array of hex color codes.
        */
-      function triggerConfetti() {
+      function triggerConfetti(options = {}) {
         confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-          colors: ['#B85C3A', '#1E2C4F', '#84A98C', '#F2F4F7'] // Copper, Navy, Sage, Light Base
+          particleCount: options.particleCount || 100,
+          spread: options.spread || 70,
+          origin: options.origin || { y: 0.6 },
+          colors: options.colors || ['#B85C3A', '#1E2C4F', '#84A98C', '#F2F4F7']
         });
       }
 
@@ -1442,56 +1516,69 @@
       // --- Countdown & Progress Logic ---
 
       /**
-       * Applies dynamic styles to countdown cards based on time remaining.
-       * Changes border color, shadow, and number color.
-       * @param {number} diff - Time remaining in milliseconds.
+       * Applies dynamic styles to individual countdown cards based on their own value.
+       * Also applies a global flashing effect when very close to 0 seconds.
+       * @param {number} weeksVal - Current weeks value.
+       * @param {number} daysVal - Current days (remainder) value.
+       * @param {number} hoursVal - Current hours value.
+       * @param {number} minutesVal - Current minutes value.
+       * @param {number} secondsVal - Current seconds value.
+       * @param {number} totalDiffMs - Total milliseconds remaining until wedding.
        */
-      function applyDynamicCountdownStyles(diff) {
-        let accentColor = 'var(--color-secondary-sage)'; // Default: Sage
-        let borderColor = 'transparent';
-        let shadow = '0 6px 20px rgba(0, 0, 0, 0.08)';
-        let flashClass = ''; // For the ultra-close effect
+      function applyIndividualCountdownStyles(weeksVal, daysVal, hoursVal, minutesVal, secondsVal, totalDiffMs) {
+        const countdownElements = [
+          { card: weeksCard, value: weeksVal },
+          { card: daysCard, value: daysVal },
+          { card: hoursCard, value: hoursVal },
+          { card: minutesCard, value: minutesVal },
+          { card: secondsCard, value: secondsVal }
+        ];
 
-        const oneSecond = 1000;
-        const oneMinute = oneSecond * 60;
-        const oneHour = oneMinute * 60;
-        const oneDay = oneHour * 24;
-        const oneWeek = oneDay * 7;
-        const oneMonth = oneDay * 30; // Approx month
+        // Define color and shadow properties for different intensity levels
+        const intensityColors = {
+            default: { color: 'var(--color-secondary-sage)', border: 'transparent', shadow: '0 6px 20px rgba(0, 0, 0, 0.08)' },
+            lessIntense: { color: 'var(--color-accent-copper)', border: 'var(--color-accent-copper)', shadow: '0 0 8px rgba(0,0,0,0.1), 0 0 10px var(--color-accent-copper)' }, // For < 20
+            mediumIntense: { color: 'var(--color-primary-navy)', border: 'var(--color-primary-navy)', shadow: '0 0 10px rgba(0,0,0,0.15), 0 0 15px var(--color-primary-navy)' }, // For < 10
+            mostIntense: { color: 'var(--color-accent-copper)', border: 'var(--color-primary-navy)', shadow: '0 0 15px rgba(0,0,0,0.2), 0 0 20px var(--color-primary-navy)' } // For < 5
+        };
 
-        if (diff < 20 * oneSecond) { // Less than 20 seconds
-          accentColor = 'var(--color-primary-navy)'; // Main number color intense
-          borderColor = 'var(--color-accent-copper)'; // Border color flash
-          shadow = `0 0 25px rgba(0, 0, 0, 0.3), 0 0 30px var(--color-accent-copper)`;
-          flashClass = 'countdown-flash'; // Apply flashing animation
-        } else if (diff < 7 * oneDay) { // Less than 7 days (1 week)
-          accentColor = 'var(--color-accent-copper)';
-          borderColor = 'var(--color-primary-navy)';
-          shadow = `0 0 20px rgba(0, 0, 0, 0.2), 0 0 25px var(--color-primary-navy)`;
-        } else if (diff < 30 * oneDay) { // Less than 30 days (approx 1 month)
-          accentColor = 'var(--color-primary-navy)';
-          borderColor = 'var(--color-primary-navy)';
-          shadow = `0 0 15px rgba(0, 0, 0, 0.15), 0 0 20px var(--color-primary-navy)`;
-        } else if (diff < 90 * oneDay) { // Less than 90 days (approx 3 months)
-          accentColor = 'var(--color-accent-copper)';
-          borderColor = 'var(--color-accent-copper)';
-          shadow = `0 0 10px rgba(0, 0, 0, 0.1), 0 0 15px var(--color-accent-copper)`;
-        }
-        // else, default (sage)
+        // Apply styles based on individual value thresholds
+        countdownElements.forEach(item => {
+          const card = item.card;
+          const val = item.value; // The current number in the box
+          const valueEl = card.querySelector('.countdown-value');
 
-        root.style.setProperty('--countdown-accent-color', accentColor);
-        root.style.setProperty('--countdown-card-border', borderColor);
-        root.style.setProperty('--countdown-card-shadow', shadow);
+          // Reset styles first to ensure changes are applied correctly
+          card.style.borderColor = '';
+          card.style.boxShadow = '';
+          valueEl.style.color = '';
+          card.classList.remove('countdown-flash'); // Remove flash for individual logic first
 
-        // Apply/remove flash class to all countdown cards
-        const countdownCards = document.querySelectorAll('.countdown-card');
-        countdownCards.forEach(card => {
-            if (flashClass === 'countdown-flash') {
-                card.classList.add('countdown-flash');
-            } else {
-                card.classList.remove('countdown-flash');
-            }
+          let currentStyle = intensityColors.default;
+
+          if (val <= 4 && val >= 0) { // 0 to 4 (most intense before flashing)
+            currentStyle = intensityColors.mostIntense;
+          } else if (val <= 9 && val >= 5) { // 5 to 9
+            currentStyle = intensityColors.mediumIntense;
+          } else if (val <= 19 && val >= 10) { // 10 to 19
+            currentStyle = intensityColors.lessIntense;
+          }
+          // If none of the above, it remains default (sage)
+
+          // Apply individual styles
+          card.style.setProperty('border-color', currentStyle.border);
+          card.style.setProperty('box-shadow', currentStyle.shadow);
+          valueEl.style.setProperty('color', currentStyle.color);
         });
+
+        // Global flashing for less than 20 seconds total, overriding individual animations if active
+        const twentySecondsInMs = 20 * 1000;
+        if (totalDiffMs > 0 && totalDiffMs < twentySecondsInMs) {
+          countdownElements.forEach(item => {
+            item.card.classList.add('countdown-flash');
+            // The CSS animation `textFlash` will handle the color for `.countdown-value` when `.countdown-flash` is present
+          });
+        }
       }
 
       /**
@@ -1530,8 +1617,8 @@
         progressFillEl.style.width = pct + "%";
         percentDoneEl.innerText    = pct + "%";
 
-        // Apply dynamic styles based on remaining time in milliseconds
-        applyDynamicCountdownStyles(diff);
+        // Apply dynamic styles based on individual and total remaining time
+        applyIndividualCountdownStyles(w, dRem, h, m, s, diff);
 
         // If wedding passed, stop interval and show message
         if (diff <= 0) {
@@ -1772,7 +1859,7 @@
                   timestamp: serverTimestamp(), // Firestore automatically adds a server-side timestamp
                   userId: userId // Store the user ID for debugging/moderation
               });
-              showMessageBox("Your message has been sent! Thank you! 🎉");
+              showMessageBox("Your message landed straight in our hearts! Thank you! 😊"); // Existing message, confirmed
               guestbookNameInput.value = '';
               guestbookMessageInput.value = '';
           } catch (e) {
@@ -1780,6 +1867,20 @@
               showMessageBox("Failed to send message. Please try again.", 3000);
           }
       }
+
+      /**
+       * Handles contact form submission.
+       * Added a local message box for immediate feedback, before formsubmit.co redirects.
+       * @param {Event} event - The form submission event.
+       */
+      function handleContactSubmit(event) {
+          // The form will still submit and redirect via Formsubmit.co action
+          // This message will appear briefly before the redirect.
+          showMessageBox("Message sent! We'll be in touch faster than you can say 'Mazel Tov!' 🥳");
+          // Optionally, you could add event.preventDefault() here and handle the submission
+          // via Fetch API if you don't want a redirect, but Formsubmit.co requires it by default.
+      }
+
 
       // --- Firebase Initialization and Auth ---
       async function initializeFirebase() {
@@ -1889,6 +1990,30 @@
         minutesCard.addEventListener('click', () => triggerLocalizedConfetti(minutesCard, ['#84A98C', '#1E2C4F']));// Sage, navy
         secondsCard.addEventListener('click', () => triggerLocalizedConfetti(secondsCard, ['#B85C3A', '#F2F4F7']));// Copper, light
 
+        // Event listener for the progress bar button
+        progressButton.addEventListener('click', () => {
+          const rect = progressButton.getBoundingClientRect();
+          triggerConfetti({
+            origin: {
+              x: (rect.left + rect.right) / 2 / window.innerWidth,
+              y: (rect.top + rect.bottom) / 2 / window.innerHeight
+            },
+            particleCount: 75,
+            spread: 60,
+            colors: ['#B85C3A', '#1E2C4F', '#84A98C']
+          });
+          showMessageBox("Hearts are full of love! �", 2500);
+        });
+
+        // New: Event listener for Save the Date button
+        saveDateBtn.addEventListener('click', () => {
+            showMessageBox("Can't wait to celebrate with you! Thanks for marking your calendar! ✨", 3000);
+        });
+
+        // New: Event listener for Share Your Simcha! button
+        sendBruchaBtn.addEventListener('click', () => {
+            showMessageBox("Your beautiful blessing warmed our hearts! Thank you for sharing! ❤️", 3000);
+        });
 
         // Sticky nav class on scroll
         window.addEventListener('scroll', () => {
@@ -1907,6 +2032,10 @@
 
         // Guestbook Event Listener
         guestbookForm.addEventListener('submit', handleGuestbookSubmit);
+
+        // New: Contact Form Event Listener
+        contactForm.addEventListener('submit', handleContactSubmit);
+
 
         // Secret message trigger
         secretMessageTrigger.addEventListener('click', () => {
