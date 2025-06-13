@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-html lang="en">
+!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -447,8 +447,22 @@ html lang="en">
 
     /* Map Section Specifics */
     .map-embed {
-      border: 4px solid var(--color-primary-navy); /* Stronger border for map */
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      position: relative; /* Needed for absolute positioning of iframe */
+      width: 100%;
+      padding-bottom: 100%; /* This creates the square aspect ratio */
+      height: 0; /* Important to collapse height and let padding define it */
+      overflow: hidden; /* Ensure iframe doesn't overflow */
+      border: 4px solid var(--color-primary-navy); /* Keep border */
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); /* Keep shadow */
+    }
+
+    .map-embed iframe {
+      position: absolute; /* Position iframe within the new padding-bottom container */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
     }
 
     /* Blessings Section */
@@ -579,34 +593,8 @@ html lang="en">
     }
 
     /* Guestbook & Blessing Post Specific Styles */
-    .guestbook-message-card {
-        background-color: var(--color-white);
-        border-left: 4px solid var(--color-accent-copper); /* Border on left for LTR */
-        border-right: none; /* Remove right border */
-        border-radius: 0.75rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        padding: 1.5rem;
-        margin-bottom: 1rem;
-        transition: all 0.3s ease-in-out;
-        text-align: left; /* Ensure text is left-aligned */
-    }
-    .guestbook-message-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .guestbook-message-text {
-        color: var(--color-text-dark);
-        font-size: 1.05rem;
-        line-height: 1.6;
-        margin-bottom: 0.75rem;
-    }
-    .guestbook-message-author {
-        font-size: 0.9rem;
-        color: var(--color-text-medium);
-        font-style: italic;
-        text-align: right; /* Author name can be right-aligned for LTR */
-        direction: ltr; /* Ensure author name is LTR */
-    }
+    /* The guestbook-message-card and related styles are now unused/removed */
+
     .loading-spinner {
         text-align: center;
         color: var(--color-primary-navy);
@@ -1085,11 +1073,10 @@ html lang="en">
       Need help finding us? Just follow the music and smiles — we’ll be there!
     </p>
     <!-- Embedded Google Map -->
-    <div class="max-w-6xl w-full mx-auto rounded-2xl overflow-hidden shadow-2xl mb-10 aspect-square map-embed">
+    <div class="max-w-6xl w-full mx-auto rounded-2xl overflow-hidden shadow-2xl mb-10 map-embed">
       <!-- IMPORTANT: Replace the 'src' with your actual Google Maps Embed API URL. This is a placeholder. -->
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11977.830604163914!2d-74.02058300000001!3d41.1396113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2c19a9a9a9a9f%3A0x123456789abcdef0!2sAteres%20Chaya%20Surah!5e0!3m2!1sen!2suk!4v1689254321000!5m2=1sen!2suk"
-        style="width: 100%; height: 100%; border: 0;"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11977.830604163914!2d-74.02058300000001!3d41.1396113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2c19a9a9a9a9f%3A0x123456789abcdef0!2sAteres%20Chaya%20Surah!5e0!3m2!1sen!2suk!4v1689254321000!5m2=1sen%2suk"
         allowfullscreen=""
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade">
@@ -1240,40 +1227,6 @@ html lang="en">
 
   </section>
 
-  <!-- Interactive Guestbook Section -->
-  <div class="max-w-3xl mx-auto w-full bg-card rounded-2xl shadow-2xl p-8 md:p-10 mt-12">
-    <h3 class="font-heading text-2xl font-bold text-primary-navy mb-4 text-center">Guestbook: Leave Your Mark! ✍️</h3>
-    <p class="text-text-medium mb-6 text-center">
-        Share your well wishes, a favorite memory, or just a simple "Mazel Tov!" with Meilech & Tzippy!
-    </p>
-
-    <form id="guestbook-form" class="space-y-4 text-left mb-8">
-      <div>
-        <label for="guestbook-name" class="block text-lg text-primary-navy font-semibold mb-2">Your Name</label>
-        <input type="text" id="guestbook-name" required class="input-field" placeholder="Your Name">
-      </div>
-      <div>
-        <label for="guestbook-message" class="block text-lg text-primary-navy font-semibold mb-2">Your Message</label>
-        <textarea id="guestbook-message" rows="4" required class="input-field" placeholder="Write your heartfelt message here..."></textarea>
-      </div>
-      <button type="submit" id="submit-guestbook-btn" class="btn btn-primary w-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-        Send Your Message!
-      </button>
-    </form>
-
-    <div id="guestbook-loading" class="loading-spinner hidden">
-      <svg class="animate-spin h-5 w-5 text-primary-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-      </svg>
-      Loading messages...
-    </div>
-
-    <div id="guestbook-messages-display" class="mt-8 space-y-4 text-left">
-      <!-- Guestbook messages will be loaded here -->
-    </div>
-  </div>
-
   <!-- Chat & Questions Section - Form for guests to ask questions -->
   <section id="chat-section" class="section-padding bg-gradient-details text-center">
     <h2 class="section-title text-primary-navy mb-10">Got a Burning Question?</h2>
@@ -1420,13 +1373,12 @@ html lang="en">
       // Elements for scroll-fade-in
       const elementsToFadeIn = document.querySelectorAll('.info-card, .fun-fact-card');
 
-      // Guestbook Elements
-      const guestbookForm          = document.getElementById('guestbook-form');
-      const guestbookNameInput     = document.getElementById('guestbook-name');
-      const guestbookMessageInput  = document.getElementById('guestbook-message');
-      const guestbookMessagesDisplay = document.getElementById('guestbook-messages-display');
-      const guestbookLoading       = document.getElementById('guestbook-loading');
-      const currentUserIdDisplay   = document.getElementById('current-user-id');
+      // Guestbook Elements (removed from HTML, but keep vars for cleanup)
+      const guestbookForm          = null; // document.getElementById('guestbook-form');
+      const guestbookNameInput     = null; // document.getElementById('guestbook-name');
+      const guestbookMessageInput  = null; // document.getElementById('guestbook-message');
+      const guestbookMessagesDisplay = null; // document.getElementById('guestbook-messages-display');
+      const guestbookLoading       = document.getElementById('guestbook-loading'); // Still exists for now, removed later
 
       // Contact Form Elements
       const contactForm            = document.getElementById('contact-form');
@@ -1824,107 +1776,9 @@ html lang="en">
           }
       }
 
-      // --- Guestbook Logic ---
+      // --- Guestbook Logic (Removed) ---
+      // All guestbook functions like displayGuestbookMessage, setupGuestbookListener, handleGuestbookSubmit are removed.
 
-      /**
-       * Displays a single guestbook message.
-       * @param {object} message - The message object {author, text, timestamp}.
-       */
-      function displayGuestbookMessage(message) {
-          const messageDiv = document.createElement('div');
-          messageDiv.className = 'guestbook-message-card fade-in-hidden';
-          const date = message.timestamp ? new Date(message.timestamp.seconds * 1000).toLocaleString('en-US') : 'N/A'; // Use en-US for English locale
-          messageDiv.innerHTML = `
-              <p class="guestbook-message-text">${message.message}</p>
-              <p class="guestbook-message-author" style="direction: ltr; text-align: right;">- ${message.name} <span class="text-xs">(${date})</span></p>
-          `;
-          guestbookMessagesDisplay.prepend(messageDiv); // Add new messages to the top
-          // Trigger fade-in animation
-          setTimeout(() => {
-            messageDiv.classList.add('fade-in-visible');
-            messageDiv.classList.remove('fade-in-hidden');
-          }, 100); // Small delay to allow element to be added to DOM
-      }
-
-      /**
-       * Fetches and listens for real-time updates to guestbook messages.
-       */
-      function setupGuestbookListener() {
-        if (!db || !isAuthReady) {
-            console.warn("Firestore not initialized or auth not ready for guestbook listener.");
-            return;
-        }
-
-        guestbookLoading.classList.remove('hidden');
-        guestbookMessagesDisplay.innerHTML = ''; // Clear existing messages
-
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const q = query(collection(db, `/artifacts/${appId}/public/data/guestbook_messages`));
-
-        onSnapshot(q, (snapshot) => {
-            guestbookLoading.classList.add('hidden');
-            // Clear existing messages before re-rendering to prevent duplicates if data changes
-            guestbookMessagesDisplay.innerHTML = '';
-            // Sort by timestamp if needed for consistent display (Firestore orderBy not used for flexibility)
-            const messages = [];
-            snapshot.forEach(doc => {
-                messages.push(doc.data());
-            });
-            messages.sort((a, b) => {
-                const tsA = a.timestamp ? a.timestamp.seconds : 0;
-                const tsB = b.timestamp ? b.timestamp.seconds : 0;
-                return tsB - tsA; // Newest first
-            });
-
-            messages.forEach(msg => displayGuestbookMessage(msg));
-
-            // Ensure newly added elements also get the fade-in class
-            guestbookMessagesDisplay.querySelectorAll('.fade-in-hidden').forEach(el => {
-                el.classList.add('fade-in-visible');
-                el.classList.remove('fade-in-hidden');
-            });
-        }, (error) => {
-            console.error("Error listening to guestbook messages: ", error);
-            guestbookLoading.textContent = "Error loading messages. Please refresh.";
-        });
-      }
-
-      /**
-       * Handles guestbook form submission.
-       * @param {Event} event - The form submission event.
-       */
-      async function handleGuestbookSubmit(event) {
-          event.preventDefault();
-
-          if (!db || !isAuthReady) {
-              showMessageBox("Authentication not ready. Please try again in a moment.", 3000);
-              return;
-          }
-
-          const name = guestbookNameInput.value.trim();
-          const message = guestbookMessageInput.value.trim();
-
-          if (!name || !message) {
-              showMessageBox("Please fill in both your name and message!", 2000);
-              return;
-          }
-
-          try {
-              const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-              await addDoc(collection(db, `/artifacts/${appId}/public/data/guestbook_messages`), {
-                  name: name,
-                  message: message,
-                  timestamp: serverTimestamp(), // Firestore automatically adds a server-side timestamp
-                  userId: userId // Store the user ID for debugging/moderation
-              });
-              showMessageBox("Your message landed straight in our hearts! Thank you! 😊"); // Existing message, confirmed
-              guestbookNameInput.value = '';
-              guestbookMessageInput.value = '';
-          } catch (e) {
-              console.error("Error adding document: ", e);
-              showMessageBox("Failed to send message. Please try again.", 3000);
-          }
-      }
 
       /**
        * Handles contact form submission.
@@ -1957,7 +1811,7 @@ html lang="en">
                       userId = user.uid;
                       currentUserIdDisplay.textContent = userId;
                       isAuthReady = true;
-                      setupGuestbookListener(); // Start listening for guestbook messages once authenticated
+                      // Removed guestbook listener call here
                       setupBlessingsListener(); // Start listening for blessings messages once authenticated
                   } else {
                       // User is signed out, try to sign in anonymously
@@ -2074,6 +1928,7 @@ html lang="en">
         sendBruchaBtn.addEventListener('click', () => showModal(blessingModalOverlay));
         closeBlessingModalBtn.addEventListener('click', () => hideModal(blessingModalOverlay));
         blessingModalOverlay.addEventListener('click', (event) => {
+            // Close modal if user clicks outside the content (on the overlay itself)
             if (event.target === blessingModalOverlay) {
                 hideModal(blessingModalOverlay);
             }
@@ -2089,8 +1944,7 @@ html lang="en">
           }
         });
 
-        // Guestbook Event Listener
-        guestbookForm.addEventListener('submit', handleGuestbookSubmit);
+        // Removed Guestbook Event Listener: guestbookForm.addEventListener('submit', handleGuestbookSubmit);
 
         // New: Contact Form Event Listener
         contactForm.addEventListener('submit', handleContactSubmit);
@@ -2151,3 +2005,4 @@ html lang="en">
 
 </body>
 </html>
+
