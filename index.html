@@ -1343,7 +1343,56 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    
+// 1) Your Firebase config exactly from the console:
+    const firebaseConfig = {
+      apiKey:            "AIzaSyCnotkGbasC_lm3yVB0cOdKAJU2_gnztXY",
+      authDomain:        "bruchas-section-for-the-web.firebaseapp.com",
+      projectId:         "bruchas-section-for-the-web",
+      storageBucket:     "bruchas-section-for-the-web.firebasestorage.app",
+      messagingSenderId: "704795803170",
+      appId:             "1:704795803170:web:2c033bfefd2700a0eed47b",
+      measurementId:     "G-TNKNJYGBJD"
+    };
 
+    // 2) Initialize Firebase services
+    const app       = initializeApp(firebaseConfig);
+    const auth      = getAuth(app);
+    const db        = getFirestore(app);
+
+    // 3) Sign in anonymously & watch for the user
+    signInAnonymously(auth).catch(err =>
+      console.error("🔒 Auth failed:", err)
+    );
+    onAuthStateChanged(auth, user => {
+      const uidEl = document.getElementById("current-user-id");
+      if (user) {
+        uidEl.textContent = user.uid;
+        setupBlessingsListener();  // starts your real-time listener
+      } else {
+        uidEl.textContent = "Not signed in";
+      }
+    });
+
+    // 4) Real-time listener for blessings
+    function setupBlessingsListener() {
+      const appId = "default-app-id";
+      const col = collection(
+        db,
+        `artifacts/${appId}/public/data/wedding_blessings`
+      );
+      onSnapshot(col, snapshot => {
+        const wall = document.getElementById("blessing-wall");
+        wall.innerHTML = "";  // clear old cards
+        snapshot.forEach(doc => {
+          const { name, text, timestamp } = doc.data();
+          createBlessingCard({ name, text, timestamp });
+        });
+      }, err => {
+        console.error("Listener error:", err);
+        displayInitialBlessings();
+      });
+    }
     // --- Main JavaScript (Encapsulated) ---
     (function(){
       // --- Configuration & Elements ---
