@@ -276,7 +276,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      text-align: left; /* Default text alignment for LTR */
+      text-align: center; /* Changed from left to center for general section text */
     }
     .section-title {
       font-family: 'Lora', serif;
@@ -447,53 +447,63 @@
 
     /* Map Section Specifics */
     .map-embed {
-      border: 4px solid var(--color-primary-navy); /* Stronger border for map */
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      position: relative; /* Needed for absolute positioning of iframe */
+      width: 100%;
+      padding-bottom: 75%; /* Changed from 100% to 75% for 4:3 aspect ratio */
+      height: 0; /* Important to collapse height and let padding define it */
+      overflow: hidden; /* Ensure iframe doesn't overflow */
+      border: 4px solid var(--color-primary-navy); /* Keep border */
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); /* Keep shadow */
+    }
+
+    .map-embed iframe {
+      position: absolute; /* Position iframe within the new padding-bottom container */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
     }
 
     /* Blessings Section */
-    .heart-note {
+    .blessing-card { /* Renamed from heart-note for clarity and consistency */
       background-color: var(--color-secondary-sage);
       color: var(--color-white); /* Text color on sage background */
       font-weight: 600;
       padding: 2rem 1.25rem;
-      border-radius: 2rem 2rem 1.5rem 1.5rem;
+      border-radius: 1.5rem; /* slightly less rounded than before to be consistent with cards */
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-      animation: float 6s ease-in-out infinite;
+      /* animation: float 6s ease-in-out infinite; // Remove for controlled rotation */
       display: flex;
-      flex-direction: column; /* Ensure text is aligned vertically */
-      align-items: center; /* Center horizontally */
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
-      text-align: center; /* Center text within heart note */
+      text-align: center;
       min-height: 200px;
       font-size: 1.15rem;
       line-height: 1.6;
-      transition: transform 0.3s ease, background-color 0.3s ease; /* Add transition for background */
+      transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; /* Added border-color, box-shadow */
     }
-    .heart-note:hover {
+    .blessing-card:hover {
       transform: scale(1.04) rotate(0deg);
-      background-color: var(--color-accent-copper); /* Change color on hover */
+      background-color: var(--color-accent-copper);
+    }
+    /* New class for visual rotation */
+    .blessing-card.highlighted {
+        border-color: var(--color-accent-copper);
+        box-shadow: 0 0 15px var(--color-accent-copper), 0 0 25px rgba(184, 92, 58, 0.4);
+        transform: scale(1.02);
     }
     @keyframes float {
       0%, 100% { transform: translateY(0) rotate(-2deg); }
       50% { transform: translateY(-8px) rotate(0deg); }
     }
     @media (min-width: 768px) {
-      .heart-note { font-size: 1.25rem; padding: 2.5rem 1.5rem; min-height: 220px; }
+      .blessing-card { font-size: 1.25rem; padding: 2.5rem 1.5rem; min-height: 220px; }
     }
     @media (min-width: 1024px) {
-      .heart-note { font-size: 1.3rem; padding: 2.75rem 1.75rem; min-height: 240px; }
+      .blessing-card { font-size: 1.3rem; padding: 2.75rem 1.75rem; min-height: 240px; }
     }
-
-    /* Pop-up message for blessings - REMOVED, now using generic message-box */
-    /* #popup-message {
-      animation: bounce 0.5s infinite alternate;
-      color: var(--color-primary-navy);
-    }
-    @keyframes bounce {
-      from { transform: translateY(0); }
-      to { transform: translateY(-5px); }
-    } */
 
     /* Chat & Questions Form */
     .input-field {
@@ -556,64 +566,9 @@
     .text-secondary-sage { color: var(--color-secondary-sage); }
 
 
-    /* LLM Blessing Generator Specific Styles */
-    .llm-generator-card {
-        background-color: var(--color-white);
-        border-radius: 1.5rem;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        padding: 2.5rem;
-        margin-top: 4rem; /* Space below existing content */
-        text-align: left; /* Ensure text is left-aligned */
-    }
+    /* Removed LLM Blessing Generator Specific Styles */
+    /* .llm-generator-card, .llm-loading, .llm-generated-output, .copy-btn styles are removed */
 
-    .llm-loading {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.75rem;
-        color: var(--color-primary-navy);
-        font-weight: 600;
-        font-size: 1.125rem;
-        direction: ltr; /* Ensure loading text is LTR */
-    }
-
-    .llm-loading span {
-        animation: pulse 1.5s infinite ease-in-out;
-    }
-
-    @keyframes pulse {
-        0%, 100% { opacity: 0.5; transform: scale(0.9); }
-        50% { opacity: 1; transform: scale(1); }
-    }
-
-    .llm-generated-output {
-        background-color: var(--color-base-light);
-        border: 1px solid var(--color-base-dark);
-        border-radius: 0.75rem;
-        padding: 1.5rem;
-        margin-top: 1.5rem;
-        font-family: 'Lora', serif; /* Use heading font for generated text */
-        color: var(--color-text-dark);
-        line-height: 1.7;
-        font-size: 1.125rem;
-        white-space: pre-wrap; /* Preserve formatting from LLM */
-        word-wrap: break-word; /* Ensure long words break */
-        text-align: left; /* Align generated text left */
-    }
-
-    .copy-btn {
-        background-color: var(--color-secondary-sage);
-        color: var(--color-white);
-        padding: 0.5rem 1rem;
-        border-radius: 9999px;
-        font-weight: 600;
-        margin-top: 1rem;
-        font-size: 0.875rem;
-        transition: background-color 0.3s ease;
-    }
-    .copy-btn:hover {
-        background-color: var(--color-primary-navy);
-    }
 
     .message-box {
         position: fixed;
@@ -637,42 +592,28 @@
         visibility: visible;
     }
 
-    /* Guestbook Specific Styles */
-    .guestbook-message-card {
-        background-color: var(--color-white);
-        border-left: 4px solid var(--color-accent-copper); /* Border on left for LTR */
-        border-right: none; /* Remove right border */
-        border-radius: 0.75rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        padding: 1.5rem;
-        margin-bottom: 1rem;
-        transition: all 0.3s ease-in-out;
-        text-align: left; /* Ensure text is left-aligned */
-    }
-    .guestbook-message-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .guestbook-message-text {
-        color: var(--color-text-dark);
-        font-size: 1.05rem;
-        line-height: 1.6;
-        margin-bottom: 0.75rem;
-    }
-    .guestbook-message-author {
-        font-size: 0.9rem;
-        color: var(--color-text-medium);
-        font-style: italic;
-        text-align: right; /* Author name can be right-aligned for LTR */
-        direction: ltr; /* Ensure author name is LTR */
-    }
-    .guestbook-loading {
+    /* Guestbook & Blessing Post Specific Styles */
+    /* The guestbook-message-card and related styles are now unused/removed */
+
+    .loading-spinner {
         text-align: center;
         color: var(--color-primary-navy);
         font-weight: 600;
         margin-top: 2rem;
         direction: ltr;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
     }
+    .loading-spinner svg {
+        animation: spin 1.5s linear infinite;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
     .current-user-id-display {
       font-size: 0.8rem;
       color: var(--color-text-medium);
@@ -680,6 +621,59 @@
       margin-top: 1rem;
       word-break: break-all;
       direction: ltr; /* Keep User ID LTR */
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background-color: var(--color-white);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      max-width: 90%;
+      width: 500px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      transform: translateY(-20px);
+      opacity: 0;
+      transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+      position: relative;
+    }
+    .modal-overlay.show .modal-content {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--color-text-medium);
+      transition: color 0.2s ease;
+    }
+    .close-btn:hover {
+      color: var(--color-primary-navy);
     }
   </style>
 
@@ -740,7 +734,7 @@
 
       <!-- Save the Date Button - Links to add event to Google Calendar -->
       <div class="mb-10 w-full max-w-sm mx-auto">
-        <a id="save-date" href="#" class="btn btn-primary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center space-x-2">
+        <a id="save-date" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center space-x-2">
           <!-- Calendar SVG Icon -->
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -764,7 +758,7 @@
         <button id="secret-message-trigger" class="text-text-medium hover:text-accent-copper transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-accent-copper focus:ring-opacity-50 rounded-full px-4 py-2 text-sm italic">
           Discover a Little Secret... ❤️
         </button>
-        <div id="secret-message-content" class="hidden mt-4 p-4 bg-secondary-sage text-white rounded-lg shadow-md max-w-sm mx-auto text-base text-center transform scale-y-0 opacity-0 transition-all duration-500 origin-top">
+        <div id="secret-message-content" class="hidden mt-4 p-4 bg-secondary-sage text-white rounded-lg shadow-md max-w-sm mx-auto text-base text-center transform scale-y(0) opacity-0 transition-all duration-500 origin-top">
           <!-- Secret message will be injected here by JavaScript -->
         </div>
       </div>
@@ -1050,7 +1044,7 @@
           </svg>
         </summary>
         <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
-          <p>You're asking the real questions! Absolutely! If you've got moves (or even just enthusiasm!), we'd love to have you. Just reach out to Tzippy's sister, Rivky, and she'll share all the secret steps and make sure you're ready to bust a move! Get ready to dance the night away!</p>
+          <p>You're asking the real questions! Absolutely! If you've got moves (or even just enthusiasm!), we'd love to have you. Just reach out to <strong>Tzippy the kallah</strong>, and she'll share all the secret steps and make sure you're ready to bust a move! Get ready to dance the night away!</p>
         </div>
       </details>
 
@@ -1079,11 +1073,11 @@
       Need help finding us? Just follow the music and smiles — we’ll be there!
     </p>
     <!-- Embedded Google Map -->
-    <div class="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-2xl mb-10 aspect-video map-embed">
+    <div class="max-w-2xl w-full mx-auto rounded-2xl overflow-hidden shadow-2xl mb-10 map-embed">
+      <!-- Changed max-w-4xl to max-w-2xl and padding-bottom to 75% for a smaller, 4:3 aspect ratio map -->
       <!-- IMPORTANT: Replace the 'src' with your actual Google Maps Embed API URL. This is a placeholder. -->
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11977.830604163914!2d-74.02058300000001!3d41.1396113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2c19a9a9a9a9f%3A0x123456789abcdef0!2sAteres%20Chaya%20Surah!5e0!3m2!1sen!2suk!4v1689254321000!5m2=1sen!2suk"
-        style="width: 100%; height: 100%; border: 0;"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11977.830604163914!2d-74.02058300000001!3d41.1396113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2c19a9a9a9a9f%3A0x123456789abcdef0!2sAteres%20Chaya%20Surah!5e0!3m2!1sen!2suk!4v1689254321000!5m2=1sen%2suk"
         allowfullscreen=""
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade">
@@ -1102,7 +1096,7 @@
         <h3 class="font-heading text-2xl font-bold text-primary-navy mb-3">What’s Pinned?</h3>
         <ul class="list-disc list-inside text-text-medium space-y-2">
           <li><strong>Wedding Venue:</strong> Ateres Chaya Surah, Spring Valley</li>
-          <li><strong>Oifruf:</strong> 3 Harvest Ct, Monsey</li>
+          <li><strong>Oifruf:</b> 3 Harvest Ct, Monsey</li>
           <li><strong>Bogleiten:</strong> 15 Sophia St, Monsey</li>
           <li><strong>Bovarfen:</strong> Belz Shul, 1 Harvest Ct</li>
           <li><strong>Shabbos Sheva Brachas:</strong> Bobov Shul, Jill Ln</li>
@@ -1215,85 +1209,22 @@
   <section id="blessings-section" class="section-padding bg-gradient-base text-center">
     <h2 class="section-title text-primary-navy mb-10">Messages of Simcha & Brachos!</h2>
     <p class="text-lg text-text-medium mb-12 max-w-2xl mx-auto">
-      From the people who love us most — now proudly displayed for all to see (and smile at!).
+      Share your heartfelt blessings for Meilech & Tzippy!
     </p>
 
     <!-- Blessing Wall - Content injected by JavaScript -->
     <div id="blessing-wall" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"></div>
 
+    <!-- The blessings-loading spinner is removed as pre-saved blessings are shown initially -->
     <!-- Call to Action button for sharing blessings -->
     <div class="mt-16">
       <button id="send-brucha-btn" class="btn btn-secondary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-        Share Your Simcha!
+        Add Your Blessing! ✨
       </button>
-      <!-- Removed old popup message element -->
-      <!-- <div id="popup-message" class="mt-4 text-primary-navy font-body font-semibold text-lg hidden animate-bounce">
-        Aww! That means so much to us – can't wait to read it! 🥰
-      </div> -->
     </div>
 
-    <!-- ✨ LLM Blessing Generator Feature ✨ -->
-    <div class="max-w-3xl mx-auto w-full llm-generator-card mb-12">
-        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-4 text-center">✨ Need Help Crafting a Blessing? ✨</h3>
-        <p class="text-text-medium mb-6 text-center">
-            Type a few keywords, and our AI will help you sparkle up your message for the happy couple!
-        </p>
-        <div class="space-y-4">
-            <div>
-                <label for="blessing-input" class="block text-lg text-primary-navy font-semibold mb-2">Your Blessing Idea (e.g., "much nachas", "happy life", "joyous home")</label>
-                <textarea id="blessing-input" rows="3" class="input-field" placeholder="Enter your blessing keywords here..."></textarea>
-            </div>
-            <button id="generate-blessing-btn" class="btn btn-primary w-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center justify-content-center space-x-2">
-                <span>Sparkle My Blessing! ✨</span>
-            </button>
-
-            <!-- Loading Indicator -->
-            <div id="blessing-loading" class="llm-loading hidden mt-4">
-                <span>Generating a truly special blessing...</span>
-                <svg class="animate-spin h-5 w-5 text-primary-navy" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-            </div>
-
-            <!-- Generated Blessing Output Area -->
-            <div id="generated-blessing-output" class="llm-generated-output hidden">
-                <!-- LLM generated text will be inserted here -->
-            </div>
-            <button id="copy-blessing-btn" class="copy-btn hidden">Copy Blessing</button>
-        </div>
-    </div>
-
-    <!-- Interactive Guestbook Section -->
-    <div class="max-w-3xl mx-auto w-full bg-card rounded-2xl shadow-2xl p-8 md:p-10 mt-12">
-      <h3 class="font-heading text-2xl font-bold text-primary-navy mb-4 text-center">Guestbook: Leave Your Mark! ✍️</h3>
-      <p class="text-text-medium mb-6 text-center">
-          Share your well wishes, a favorite memory, or just a simple "Mazel Tov!" with Meilech & Tzippy!
-      </p>
-
-      <form id="guestbook-form" class="space-y-4 text-left mb-8">
-        <div>
-          <label for="guestbook-name" class="block text-lg text-primary-navy font-semibold mb-2">Your Name</label>
-          <input type="text" id="guestbook-name" required class="input-field" placeholder="Your Name">
-        </div>
-        <div>
-          <label for="guestbook-message" class="block text-lg text-primary-navy font-semibold mb-2">Your Message</label>
-          <textarea id="guestbook-message" rows="4" required class="input-field" placeholder="Write your heartfelt message here..."></textarea>
-        </div>
-        <button type="submit" id="submit-guestbook-btn" class="btn btn-primary w-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-          Send Your Message!
-        </button>
-      </form>
-
-      <div class="guestbook-loading hidden" id="guestbook-loading">
-        Loading messages...
-      </div>
-
-      <div id="guestbook-messages-display" class="mt-8 space-y-4 text-left">
-        <!-- Guestbook messages will be loaded here -->
-      </div>
-      <p class="current-user-id-display">Your User ID: <span id="current-user-id">Loading...</span></p>
-    </div>
+    <!-- Current User ID Display -->
+    <p class="current-user-id-display">Your User ID: <span id="current-user-id">Loading...</span></p>
 
   </section>
 
@@ -1358,7 +1289,6 @@
     <div class="max-w-4xl mx-auto text-lg text-text-medium space-y-6 bg-card rounded-2xl shadow-2xl p-8 md:p-10">
       <p>Dear family and friends, </p>
       <p>We’re so excited as we count down the days to our wedding, and we feel incredibly lucky to be surrounded by such immense love and support. Your warm wishes, thoughtful messages, and bubbling excitement mean more than we can possibly say.</p>
-      <p>Thank you for joining us on this beautiful journey. Whether you’ll be dancing with us in person or celebrating from afar, your presence in our lives is a true blessing (a "bracha" for those who know the lingo!).</p>
       <p class="text-2xl md:text-3xl font-bold font-heading text-primary-navy mt-8">With all our love and excitement,</p>
       <p class="text-3xl md:text-4xl font-bold font-heading text-primary-navy">Meilech & Tzippy</p>
     </div>
@@ -1379,6 +1309,31 @@
 
   <!-- Message box for copy confirmation -->
   <div id="message-box" class="message-box"></div>
+
+  <!-- Blessing Submission Modal -->
+  <div id="blessing-modal-overlay" class="modal-overlay">
+    <div class="modal-content">
+      <button class="close-btn" id="close-blessing-modal">&times;</button>
+      <h3 class="font-heading text-2xl font-bold text-primary-navy mb-4 text-center">Add Your Blessing! ✨</h3>
+      <p class="text-text-medium mb-6 text-center">
+          Share your well wishes for Meilech & Tzippy directly on our blessings wall!
+      </p>
+      <form id="blessing-form" class="space-y-4 text-left">
+        <div>
+          <label for="blessing-name" class="block text-lg text-primary-navy font-semibold mb-2">Your Name</label>
+          <input type="text" id="blessing-name" required class="input-field" placeholder="Your Name">
+        </div>
+        <div>
+          <label for="blessing-text" class="block text-lg text-primary-navy font-semibold mb-2">Your Blessing</label>
+          <textarea id="blessing-text" rows="4" required class="input-field" placeholder="Write your heartfelt blessing here..."></textarea>
+        </div>
+        <button type="submit" id="submit-blessing-btn" class="btn btn-primary w-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+          Post Your Blessing!
+        </button>
+      </form>
+    </div>
+  </div>
+
 
   <!-- Confetti.js CDN - Required for confetti effects -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -1409,35 +1364,26 @@
       const saveDateBtn         = document.getElementById("save-date");
       const blessingWall        = document.getElementById("blessing-wall");
       const sendBruchaBtn       = document.getElementById("send-brucha-btn");
-      // const popupMessageEl      = document.getElementById("popup-message"); // Removed
       const heroContent         = document.querySelector(".hero-content");
       const confettiTriggerSpot = document.getElementById("confetti-trigger-spot");
       const navHeader           = document.querySelector(".header-nav");
       const progressButton      = document.getElementById("progress-button"); // Progress bar button
-
-      // LLM Blessing Generator Elements
-      const blessingInput       = document.getElementById('blessing-input');
-      const generateBlessingBtn = document.getElementById('generate-blessing-btn');
-      const blessingLoading     = document.getElementById('blessing-loading');
-      const generatedBlessingOutput = document.getElementById('generated-blessing-output');
-      const copyBlessingBtn     = document.getElementById('copy-blessing-btn');
       const messageBox          = document.getElementById('message-box');
 
       // Elements for scroll-fade-in
       const elementsToFadeIn = document.querySelectorAll('.info-card, .fun-fact-card');
 
-      // Guestbook Elements
-      const guestbookForm          = document.getElementById('guestbook-form');
-      const guestbookNameInput     = document.getElementById('guestbook-name');
-      const guestbookMessageInput  = document.getElementById('guestbook-message');
-      const guestbookMessagesDisplay = document.getElementById('guestbook-messages-display');
-      const guestbookLoading       = document.getElementById('guestbook-loading');
-      const currentUserIdDisplay   = document.getElementById('current-user-id');
+      // Guestbook Elements (removed from HTML, but keep vars for cleanup)
+      // These are now explicitly null because the guestbook section was removed.
+      const guestbookForm          = null;
+      const guestbookNameInput     = null;
+      const guestbookMessageInput  = null;
+      const guestbookMessagesDisplay = null;
+      const guestbookLoading       = null;
 
       // Contact Form Elements
       const contactForm            = document.getElementById('contact-form');
       const submitContactBtn       = document.getElementById('submit-contact-btn');
-
 
       // New hidden message elements
       const secretMessageTrigger = document.getElementById('secret-message-trigger');
@@ -1445,14 +1391,14 @@
       let secretMessageTimeout; // To store the timeout ID for auto-hiding
       let currentSecretMessageIndex = 0; // To track which secret message to show
 
-      // Array of secret messages
+      // Array of secret messages (UPDATED)
       const secretMessages = [
-        "Did you know Meilech proposed at their favorite park bench? Shhh!",
-        "Tzippy's favorite part of wedding planning? Definitely the cake tasting!",
-        "Meilech secretly practices his dance moves when no one's watching. You heard it here first!",
-        "Their first date was a spontaneous picnic under the stars.",
-        "They bonded over a shared love for obscure 80s music.",
-        "The rings have a tiny, hidden inscription only they know about. ✨"
+        "A hidden path leads to the heart of every story.",
+        "The universe whispers its secrets to those who truly listen.",
+        "Every end is just a new beginning, waiting to unfold.",
+        "Love is the only language that transcends all barriers.",
+        "The greatest adventures often begin with a single, silent promise.",
+        "In every moment, there's a universe of possibilities waiting to be discovered."
       ];
 
       // Get references to the countdown card elements for confetti
@@ -1462,33 +1408,37 @@
       const minutesCard = minutes.parentElement;
       const secondsCard = seconds.parentElement;
 
-
-      // Root for CSS variables - no longer directly used for countdown colors as they are inline/class-based
-      // const root = document.documentElement;
+      // Blessing Modal Elements
+      const blessingModalOverlay = document.getElementById('blessing-modal-overlay');
+      const closeBlessingModalBtn = document.getElementById('close-blessing-modal');
+      const blessingForm = document.getElementById('blessing-form');
+      const blessingNameInput = document.getElementById('blessing-name');
+      const blessingTextInput = document.getElementById('blessing-text');
+      // blessingsLoading is removed from HTML
 
       // Firebase variables (initialized later)
       let app, db, auth, userId;
       let isAuthReady = false;
 
-      // --- Pre-saved Blessings for Display ---
-      const blessingsData = [
-        { name: "The Kugel Connoisseur", text: "May your life together be as sweet and abundant as a double-batch kugel! Mazel Tov!" },
-        { name: "A Well-Wisher from Afar", text: "Though miles may separate us, our hearts are with you. Wishing you a truly joyous union!" },
-        { name: "That Guy from Cheder", text: "From the old days till now, so proud to see you build this beautiful life! Mazel Tov!" },
-        { name: "The Couple's Biggest Fans", text: "You two are seriously the best! Wishing you endless laughter and happiness. Party on!" },
-        { name: "Auntie Mameleh", text: "May your home be filled with only good things, from now until forever! Much nachas and simcha!" },
-        { name: "The Mensch Family", text: "To a truly special couple: May you always find strength, love, and comfort in each other. Brachos!" },
-        { name: "Your Go-To Babysitter", text: "So excited for your future! Remember me when you need a night out. 😉 Mazel Tov!" },
-        { name: "The One Who Knows All Your Secrets", text: "May your love story continue to be the most exciting chapter yet. And yes, I'll keep your secrets! 😉" },
-        { name: "The Matchmaker's Apprentice", text: "Another perfect match! Wishing you both a lifetime of happiness. Don't forget who brought you together (kinda)!" },
-        { name: "Your Favorite Cousin (Probably)", text: "Beyond thrilled for you both! May your days be filled with simcha and your nights with peace. See you on the dance floor!" },
-        { name: "A Friend from the Old Neighborhood", text: "From backyard games to wedding bells – so happy for you two. Wishing you all the best!" },
-        { name: "The Mystery Mazel Tov Sender", text: "Wishing you a home filled with light, joy, and the constant presence of the Shechinah. Mazel Tov!" }
+      // New: Pre-saved blessings data
+      const initialBlessingsData = [
+        { name: "A Loving Friend", text: "May your journey together be filled with boundless joy and unending harmony! Mazel Tov!" },
+        { name: "Family Member", text: "Wishing you a lifetime of happiness, health, and true nachas. We love you both!" },
+        { name: "Well-Wisher", text: "May your home always be a beacon of light, warmth, and beautiful blessings." },
+        { name: "Simcha Seeker", text: "Chassan Kallah Mazel Tov! May your union inspire all around you." },
+        { name: "Supporter", text: "So much simcha! May you build an everlasting edifice of love and Torah." },
+        { name: "Future Guest", text: "Wishing you mazel and bracha for all your days. Ad-Meya Ve-Esrim!" },
+        { name: "Good Friend", text: "May your lives together be even sweeter than the wedding cake. Congrats!" },
+        { name: "Community Member", text: "May you be zoche to build a beautiful family together, full of chesed and simcha." },
+        { name: "Proud Relative", text: "Our hearts are overflowing with joy for you both. May you always share such love!" },
+        { name: "Anon Friend", text: "May you be blessed with everything good, physically and spiritually. Mazel Tov!" }
       ];
+      let initialBlessingsInterval = null; // To store the interval ID for initial blessings rotation
+      let currentHighlightedBlessingIndex = 0;
 
+      // Current User ID Display - Moved up to ensure it's defined before initializeFirebase
+      const currentUserIdDisplay   = document.getElementById('current-user-id');
 
-      let currentBlessingIndex = 0;
-      let blessingInterval;
 
       // --- Utility Functions ---
 
@@ -1506,6 +1456,22 @@
       }
 
       /**
+       * Shows a modal.
+       * @param {HTMLElement} modalElement - The modal overlay element to show.
+       */
+      function showModal(modalElement) {
+          modalElement.classList.add('show');
+      }
+
+      /**
+       * Hides a modal.
+       * @param {HTMLElement} modalElement - The modal overlay element to hide.
+       */
+      function hideModal(modalElement) {
+          modalElement.classList.remove('show');
+      }
+
+      /**
        * Triggers a confetti animation.
        * @param {Object} [options] - Optional parameters for confetti.
        * @param {number} [options.x] - Normalized x-coordinate (0-1).
@@ -1519,25 +1485,6 @@
           origin: options.origin || { y: 0.6 },
           colors: options.colors || ['#B85C3A', '#1E2C4F', '#84A98C', '#F2F4F7']
         });
-      }
-
-      /**
-       * Copies text to clipboard.
-       * @param {string} text - The text to copy.
-       */
-      function copyTextToClipboard(text) {
-          const textarea = document.createElement('textarea');
-          textarea.value = text;
-          document.body.appendChild(textarea);
-          textarea.select();
-          try {
-              document.execCommand('copy'); // Deprecated but widely supported in iframes
-              showMessageBox('Copied to clipboard! 🎉');
-          } catch (err) {
-              console.error('Failed to copy text: ', err);
-              showMessageBox('Failed to copy. Please try again manually.');
-          }
-          document.body.removeChild(textarea);
       }
 
       // --- Countdown & Progress Logic ---
@@ -1691,178 +1638,115 @@
 
       /**
        * Creates and appends a blessing card to the wall.
-       * @param {object} blessing - The blessing object {name, text}.
+       * @param {object} blessing - The blessing object {name, text, timestamp}.
        */
-      function createBlessingCard(blessing) {
+      function createBlessingCard(blessing, isInitial = false) {
         const div = document.createElement('div');
-        div.className = 'heart-note relative overflow-hidden group';
+        div.className = 'blessing-card fade-in-hidden relative overflow-hidden group';
+        // Only show timestamp for real blessings, not initial ones
+        const date = blessing.timestamp && !isInitial ? new Date(blessing.timestamp.seconds * 1000).toLocaleString('en-US') : '';
         div.innerHTML = `
           <p class="relative z-10 text-center font-body text-lg">${blessing.text}</p>
-          <p class="relative z-10 text-center text-sm font-semibold mt-4 text-primary-navy group-hover:text-white transition-colors duration-300">- ${blessing.name}</p>
+          <p class="relative z-10 text-center text-sm font-semibold mt-4 text-primary-navy group-hover:text-white transition-colors duration-300">- ${blessing.name} ${date ? `<span class="text-xs">(${date})</span>` : ''}</p>
           <div class="absolute inset-0 bg-accent-copper opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform scale-x-0 group-hover:scale-x-100 origin-left rounded-2xl"></div>
         `;
-        blessingWall.appendChild(div);
+        blessingWall.prepend(div); // Add new blessings to the top
+        // Trigger fade-in animation
+        setTimeout(() => {
+          div.classList.add('fade-in-visible');
+          div.classList.remove('fade-in-hidden');
+        }, 100);
       }
 
       /**
-       * Displays a batch of blessings on the wall.
-       * Clears previous ones if any.
+       * Displays the pre-saved blessings and starts their rotation.
        */
-      function displayBlessings() {
-        blessingWall.innerHTML = ''; // Clear existing blessings
-        const numToDisplay = Math.min(blessingsData.length, 8); // Display up to 8
-        const startIndex = currentBlessingIndex;
-        for (let i = 0; i < numToDisplay; i++) {
-          const blessing = blessingsData[(startIndex + i) % blessingsData.length];
-          createBlessingCard(blessing);
-        }
-      }
+      function displayInitialBlessings() {
+          blessingWall.innerHTML = ''; // Clear any existing content
+          initialBlessingsData.forEach(blessing => createBlessingCard(blessing, true)); // Pass true for isInitial
 
-      /**
-       * Starts the automatic rotation of blessings.
-       */
-      function startBlessingRotation() {
-        blessingInterval = setInterval(() => {
-          currentBlessingIndex = (currentBlessingIndex + 1) % blessingsData.length;
-          displayBlessings();
-        }, 3500); // Rotate every 3.5 seconds
-      }
+          // Start rotation only if not already running
+          if (!initialBlessingsInterval) {
+              initialBlessingsInterval = setInterval(() => {
+                  const cards = blessingWall.querySelectorAll('.blessing-card');
+                  if (cards.length === 0) {
+                      clearInterval(initialBlessingsInterval);
+                      initialBlessingsInterval = null;
+                      return;
+                  }
 
-      // --- LLM Blessing Generator Logic ---
+                  // Remove highlight from previous card
+                  if (cards[currentHighlightedBlessingIndex]) {
+                      cards[currentHighlightedBlessingIndex].classList.remove('highlighted');
+                  }
 
-      /**
-       * Calls the Gemini API to generate a blessing.
-       * @param {string} promptText - The user's input/keywords for the blessing.
-       * @returns {Promise<string>} - The generated blessing text.
-       */
-      async function generateBlessing(promptText) {
-          blessingLoading.classList.remove('hidden');
-          generatedBlessingOutput.classList.add('hidden');
-          copyBlessingBtn.classList.add('hidden');
-          generatedBlessingOutput.innerHTML = ''; // Clear previous output
+                  // Move to next card, loop back if at end
+                  currentHighlightedBlessingIndex = (currentHighlightedBlessingIndex + 1) % cards.length;
 
-          try {
-              let chatHistory = [];
-              chatHistory.push({ role: "user", parts: [{ text: `Generate a warm, heartfelt, and slightly humorous wedding blessing for a couple named Meilech and Tzippy, based on the following keywords: "${promptText}". The blessing should be in a friendly, appreciative tone, suitable for close family and friends. Keep it concise, around 50-70 words. Avoid overly formal or religious language unless directly implied by keywords. End with a general well-wish. Example: "Wishing Meilech & Tzippy a lifetime of shared laughter, deep happiness, and endless simcha! May your home be a sanctuary of love and joy, always. Mazel Tov!"` }] });
-
-              const payload = { contents: chatHistory };
-              const apiKey = ""; // Canvas will inject this at runtime.
-              const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-              const response = await fetch(apiUrl, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify(payload)
-              });
-
-              if (!response.ok) {
-                  const errorData = await response.json();
-                  throw new Error(`API error: ${response.status} - ${errorData.error.message}`);
-              }
-
-              const result = await response.json();
-              if (result.candidates && result.candidates.length > 0 &&
-                  result.candidates[0].content && result.candidates[0].content.parts &&
-                  result.candidates[0].content.parts.length > 0) {
-                  const text = result.candidates[0].content.parts[0].text;
-                  return text;
-              } else {
-                  throw new Error("Invalid response structure from LLM.");
-              }
-          } catch (error) {
-              console.error("Error generating blessing:", error);
-              return "Oops! Ran into a little AI hiccup. Please try a different idea or refresh the page!";
-          } finally {
-              blessingLoading.classList.add('hidden');
+                  // Add highlight to current card
+                  if (cards[currentHighlightedBlessingIndex]) {
+                      cards[currentHighlightedBlessingIndex].classList.add('highlighted');
+                  }
+              }, 3000); // Change every 3 seconds
           }
       }
 
       /**
-       * Handles the click event for the blessing generation button.
+       * Fetches and listens for real-time updates to blessings.
        */
-      async function handleGenerateBlessingClick() {
-          const promptText = blessingInput.value.trim();
-          if (!promptText) {
-              showMessageBox("Please type in some keywords for your blessing!", 2000);
-              return;
-          }
-
-          const generatedText = await generateBlessing(promptText);
-          generatedBlessingOutput.textContent = generatedText;
-          generatedBlessingOutput.classList.remove('hidden');
-          copyBlessingBtn.classList.remove('hidden');
-      }
-
-      // --- Guestbook Logic ---
-
-      /**
-       * Displays a single guestbook message.
-       * @param {object} message - The message object {author, text, timestamp}.
-       */
-      function displayGuestbookMessage(message) {
-          const messageDiv = document.createElement('div');
-          messageDiv.className = 'guestbook-message-card fade-in-hidden';
-          const date = message.timestamp ? new Date(message.timestamp.seconds * 1000).toLocaleString('en-US') : 'N/A'; // Use en-US for English locale
-          messageDiv.innerHTML = `
-              <p class="guestbook-message-text">${message.message}</p>
-              <p class="guestbook-message-author" style="direction: ltr; text-align: right;">- ${message.name} <span class="text-xs">(${date})</span></p>
-          `;
-          guestbookMessagesDisplay.prepend(messageDiv); // Add new messages to the top
-          // Trigger fade-in animation
-          setTimeout(() => {
-            messageDiv.classList.add('fade-in-visible');
-            messageDiv.classList.remove('fade-in-hidden');
-          }, 100); // Small delay to allow element to be added to DOM
-      }
-
-      /**
-       * Fetches and listens for real-time updates to guestbook messages.
-       */
-      function setupGuestbookListener() {
+      function setupBlessingsListener() {
         if (!db || !isAuthReady) {
-            console.warn("Firestore not initialized or auth not ready for guestbook listener.");
+            console.warn("Firestore not initialized or auth not ready for blessings listener.");
+            displayInitialBlessings(); // Always display initial if not ready
             return;
         }
 
-        guestbookLoading.classList.remove('hidden');
-        guestbookMessagesDisplay.innerHTML = ''; // Clear existing messages
+        // Display initial blessings while waiting for Firebase data
+        displayInitialBlessings(); // Show placeholders immediately
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const q = query(collection(db, `/artifacts/${appId}/public/data/guestbook_messages`));
+        const q = query(collection(db, `/artifacts/${appId}/public/data/wedding_blessings`));
 
         onSnapshot(q, (snapshot) => {
-            guestbookLoading.classList.add('hidden');
-            // Clear existing messages before re-rendering to prevent duplicates if data changes
-            guestbookMessagesDisplay.innerHTML = '';
-            // Sort by timestamp if needed for consistent display (Firestore orderBy not used for flexibility)
-            const messages = [];
+            const blessings = [];
             snapshot.forEach(doc => {
-                messages.push(doc.data());
-            });
-            messages.sort((a, b) => {
-                const tsA = a.timestamp ? a.timestamp.seconds : 0;
-                const tsB = b.timestamp ? b.timestamp.seconds : 0;
-                return tsB - tsA; // Newest first
+                blessings.push(doc.data());
             });
 
-            messages.forEach(msg => displayGuestbookMessage(msg));
+            // If real data exists, stop initial blessing rotation and clear wall
+            if (blessings.length > 0) {
+                if (initialBlessingsInterval) {
+                    clearInterval(initialBlessingsInterval);
+                    initialBlessingsInterval = null;
+                }
+                blessingWall.innerHTML = ''; // Clear initial blessings
+                blessings.sort((a, b) => {
+                    const tsA = a.timestamp ? a.timestamp.seconds : 0;
+                    const tsB = b.timestamp ? b.timestamp.seconds : 0;
+                    return tsB - tsA; // Newest first
+                });
+                blessings.forEach(blessing => createBlessingCard(blessing));
 
-            // Ensure newly added elements also get the fade-in class
-            guestbookMessagesDisplay.querySelectorAll('.fade-in-hidden').forEach(el => {
-                el.classList.add('fade-in-visible');
-                el.classList.remove('fade-in-hidden');
-            });
+                blessingWall.querySelectorAll('.fade-in-hidden').forEach(el => {
+                    el.classList.add('fade-in-visible');
+                    el.classList.remove('fade-in-hidden');
+                });
+            } else {
+                // If no real blessings, ensure initial blessings are displayed and rotating
+                displayInitialBlessings();
+            }
         }, (error) => {
-            console.error("Error listening to guestbook messages: ", error);
-            guestbookLoading.textContent = "Error loading messages. Please refresh.";
+            console.error("Error listening to blessings: ", error);
+            // Fallback to initial blessings if there's an error after trying to load real data
+            displayInitialBlessings();
         });
       }
 
       /**
-       * Handles guestbook form submission.
+       * Handles blessing form submission.
        * @param {Event} event - The form submission event.
        */
-      async function handleGuestbookSubmit(event) {
+      async function handleBlessingSubmit(event) {
           event.preventDefault();
 
           if (!db || !isAuthReady) {
@@ -1870,30 +1754,35 @@
               return;
           }
 
-          const name = guestbookNameInput.value.trim();
-          const message = guestbookMessageInput.value.trim();
+          const name = blessingNameInput.value.trim();
+          const text = blessingTextInput.value.trim();
 
-          if (!name || !message) {
-              showMessageBox("Please fill in both your name and message!", 2000);
+          if (!name || !text) {
+              showMessageBox("Please fill in both your name and blessing!", 2000);
               return;
           }
 
           try {
               const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-              await addDoc(collection(db, `/artifacts/${appId}/public/data/guestbook_messages`), {
+              await addDoc(collection(db, `/artifacts/${appId}/public/data/wedding_blessings`), {
                   name: name,
-                  message: message,
+                  text: text,
                   timestamp: serverTimestamp(), // Firestore automatically adds a server-side timestamp
                   userId: userId // Store the user ID for debugging/moderation
               });
-              showMessageBox("Your message landed straight in our hearts! Thank you! 😊"); // Existing message, confirmed
-              guestbookNameInput.value = '';
-              guestbookMessageInput.value = '';
+              showMessageBox("Your blessing was added to the wall! Thank you! 😊");
+              blessingNameInput.value = '';
+              blessingTextInput.value = '';
+              hideModal(blessingModalOverlay); // Hide the modal after submission
           } catch (e) {
-              console.error("Error adding document: ", e);
-              showMessageBox("Failed to send message. Please try again.", 3000);
+              console.error("Error adding blessing: ", e);
+              showMessageBox("Failed to send blessing. Please try again.", 3000);
           }
       }
+
+      // --- Guestbook Logic (Removed) ---
+      // All guestbook functions like displayGuestbookMessage, setupGuestbookListener, handleGuestbookSubmit are removed.
+
 
       /**
        * Handles contact form submission.
@@ -1926,7 +1815,8 @@
                       userId = user.uid;
                       currentUserIdDisplay.textContent = userId;
                       isAuthReady = true;
-                      setupGuestbookListener(); // Start listening for messages once authenticated
+                      // Removed guestbook listener call here
+                      setupBlessingsListener(); // Start listening for blessings messages once authenticated
                   } else {
                       // User is signed out, try to sign in anonymously
                       try {
@@ -1939,14 +1829,14 @@
                       } catch (error) {
                           console.error("Firebase Auth Error:", error);
                           currentUserIdDisplay.textContent = "Auth Error!";
-                          showMessageBox("Failed to authenticate. Guestbook may not function.", 5000);
+                          showMessageBox("Failed to authenticate. Features requiring sign-in may not function.", 5000);
                           isAuthReady = false;
                       }
                   }
               });
           } catch (error) {
               console.error("Firebase initialization failed:", error);
-              showMessageBox("Failed to load Firebase. Guestbook may not function.", 5000);
+              showMessageBox("Failed to load Firebase. Some features may not function.", 5000);
               isAuthReady = false;
           }
       }
@@ -1966,8 +1856,13 @@
             entry.target.classList.remove('fade-in-hidden');
             // No unobserve here for guestbook messages, as new ones can appear and need animation
             // For other elements, like info-cards, you can unobserve after animation
-            if (entry.target.classList.contains('info-card') || entry.target.classList.contains('fun-fact-card')) {
-                observer.unobserve(entry.target);
+            if (entry.target.classList.contains('info-card') || entry.target.classList.contains('fun-fact-card') || entry.target.classList.contains('blessing-card')) {
+                // If it's a blessing card and part of initial display, keep observing for highlight effect
+                if (!entry.target.classList.contains('highlighted')) { // Only unobserve if it's not currently highlighted (to allow re-highlighting)
+                   // The highlight logic will manage which cards are observed/unobserved.
+                   // For a persistent visual effect (like rotation), we shouldn't unobserve immediately.
+                   // So, removing this unobserve for blessing-card to allow the rotation logic to function.
+                }
             }
           }
         });
@@ -1983,10 +1878,6 @@
         setupSaveDate();
         updateAll();
         const countdownInterval = setInterval(updateAll, 1000);
-
-        // Display initial blessings and start rotation
-        displayBlessings();
-        startBlessingRotation();
 
         // Confetti trigger for total days remaining (hidden element)
         totalDaysHiddenEl.addEventListener('click', triggerConfetti);
@@ -2037,10 +1928,16 @@
             showMessageBox("Can't wait to celebrate with you! Thanks for marking your calendar! ✨", 3000);
         });
 
-        // New: Event listener for Share Your Simcha! button
-        sendBruchaBtn.addEventListener('click', () => {
-            showMessageBox("Your beautiful blessing warmed our hearts! Thank you for sharing! ❤️", 3000);
+        // Blessing Modal Event Listeners
+        sendBruchaBtn.addEventListener('click', () => showModal(blessingModalOverlay));
+        closeBlessingModalBtn.addEventListener('click', () => hideModal(blessingModalOverlay));
+        blessingModalOverlay.addEventListener('click', (event) => {
+            // Close modal if user clicks outside the content (on the overlay itself)
+            if (event.target === blessingModalOverlay) {
+                hideModal(blessingModalOverlay);
+            }
         });
+        blessingForm.addEventListener('submit', handleBlessingSubmit);
 
         // Sticky nav class on scroll
         window.addEventListener('scroll', () => {
@@ -2051,18 +1948,10 @@
           }
         });
 
-        // LLM Blessing Generator Event Listeners
-        generateBlessingBtn.addEventListener('click', handleGenerateBlessingClick);
-        copyBlessingBtn.addEventListener('click', () => {
-            copyTextToClipboard(generatedBlessingOutput.textContent);
-        });
-
-        // Guestbook Event Listener
-        guestbookForm.addEventListener('submit', handleGuestbookSubmit);
+        // Removed Guestbook Event Listener: guestbookForm.addEventListener('submit', handleGuestbookSubmit);
 
         // New: Contact Form Event Listener
         contactForm.addEventListener('submit', handleContactSubmit);
-
 
         // Secret message trigger
         secretMessageTrigger.addEventListener('click', () => {
@@ -2096,6 +1985,21 @@
             el.classList.add('fade-in-hidden'); // Ensure initial hidden state
             observer.observe(el);
         });
+
+        // Also observe blessing cards dynamically, as they can be added/removed.
+        // The initial display will trigger this for initial blessings.
+        new MutationObserver((mutationsList) => {
+            for (const mutation of mutationsList) {
+                if (mutation.type === 'childList') {
+                    mutation.addedNodes.forEach(node => {
+                        if (node.nodeType === 1 && node.classList.contains('blessing-card')) {
+                            observer.observe(node);
+                        }
+                    });
+                }
+            }
+        }).observe(blessingWall, { childList: true });
+
 
         // Initialize Firebase and Auth
         initializeFirebase();
