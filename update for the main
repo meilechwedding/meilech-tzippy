@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Meilech & Tzippy - The Big Day!</title>
+  <title>Meilech & Tzippy - The Big Day! מיילך וציפי</title>
   <meta name="description" content="Join Meilech & Tzippy as they tie the knot! Explore wedding details, countdown, fun facts, and share your blessings.">
+  <meta name="keywords" content="Meilech, Tzippy, Wedding, Monsey, Chuppah, Simcha, מיילך, ציפי, חתונה, שמחה"/>
 
   <!-- Google Fonts - Lora (for headings) and Lato (for body) -->
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
@@ -171,7 +172,6 @@
 
     /* Hero Section Specifics */
     .hero-section {
-      /* Using a subtle, elegant gradient for the background */
       background: linear-gradient(135deg, #F2F4F7 0%, #E0E7EB 50%, #F2F4F7 100%);
       position: relative;
       min-height: 100vh;
@@ -181,19 +181,30 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      overflow: hidden; /* Important for background animation */
     }
 
-    /* Add a pseudo-element overlay for better text contrast if needed, or if an image were used */
+    /* Background Animation Overlay */
     .hero-section::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(255, 255, 255, 0.2); /* Very light white overlay */
-      z-index: 0;
+      top: -50%; /* Start off-screen */
+      left: -50%; /* Start off-screen */
+      width: 200%; /* Cover entire area when animated */
+      height: 200%; /* Cover entire area when animated */
+      background: radial-gradient(circle at 60% 40%, rgba(184, 92, 58, 0.15) 0%, transparent 40%), /* Increased opacity */
+                  radial-gradient(circle at 40% 60%, rgba(30, 44, 79, 0.15) 0%, transparent 40%); /* Increased opacity */
+      background-size: 80% 80%, 80% 80%; /* Ensure gradients are distinct and cover large area */
+      animation: subtleBackgroundMove 30s ease-in-out infinite alternate; /* Slow, smooth animation */
+      z-index: 0; /* Behind content */
+      opacity: 1;
     }
+
+    @keyframes subtleBackgroundMove {
+      0% { background-position: 0% 0%, 100% 100%; }
+      100% { background-position: 100% 100%, 0% 0%; }
+    }
+
 
     .hero-content {
       position: relative; /* Bring content above the pseudo-element overlay */
@@ -213,7 +224,7 @@
       font-size: 3.5rem; /* Base size, will scale up */
       letter-spacing: 0.05em; /* Add subtle letter spacing */
       text-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* Soft shadow for depth */
-      color: var(--color-primary-navy); /* Default color */
+      color: var(--color-primary-navy); /* Reverted to navy for contrast */
       margin-bottom: 0.5rem; /* Adjust spacing */
       line-height: 1.1;
       font-weight: 700;
@@ -244,7 +255,7 @@
       font-family: 'Lora', serif; /* Ensure Lora for consistency with names */
     }
     .monogram-ampersand {
-      fill: var(--color-primary-navy); /* Use navy for the ampersand */
+      fill: var(--color-primary-navy); /* Reverted to navy for contrast */
       font-family: 'Lora', serif; /* Ensure Lora for consistency with names */
     }
 
@@ -801,19 +812,19 @@
           </svg>
           <span>Save the Date!</span>
         </a>
-        <a href="https://www.google.com/travel/flights/search?tfs=CBwQAhojEgoyMDI1LTEwLTI5agwIAhIIL20vMDdxenZyBwgBEgNFV1IaIxIKMjAyNS0xMS0wNWoHCAESA0VXUnIMCAISCC9tLzA3cXp2QAFIAXABggELCP___________wGYAQE" target="_blank" rel="noopener noreferrer" class="btn btn-secondary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center space-x-2 w-full sm:w-auto">
+        <a href="https://www.google.com/travel/flights/search?tfs=CBwQAhojEgoyMDI1LTEwLTI5agwIAhIIL2m/MDdxenZyBwgBEgNFV1IaIxIKMjAyNS01LTA3ajHCAESA0VXUnIMCAISCC9tLzA3cXp2QAFIAXABggELCP___________wGYAQE" target="_blank" rel="noopener noreferrer" class="btn btn-primary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center space-x-2 w-full sm:w-auto">
           <!-- Plane SVG Icon -->
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
           </svg>
-          <span>Find Your Flights! ✈️</span>
+          <span>Find Your Flights!</span>
         </a>
       </div>
 
       <!-- Progress Bar - Now a button! -->
       <button id="progress-button" class="w-full max-w-xl mx-auto mt-6 bg-transparent border-none cursor-pointer p-0" aria-label="View wedding progress">
         <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
-          <div id="progress-fill" class="h-full bg-accent-copper transition-all duration-1000 ease-out"></div>
+          <div id="progress-fill" class="h-full bg-accent-copper"></div>
         </div>
         <p class="mt-3 text-text-medium text-sm md:text-base font-body">
           The excitement is brewing! Our love meter is at <span id="percentDone" class="font-semibold">0%</span> for the big day!
@@ -872,6 +883,12 @@
       <!-- Hidden total days for confetti trigger (Easter egg) - kept here for easy access with related elements -->
       <p class="sr-only" id="totalDays">0</p>
     </div>
+
+    <!-- Updated: Total Minutes Display -->
+    <p id="totalMinutesDisplay" class="text-lg md:text-xl text-text-medium mt-8 max-w-2xl mx-auto font-body">
+      Our grand adventure is just <span class="font-semibold text-primary-navy" id="minutesToWedding">Calculating...</span> minutes away! Get ready for a celebration that's worth every second!
+    </p>
+
   </section>
 
   <!-- Wedding Details Section - Core information about the event -->
@@ -977,42 +994,42 @@
       <div class="fun-fact-card fade-in-hidden">
         <h3 class="font-heading text-primary-navy">Did You Know?</h3>
         <p class="fun-fact-text text-text-medium">
-          Our wedding day, November 3rd, is also **National Sandwich Day!** We're taking a big bite out of forever.
+          On November 3rd, our wedding day, we're not just tying the knot—we're also celebrating National Sandwich Day! Coincidence? We think not. Prepare for a love that's as layered and satisfying as your favorite deli creation!
         </p>
       </div>
 
       <div class="fun-fact-card fade-in-hidden">
         <h3 class="font-heading text-primary-navy">Musical Interlude</h3>
         <p class="fun-fact-text text-text-medium">
-          The number of times "Mazel Tov!" is expected to be shouted: approximately **1,000,000!** Start practicing your vocal chords.
+          Prepare your vocal cords! We're anticipating a symphony of enthusiastic 'Mazel Tovs!' and joyous singing that will shake the rafters (in the best way possible, of course!).
         </p>
       </div>
 
       <div class="fun-fact-card fade-in-hidden">
         <h3 class="font-heading text-primary-navy">Royal Status</h3>
         <p class="fun-fact-text text-text-medium">
-          Jewish tradition says the Kallah is a queen and the Chassan is a king on their wedding day. Bow down, peasants! (Just kidding... mostly.)
+          According to Jewish tradition, the Kallah is a queen and the Chassan is a king on their wedding day. So, feel free to address us by our royal titles! (Only for November 3rd, promise.)
         </p>
       </div>
 
       <div class="fun-fact-card fade-in-hidden">
         <h3 class="font-heading text-primary-navy">Sweet Predictions</h3>
         <p class="fun-fact-text text-text-medium">
-          Experts predict our wedding cake will magically disappear faster than a plate of kugel at a simcha.
+          Our top secret culinary forecast predicts the wedding cake will vanish faster than a plate of fresh kugel at a simcha. Consider yourselves warned... and bring a fork!
         </p>
       </div>
 
       <div class="fun-fact-card fade-in-hidden">
         <h3 class="font-heading text-primary-navy">Dancing Shoes Alert</h3>
         <p class="fun-fact-text text-text-medium">
-          We've measured the dance floor: it's big enough for *everyone* to get down. Don't be shy!
+          Good news, dance enthusiasts! We've surveyed the dance floor, and it's officially certified for maximum simcha! There's plenty of room for all your best moves, so don't hold back!
         </p>
       </div>
 
       <div class="fun-fact-card fade-in-hidden">
         <h3 class="font-heading text-primary-navy">Historic Day</h3>
         <p class="fun-fact-text text-text-medium">
-          On November 3rd, 1957, the Soviet Union launched Sputnik 2, carrying the dog Laika into space. We're launching into marriage – slightly less space, more love!
+          Our wedding day shares its date with a historic launch: on November 3rd, 1957, Sputnik 2 carried the dog Laika into space. We're also launching into something boundless—marriage! (With slightly less zero-gravity, thankfully).
         </p>
       </div>
 
@@ -1465,6 +1482,7 @@
       const hoursCard           = document.getElementById("hours-card");
       const minutesCard         = document.getElementById("minutes-card");
       const secondsCard         = document.getElementById("seconds-card");
+      const totalMinutesDisplayEl = document.getElementById("minutesToWedding"); // New element for total minutes
 
       // Blessings Section
       const blessingWall        = document.getElementById("blessing-wall");
@@ -1494,6 +1512,7 @@
       let initialBlessingsInterval = null; // Stores interval ID for rotating initial blessings
       let currentHighlightedBlessingIndex = 0; // Tracks currently highlighted blessing card
       let lastJokeIndex = -1; // To ensure a different joke each time if possible
+      let currentAnimatedPercent = 0; // For progress bar animation, controlled by requestAnimationFrame
 
       // Firebase variables (initialized later)
       let app, db, auth, userId;
@@ -1503,7 +1522,7 @@
       // --- Data Arrays ---
       // Array of secret messages for the Easter egg button
       const secretMessages = [
-        "Spoiler Alert: We're totally getting married! 🎉",
+        "Spoiler Alert: We're totally getting married!",
         "Warning: May spontaneously break into dance at any moment!",
         "Fun Fact: We're practicing our 'just married' smiles. They're dazzling!",
         "Our love story is officially rated E for Everyone (especially for eating cake!)",
@@ -1519,7 +1538,7 @@
           "Warning: May spontaneously start dancing due to overwhelming anticipation!",
           "The wedding countdown is like a fine wine, it gets better with every passing second!",
           "Still plenty of time to find a date, or just bring your dancing shoes!",
-          "Less time for cold feet, more time for warm hearts! ❤️",
+          "Less time for cold feet, more time for warm hearts!",
           "Don't worry, we're practicing our 'just married' smiles. They're dazzling!",
           "It's happening! We're not just counting days, we're counting memories to make!"
       ];
@@ -1535,7 +1554,7 @@
         { name: "Good Friend", text: "From this day forward, may every day be an adventure. So excited for your beautiful future!" },
         { name: "Community Member", text: "May you build a bayis ne'eman b'Yisrael, radiating light and warmth to all around you." },
         { name: "Proud Relative", text: "Our hearts are overflowing with pride and joy for the incredible couple you are becoming. So much love!" },
-        { name: "Anon Friend", text: "May you be blessed with everything good, physically and spiritually. Mazel Tov!" }
+        { name: "Anon Friend", "text": "May you be blessed with everything good, physically and spiritually. Mazel Tov!" }
       ];
 
 
@@ -1546,7 +1565,7 @@
        * @param {string} message - The message to display.
        * @param {number} duration - How long to display the message in milliseconds.
        */
-      function showMessageBox(message, duration = 3000) {
+      function showMessageBox(message, duration = 5000) { // Standardized duration to 5000ms
           messageBox.textContent = message;
           messageBox.classList.add('show');
           setTimeout(() => {
@@ -1615,7 +1634,7 @@
 
           const joke = countdownJokes[randomIndex];
           lastJokeIndex = randomIndex;
-          showMessageBox(joke, 4000); // Show joke for 4 seconds
+          showMessageBox(joke); // Uses default 5000ms duration
       }
 
 
@@ -1688,9 +1707,10 @@
       }
 
       /**
-       * Calculates and updates all countdown elements and the progress bar.
+       * Calculates and updates all countdown elements.
+       * Note: Progress bar animation logic moved to animateProgressBar.
        */
-      function updateAll() {
+      function updateAllCountdownElements() {
         const now    = Date.now();
         const diff   = WEDDING_TS - now; // Time remaining in milliseconds
         const dTotal = Math.max(0, Math.floor(diff / (1000*60*60*24))); // Total full days remaining
@@ -1716,17 +1736,16 @@
         // Update hidden total days for confetti trigger (still uses totalEl)
         totalDaysHiddenEl.innerText = dTotal;
 
-        // Progress % from engagement→wedding
-        const span   = WEDDING_TS - ENGAGEMENT_TS;
-        const done   = now - ENGAGEMENT_TS;
-        const pct    = Math.min(100, Math.max(0, Math.round((done/span)*100)));
-        progressFillEl.style.width = pct + "%";
-        percentDoneEl.innerText    = pct + "%";
+        // Calculate and update total minutes
+        const totalMinutes = Math.max(0, Math.floor(diff / (1000 * 60))); // Total minutes remaining
+        if (totalMinutesDisplayEl) {
+            totalMinutesDisplayEl.innerText = totalMinutes.toLocaleString(); // Format with commas
+        }
 
         // Apply dynamic styles based on individual and total remaining time
         applyIndividualCountdownStyles(w, dRem, h, m, s, diff);
 
-        // If wedding passed, stop interval and show message
+        // If wedding passed, ensure countdown is zeroed out
         if (diff <= 0) {
           clearInterval(countdownInterval); // countdownInterval is defined in DOMContentLoaded scope
           if (daysLeftCountdownEl) daysLeftCountdownEl.innerText = "0";
@@ -1736,10 +1755,10 @@
           hoursEl.innerText = "0";
           minsEl.innerText = "0";
           secsEl.innerText = "0";
+          // Also set progress to 100% and hide save date button if it's the wedding day or after
           percentDoneEl.innerText = "100%";
-          progressFillEl.style.width = "100%";
           heroContent.querySelector('p:first-of-type').textContent = "They tied the knot! 🎉";
-          saveDateBtn.style.display = "none"; // Hide save date button after wedding
+          saveDateBtn.style.display = "none";
           triggerConfetti(); // Final burst of confetti
         }
       }
@@ -1764,6 +1783,38 @@
           `&details=${details}` +
           `&location=${loc}` +
           `&sf=true&output=xml`;
+      }
+
+      /**
+       * Animates the progress bar smoothly and continuously.
+       * Calculates the current target percentage on each frame.
+       */
+      function animateProgressBar() {
+        const now = Date.now();
+        const span = WEDDING_TS - ENGAGEMENT_TS;
+        const done = now - ENGAGEMENT_TS;
+        const targetPercent = Math.min(100, Math.max(0, (done / span) * 100));
+
+        const animationSpeed = 0.02; // Slower speed for a more subtle, constant fill effect
+
+        // Interpolate current percentage towards the newly calculated target percentage
+        currentAnimatedPercent += (targetPercent - currentAnimatedPercent) * animationSpeed;
+
+        // Clamp the value between 0 and 100
+        currentAnimatedPercent = Math.max(0, Math.min(100, currentAnimatedPercent));
+
+        // Apply the animated width and update percentage text
+        progressFillEl.style.width = currentAnimatedPercent + "%";
+        percentDoneEl.innerText = `${Math.round(currentAnimatedPercent)}%`;
+
+        // Request next animation frame only if the wedding hasn't passed and there's still progress to animate
+        if (now < WEDDING_TS) {
+            requestAnimationFrame(animateProgressBar);
+        } else {
+            // Ensure it's exactly 100% and hidden if wedding passed
+            progressFillEl.style.width = "100%";
+            percentDoneEl.innerText = "100%";
+        }
       }
 
 
@@ -1905,7 +1956,7 @@
                   timestamp: serverTimestamp(), // Firestore automatically adds a server-side timestamp
                   userId: userId // Store the user ID for debugging/moderation
               });
-              showMessageBox("Your brucha was added to the wall! Thank you! 😊");
+              showMessageBox("Your brucha was added to the wall! Thank you! "); // Removed emoji
               blessingNameInput.value = '';
               blessingTextInput.value = '';
               hideModal(blessingModalOverlay); // Hide the modal after submission
@@ -1955,16 +2006,16 @@
               });
 
               if (response.ok) {
-                  showMessageBox("Your message zoomed right to us! We'll get back to you faster than you can say 'Mazel Tov!' 🥳", 5000);
+                  showMessageBox("Your message zoomed right to us! We'll get back to you faster than you can say 'Mazel Tov!'"); // Standardized duration
                   contactForm.reset(); // Clear the form fields
               } else {
                   const errorData = await response.json();
                   console.error('Formsubmit error:', errorData);
-                  showMessageBox("Oops! Something went wrong sending your message. Please try again. 😓", 5000);
+                  showMessageBox("Oops! Something went wrong sending your message. Please try again.");
               }
           } catch (error) {
               console.error('Network or fetch error:', error);
-              showMessageBox("Network error: Couldn't send your message. Check your connection! 🔌", 5000);
+              showMessageBox("Network error: Couldn't send your message. Check your connection!");
           }
       }
 
@@ -1999,14 +2050,14 @@
                       } catch (error) {
                           console.error("Firebase Auth Error:", error);
                           currentUserIdDisplay.textContent = "Auth Error!";
-                          showMessageBox("Failed to authenticate. Features requiring sign-in may not function.", 5000);
+                          showMessageBox("Failed to authenticate. Features requiring sign-in may not function.");
                           isAuthReady = false;
                       }
                   }
               });
           } catch (error) {
               console.error("Firebase initialization failed:", error);
-              showMessageBox("Failed to load Firebase. Some features may not function.", 5000);
+              showMessageBox("Failed to load Firebase. Some features may not function.");
               isAuthReady = false;
           }
       }
@@ -2038,8 +2089,13 @@
 
         // Set up countdown timer and start updating every second
         setupSaveDate();
-        updateAll();
-        const countdownInterval = setInterval(updateAll, 1000);
+        updateAllCountdownElements(); // Initial update
+        // The countdown interval is stored in a global variable within this IIFE
+        // to be accessible by clearInterval.
+        const countdownInterval = setInterval(updateAllCountdownElements, 1000); // Regular updates
+
+        // Start progress bar animation loop
+        requestAnimationFrame(animateProgressBar); // Starts the smooth animation
 
         // --- Event Listeners for Interactivity ---
 
@@ -2089,12 +2145,12 @@
             spread: 60,
             colors: ['#B85C3A', '#1E2C4F', '#84A98C']
           });
-          showMessageBox("Excitement levels are off the charts! 🎉", 2500);
+          showMessageBox("Excitement levels are off the charts!"); // Standardized duration
         });
 
         // Event listener for Save the Date button (enhanced feedback)
         saveDateBtn.addEventListener('click', () => {
-            showMessageBox("Can't wait to celebrate with you! Thanks for marking your calendar! ✨", 3000);
+            showMessageBox("Can't wait to celebrate with you! Thanks for marking your calendar!"); // Standardized duration
         });
 
         // Blessing Modal Event Listeners
