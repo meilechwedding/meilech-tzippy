@@ -3,12 +3,21 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Meilech & Tzippy - The Big Day! מיילך וציפי</title>
-  <meta name="description" content="Join Meilech & Tzippy as they tie the knot! Explore wedding details, countdown, fun facts, and share your blessings.">
-  <meta name="keywords" content="Meilech, Tzippy, Wedding, Monsey, Chuppah, Simcha, מיילך, ציפי, חתונה, שמחה"/>
+  <!-- Dynamic title based on language -->
+  <title data-en-title="Meilech & Tzippy - The Big Day! מיילך וציפי" data-he-title="מיילך וציפי - היום הגדול! Meilech & Tzippy">Meilech & Tzippy - The Big Day! מיילך וציפי</title>
+  <!-- Dynamic meta description based on language -->
+  <meta name="description" data-en-content="Join Meilech & Tzippy as they tie the knot! Explore wedding details, countdown, fun facts, and share your blessings."
+        data-he-content="הצטרפו למיילך וציפי כשהם קושרים את הקשר! גלו פרטי חתונה, ספירה לאחור, עובדות משעשעות ושתפו את ברכותיכם."
+        content="Join Meilech & Tzippy as they tie the knot! Explore wedding details, countdown, fun facts, and share your blessings.">
+  <!-- Dynamic meta keywords based on language -->
+  <meta name="keywords" data-en-content="Meilech, Tzippy, Wedding, Monsey, Chuppah, Simcha, מיילך, ציפי, חתונה, שמחה"
+        data-he-content="מיילך, ציפי, חתונה, מונסי, חופה, שמחה, Meilech, Tzippy, Wedding, Monsey, Chuppah, Simcha"
+        content="Meilech, Tzippy, Wedding, Monsey, Chuppah, Simcha, מיילך, ציפי, חתונה, שמחה"/>
 
-  <!-- Google Fonts - Lora (for headings) and Lato (for body) -->
+  <!-- Google Fonts - Lora (for headings) and Lato (for body) for English -->
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts - Rubik (for Hebrew) -->
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS CDN - Provides utility classes for rapid styling -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
@@ -29,12 +38,21 @@
 
     /* Global Base Styles */
     body {
-      font-family: 'Lato', sans-serif;
       scroll-behavior: smooth;
       color: var(--color-text-dark);
-      direction: ltr; /* Ensure LTR for the whole body */
-      text-align: left; /* Default text alignment for LTR */
+      /* Direction and text alignment set by JS based on language */
     }
+
+    /* Font Classes - dynamically set by JS */
+    [lang="en"] body { font-family: 'Lato', sans-serif; direction: ltr; text-align: left; }
+    [lang="he"] body { font-family: 'Rubik', sans-serif; direction: rtl; text-align: right; }
+
+    [lang="en"] .font-heading { font-family: 'Lora', serif; }
+    [lang="he"] .font-heading { font-family: 'Rubik', sans-serif; }
+
+    [lang="en"] .font-body { font-family: 'Lato', sans-serif; }
+    [lang="he"] .font-body { font-family: 'Rubik', sans-serif; }
+
 
     /* Custom Background Gradients for Sections */
     .bg-gradient-base {
@@ -47,10 +65,6 @@
       background: linear-gradient(to bottom right, var(--color-primary-navy), #0A1C3E); /* Slightly darker navy for depth */
       color: var(--color-white); /* White text on dark background */
     }
-
-    /* Font Classes */
-    .font-heading { font-family: 'Lora', serif; }
-    .font-body { font-family: 'Lato', sans-serif; }
 
     /* Custom Tailwind Overrides / New Classes */
     .text-primary-navy { color: var(--color-primary-navy); }
@@ -83,30 +97,49 @@
       font-weight: 500; /* Slightly bolder */
       transition: color 0.3s ease-out; /* Smooth color transition */
     }
-    .nav-link::after {
+    /* LTR underline */
+    [lang="en"] .nav-link::after {
       content: '';
       position: absolute;
       width: 0;
       height: 2px;
       bottom: 0;
-      left: 50%; /* Center alignment based on LTR */
-      right: auto; /* Unset right */
+      left: 50%;
       background-color: var(--color-accent-copper);
-      transition: width 0.3s ease-out, left 0.3s ease-out; /* Transition 'left' */
+      transition: width 0.3s ease-out, left 0.3s ease-out;
     }
-    .nav-link:hover::after {
+    [lang="en"] .nav-link:hover::after {
       width: 100%;
-      left: 0; /* Extends from left */
-      right: auto; /* Unset right */
+      left: 0;
     }
+    [lang="en"] .nav-link.active::after {
+      width: 100%;
+      left: 0;
+    }
+
+    /* RTL underline */
+    [lang="he"] .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      right: 50%; /* Start from right for RTL */
+      background-color: var(--color-accent-copper);
+      transition: width 0.3s ease-out, right 0.3s ease-out; /* Transition 'right' */
+    }
+    [lang="he"] .nav-link:hover::after {
+      width: 100%;
+      right: 0; /* Extends from right for RTL */
+    }
+    [lang="he"] .nav-link.active::after {
+      width: 100%;
+      right: 0;
+    }
+
     .nav-link.active { /* For highlighting active link */
       color: var(--color-primary-navy);
       font-weight: 700;
-    }
-    .nav-link.active::after {
-      width: 100%;
-      left: 0;
-      right: auto;
     }
 
     /* Hamburger menu for mobile */
@@ -163,10 +196,8 @@
         display: block; /* Make links take full width */
         padding: 0.5rem 1rem;
       }
-      .nav-link::after {
-        left: 0; /* Align underline to left for mobile */
-        transform: none;
-      }
+      [lang="en"] .nav-link::after { left: 0; transform: none; }
+      [lang="he"] .nav-link::after { right: 0; transform: none; }
     }
 
 
@@ -220,7 +251,6 @@
 
     /* Enhanced Hero Names Styling */
     .hero-names {
-      font-family: 'Lora', serif;
       font-size: 3.5rem; /* Base size, will scale up */
       letter-spacing: 0.05em; /* Add subtle letter spacing */
       text-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* Soft shadow for depth */
@@ -243,20 +273,15 @@
       margin-top: -1rem; /* Pull it closer to the names */
       margin-bottom: 1rem;
       transition: transform 0.3s ease-in-out;
-      /* Ensure text direction is LTR within SVG if letters are English, or rely on x positioning */
-      direction: ltr;
-      text-align: left;
     }
     .monogram-svg:hover {
       transform: rotate(360deg) scale(1.1); /* Spins 360 degrees and scales up */
     }
     .monogram-initial {
       fill: var(--color-accent-copper); /* Use copper for the letters */
-      font-family: 'Lora', serif; /* Ensure Lora for consistency with names */
     }
     .monogram-ampersand {
       fill: var(--color-primary-navy); /* Reverted to navy for contrast */
-      font-family: 'Lora', serif; /* Ensure Lora for consistency with names */
     }
 
 
@@ -272,7 +297,6 @@
       white-space: nowrap;
       border: none;
       cursor: pointer;
-      font-family: 'Lato', sans-serif;
       text-decoration: none; /* For anchor buttons */
     }
     .btn-primary {
@@ -307,7 +331,6 @@
     .countdown-value {
       color: var(--color-secondary-sage); /* Default color for numbers, set by JS */
       font-weight: bold;
-      font-family: 'Lora', serif; /* Ensure Lora for numbers */
       transition: color 0.5s ease-in-out; /* Smooth color transition for numbers */
     }
 
@@ -350,7 +373,6 @@
       text-align: center; /* Changed from left to center for general section text */
     }
     .section-title {
-      font-family: 'Lora', serif;
       font-size: 2.5rem; /* md:text-5xl lg:text-6xl equivalent */
       line-height: 1.2;
       font-weight: 700;
@@ -365,17 +387,17 @@
 
     /* New style for the prominent total days display */
     .total-days-display {
-      font-family: 'Lora', serif;
-      font-size: 4rem; /* Even larger on desktop */
       font-weight: 700;
       color: var(--color-primary-navy);
       margin-bottom: 2rem;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
     }
+    [lang="en"] .total-days-display { font-family: 'Lora', serif; font-size: 4rem; }
+    [lang="he"] .total-days-display { font-family: 'Rubik', sans-serif; font-size: 3.5rem; }
+
     @media (min-width: 768px) {
-      .total-days-display {
-        font-size: 6rem;
-      }
+      [lang="en"] .total-days-display { font-size: 6rem; }
+      [lang="he"] .total-days-display { font-size: 5rem; }
     }
 
 
@@ -494,8 +516,11 @@
       cursor: pointer;
       user-select: none; /* Prevent text selection on click */
       transition: background-color 0.3s ease;
-      text-align: left; /* Ensure text is left-aligned in summary */
     }
+    /* Adjust text alignment for FAQ question based on language */
+    [lang="en"] .faq-question { text-align: left; }
+    [lang="he"] .faq-question { text-align: right; }
+
     .faq-question:hover {
       background-color: var(--color-base-light);
     }
@@ -507,14 +532,23 @@
     .faq-arrow {
       color: var(--color-accent-copper);
     }
+    /* Adjust arrow rotation for RTL */
+    [lang="en"] .faq-arrow { transform: rotate(0deg); }
+    [lang="he"] .faq-arrow { transform: rotate(180deg); } /* Keep it pointing same direction */
+    [lang="en"] .faq-item[open] .faq-arrow { transform: rotate(180deg); }
+    [lang="he"] .faq-item[open] .faq-arrow { transform: rotate(0deg); } /* Rotate back for RTL */
+
     .faq-answer {
       background-color: var(--color-base-light);
       padding: 0.5rem 1.5rem 1.5rem; /* pb-4 pt-2 px-6 */
       color: var(--color-text-medium);
       font-size: 1.125rem; /* text-lg */
       border-top: 1px solid var(--color-base-dark);
-      text-align: left; /* Ensure text is left-aligned in answer */
     }
+    /* Adjust text alignment for FAQ answer based on language */
+    [lang="en"] .faq-answer { text-align: left; }
+    [lang="he"] .faq-answer { text-align: right; }
+
 
     /* Map Section Specifics */
     .map-embed {
@@ -583,8 +617,11 @@
       border: 1px solid var(--color-base-dark);
       background-color: var(--color-base-light);
       transition: all 0.3s ease;
-      text-align: left; /* Align input text left */
     }
+    /* Align input text left for LTR, right for RTL */
+    [lang="en"] .input-field { text-align: left; }
+    [lang="he"] .input-field { text-align: right; }
+
     .input-field:focus {
       outline: none;
       border-color: var(--color-accent-copper);
@@ -629,13 +666,6 @@
       transform: scaleY(1);
     }
 
-
-    /* Utility classes for dynamic colors */
-    .text-primary-navy { color: var(--color-primary-navy); }
-    .text-accent-copper { color: var(--color-accent-copper); }
-    .text-secondary-sage { color: var(--color-secondary-sage); }
-
-
     .message-box {
         position: fixed;
         bottom: 20px;
@@ -650,9 +680,11 @@
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-        direction: ltr; /* Ensure message box text is LTR */
-        text-align: left;
     }
+    /* Ensure message box text direction aligns with page */
+    [lang="en"] .message-box { direction: ltr; text-align: left; }
+    [lang="he"] .message-box { direction: rtl; text-align: right; }
+
     .message-box.show {
         opacity: 1;
         visibility: visible;
@@ -663,12 +695,15 @@
         color: var(--color-primary-navy);
         font-weight: 600;
         margin-top: 2rem;
-        direction: ltr;
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 0.5rem;
     }
+    /* Ensure loading spinner text direction aligns with page */
+    [lang="en"] .loading-spinner { direction: ltr; }
+    [lang="he"] .loading-spinner { direction: rtl; }
+
     .loading-spinner svg {
         animation: spin 1.5s linear infinite;
     }
@@ -683,8 +718,9 @@
       text-align: center;
       margin-top: 1rem;
       word-break: break-all;
-      direction: ltr; /* Keep User ID LTR */
     }
+    /* Keep User ID LTR regardless of page direction for consistency and readability of ID strings */
+    .current-user-id-display { direction: ltr !important; }
 
     /* Modal Styles */
     .modal-overlay {
@@ -735,6 +771,11 @@
       color: var(--color-text-medium);
       transition: color 0.2s ease;
     }
+    /* Adjust close button position for RTL */
+    [lang="he"] .close-btn {
+      left: 1rem;
+      right: auto;
+    }
     .close-btn:hover {
       color: var(--color-primary-navy);
     }
@@ -751,27 +792,29 @@
           <svg class="h-8 w-8 text-accent-copper" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/>
           </svg>
-          <span>Meilech & Tzippy</span>
+          <span data-translate-key="siteTitle">Meilech & Tzippy</span>
       </a>
 
       <!-- Hamburger Menu Icon for Mobile -->
-      <button id="hamburger-menu" class="hamburger focus:outline-none" aria-label="Open navigation menu">
+      <button id="hamburger-menu" class="hamburger focus:outline-none" aria-label="Open navigation menu" data-translate-aria-label-key="openNavMenu">
         &#9776; <!-- Unicode for hamburger icon -->
       </button>
 
       <!-- Navigation Links Container -->
       <div id="nav-links-container" class="nav-links-container">
         <ul class="flex space-x-6 nav-links text-text-medium font-body text-sm md:text-base">
-          <li><a href="#hero-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Home</a></li>
-          <li><a href="#countdown-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Countdown</a></li>
-          <li><a href="#details-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Details</a></li>
-          <li><a href="#fun-facts-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Fun Facts</a></li>
-          <li><a href="#faq-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Q&A</a></li>
-          <li><a href="#map-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Map</a></li>
-          <li><a href="#shabbos-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Shabbos</a></li>
-          <li><a href="#blessings-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Brachos</a></li>
-          <li><a href="#chat-section" class="nav-link hover:text-accent-copper transition-colors duration-320">Chat</a></li>
+          <li><a href="#hero-section" class="nav-link hover:text-accent-copper transition-colors duration-320" data-translate-key="navHome">Home</a></li>
+          <li><a href="#countdown-section" class="nav-link hover:text-accent-copper transition-colors duration-320" data-translate-key="navCountdown">Countdown</a></li>
+          <li><a href="#details-section" class="nav-link hover:text-accent-copper transition-colors duration-320" data-translate-key="navDetails">Details</a></li>
+          <li><a href="#fun-facts-section" class="nav-link hover:text-accent-copper transition-colors duration-320" data-translate-key="navFunFacts">Fun Facts</a></li>
+          <li><a href="#faq-section" class="nav-link hover:text-accent-copper transition-colors duration-320" data-translate-key="navQandA">Q&A</a></li>
+          <li><a href="#map-section" class="nav-link hover:text-accent-copper transition-colors duration-320" data-translate-key="navMap">Map</a></li>
+          <li><a href="#shabbos-section" class="nav-link hover:text-accent-copper transition-colors duration-320" data-translate-key="navShabbos">Shabbos</a></li>
+          <li><a href="#blessings-section" class="nav-link hover:text-accent-copper transition-colors duration-320" data-translate-key="navBrachos">Brachos</a></li>
+          <li><a href="#chat-section" class="nav-link hover:text-accent-copper transition-colors duration-320" data-translate-key="navChat">Chat</a></li>
         </ul>
+        <!-- Language Toggle Button -->
+        <button id="lang-toggle-btn" class="ml-4 px-4 py-2 rounded-full bg-primary-navy text-white text-sm font-semibold hover:bg-accent-copper transition-colors duration-300">עברית</button>
       </div>
     </nav>
   </header>
@@ -783,22 +826,22 @@
       <!-- Monogram -->
       <div class="mb-4">
         <svg class="monogram-svg mx-auto" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <text x="10" y="70" font-family="Lora, serif" font-size="60" font-weight="bold" class="monogram-initial">M</text>
-          <text x="45" y="70" font-family="Lora, serif" font-size="35" font-weight="bold" class="monogram-ampersand">&</text>
-          <text x="65" y="70" font-family="Lora, serif" font-size="60" font-weight="bold" class="monogram-initial">T</text>
+          <text x="10" y="70" font-size="60" font-weight="bold" class="monogram-initial font-heading">M</text>
+          <text x="45" y="70" font-size="35" font-weight="bold" class="monogram-ampersand font-heading">&</text>
+          <text x="65" y="70" font-size="60" font-weight="bold" class="monogram-initial font-heading">T</text>
         </svg>
       </div>
 
       <!-- Main Heading for the couple's names -->
-      <h1 class="hero-names text-primary-navy leading-tight mb-4 tracking-wide">
+      <h1 class="hero-names text-primary-navy leading-tight mb-4 tracking-wide font-heading" data-translate-key="heroNames">
         Meilech & Tzippy
       </h1>
       <!-- Engaging tagline -->
-      <p class="text-lg md:text-xl text-text-medium mb-4">
+      <p class="text-lg md:text-xl text-text-medium mb-4" data-translate-key="heroTagline">
         Are Tying the Knot!
       </p>
       <!-- New descriptive text -->
-      <p class="text-md md:text-lg text-text-medium mb-8 max-w-2xl mx-auto">
+      <p class="text-md md:text-lg text-text-medium mb-8 max-w-2xl mx-auto" data-translate-key="heroDescription">
         With hearts full of joy and excitement, we invite you to join us as we embark on our greatest adventure yet:
         building a shared future together! Your presence would make our celebration truly complete.
       </p>
@@ -810,30 +853,32 @@
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-          <span>Save the Date!</span>
+          <span data-translate-key="btnSaveDate">Save the Date!</span>
         </a>
-        <a href="https://www.google.com/travel/flights/search?tfs=CBwQAhojEgoyMDI1LTEwLTI5agwIAhIIL2m/MDdxenZyBwgBEgNFV1IaIxIKMjAyNS01LTA3ajHCAESA0VXUnIMCAISCC9tLzA3cXp2QAFIAXABggELCP___________wGYAQE" target="_blank" rel="noopener noreferrer" class="btn btn-primary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center space-x-2 w-full sm:w-auto">
+        <a href="https://www.google.com/travel/flights/search?tfs=CBwQAhojEgoyMDI1LTEwLTI5ajwIAhIIL2m0dxzvyBwgBEgNFV1IaIxIKMjAyNS01LTA3ajHCAESA0VXUnIMCAISCC9tLzA3cXp2QAFIAXABggELCP___________wGYAQE" target="_blank" rel="noopener noreferrer" class="btn btn-primary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center space-x-2 w-full sm:w-auto">
           <!-- Plane SVG Icon -->
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
           </svg>
-          <span>Find Your Flights!</span>
+          <span data-translate-key="btnFindFlights">Find Your Flights!</span>
         </a>
       </div>
 
       <!-- Progress Bar - Now a button! -->
-      <button id="progress-button" class="w-full max-w-xl mx-auto mt-6 bg-transparent border-none cursor-pointer p-0" aria-label="View wedding progress">
+      <button id="progress-button" class="w-full max-w-xl mx-auto mt-6 bg-transparent border-none cursor-pointer p-0" aria-label="View wedding progress" data-translate-aria-label-key="viewWeddingProgress">
         <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
           <div id="progress-fill" class="h-full bg-accent-copper"></div>
         </div>
         <p class="mt-3 text-text-medium text-sm md:text-base font-body">
-          The excitement is brewing! Our love meter is at <span id="percentDone" class="font-semibold">0%</span> for the big day!
+          <span data-translate-key="progressPrefix">The excitement is brewing! Our love meter is at </span>
+          <span id="percentDone" class="font-semibold">0%</span>
+          <span data-translate-key="progressSuffix"> for the big day!</span>
         </p>
       </button>
 
       <!-- New Hidden Interactive Element -->
       <div class="mt-12">
-        <button id="secret-message-trigger" class="text-text-medium hover:text-accent-copper transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-accent-copper focus:ring-opacity-50 rounded-full px-4 py-2 text-sm italic" aria-label="Discover a little secret message">
+        <button id="secret-message-trigger" class="text-text-medium hover:text-accent-copper transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-accent-copper focus:ring-opacity-50 rounded-full px-4 py-2 text-sm italic" aria-label="Discover a little secret message" data-translate-aria-label-key="discoverSecretMessage" data-translate-key="unlockSecret">
           Unlock a Tiny Treasure... 🤫
         </button>
         <div id="secret-message-content" class="hidden mt-4 p-4 bg-secondary-sage text-white rounded-lg shadow-md max-w-sm mx-auto text-base text-center transform scale-y(0) opacity-0 transition-all duration-500 origin-top">
@@ -843,16 +888,16 @@
     </div>
 
     <!-- Hidden confetti trigger spot (Easter egg) -->
-    <div id="confetti-trigger-spot" class="absolute top-1/4 right-1/4 w-12 h-12 cursor-pointer opacity-0 z-30" aria-label="Trigger confetti"></div>
+    <div id="confetti-trigger-spot" class="absolute top-1/4 right-1/4 w-12 h-12 cursor-pointer opacity-0 z-30" aria-label="Trigger confetti" data-translate-aria-label-key="triggerConfetti"></div>
   </section>
 
   <!-- Countdown Section - Dedicated page for detailed countdown -->
   <section id="countdown-section" class="section-padding bg-gradient-base text-center">
-    <h2 class="section-title text-primary-navy mb-10">The Countdown Is On!</h2>
+    <h2 class="section-title text-primary-navy mb-10 font-heading" data-translate-key="countdownTitle">The Countdown Is On!</h2>
 
     <!-- Prominent "Total Days" display at the top of the countdown page -->
-    <p class="total-days-display text-primary-navy mb-12">
-      Only <span id="daysLeftCountdown" class="text-secondary-sage">0</span> Days to Go!
+    <p class="total-days-display text-primary-navy mb-12 font-heading">
+      <span data-translate-key="countdownDaysLeftOnly">Only</span> <span id="daysLeftCountdown" class="text-secondary-sage">0</span> <span data-translate-key="countdownDaysLeftToGo">Days to Go!</span>
     </p>
 
     <!-- Detailed Countdown Timer Grid -->
@@ -860,24 +905,24 @@
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6 text-center">
         <!-- Each div is a countdown card with dynamic styling via 'countdown-card' and 'countdown-value' -->
         <div id="weeks-card" class="countdown-card p-4 md:p-6 rounded-xl shadow-md transition-all duration-500 ease-in-out hover:scale-105">
-          <div class="text-text-medium text-sm md:text-base mb-1">Weeks</div>
-          <div id="weeks" class="text-4xl md:text-5xl font-bold countdown-value">0</div>
+          <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="weeks">Weeks</div>
+          <div id="weeks" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
         </div>
         <div id="days-card" class="countdown-card p-4 md:p-6 rounded-xl shadow-md transition-all duration-500 ease-in-out hover:scale-105">
-          <div class="text-text-medium text-sm md:text-base mb-1">Days</div>
-          <div id="days" class="text-4xl md:text-5xl font-bold countdown-value">0</div>
+          <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="days">Days</div>
+          <div id="days" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
         </div>
         <div id="hours-card" class="countdown-card p-4 md:p-6 rounded-xl shadow-md transition-all duration-500 ease-in-out hover:scale-105">
-          <div class="text-text-medium text-sm md:text-base mb-1">Hours</div>
-          <div id="hours" class="text-4xl md:text-5xl font-bold countdown-value">0</div>
+          <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="hours">Hours</div>
+          <div id="hours" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
         </div>
         <div id="minutes-card" class="countdown-card p-4 md:p-6 rounded-xl shadow-md transition-all duration-500 ease-in-out hover:scale-105">
-          <div class="text-text-medium text-sm md:text-base mb-1">Minutes</div>
-          <div id="minutes" class="text-4xl md:text-5xl font-bold countdown-value">0</div>
+          <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="minutes">Minutes</div>
+          <div id="minutes" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
         </div>
         <div id="seconds-card" class="countdown-card p-4 md:p-6 rounded-xl shadow-md transition-all duration-500 ease-in-out hover:scale-105">
-          <div class="text-text-medium text-sm md:text-base mb-1">Seconds</div>
-          <div id="seconds" class="text-4xl md:text-5xl font-bold countdown-value">0</div>
+          <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="seconds">Seconds</div>
+          <div id="seconds" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
         </div>
       </div>
       <!-- Hidden total days for confetti trigger (Easter egg) - kept here for easy access with related elements -->
@@ -885,15 +930,17 @@
     </div>
 
     <!-- Updated: Total Minutes Display -->
-    <p id="totalMinutesDisplay" class="text-lg md:text-xl text-text-medium mt-8 max-w-2xl mx-auto font-body">
-      Our grand adventure is just <span class="font-semibold text-primary-navy" id="minutesToWedding">Calculating...</span> minutes away! Get ready for a celebration that's worth every second!
+    <p class="text-lg md:text-xl text-text-medium mt-8 max-w-2xl mx-auto font-body">
+      <span data-translate-key="totalMinutesPrefix">Our grand adventure is just </span>
+      <span class="font-semibold text-primary-navy" id="minutesToWedding">Calculating...</span>
+      <span data-translate-key="totalMinutesSuffix"> minutes away! Get ready for a celebration that's worth every second!</span>
     </p>
 
   </section>
 
   <!-- Wedding Details Section - Core information about the event -->
   <section id="details-section" class="section-padding bg-gradient-details text-center">
-    <h2 class="section-title text-primary-navy mb-10">Wedding Day Details</h2>
+    <h2 class="section-title text-primary-navy mb-10 font-heading" data-translate-key="detailsTitle">Wedding Day Details</h2>
 
     <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 info-card-grid">
 
@@ -905,13 +952,13 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M5 10v9a2 2 0 002 2h10a2 2 0 002-2v-9"/>
           </svg>
         </div>
-        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">The Grand Venue</h3>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="venueTitle">The Grand Venue</h3>
         <p class="text-text-medium text-lg">
           Ateres Chaya Surah<br/>
           106 S Madison Ave<br/>
           Spring Valley, NY
         </p>
-        <p class="text-text-medium text-md mt-2 italic">
+        <p class="text-text-medium text-md mt-2 italic" data-translate-key="venueDescription">
           Where the magic happens, and the dance floor is always ready for action!
         </p>
       </div>
@@ -924,12 +971,12 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
         </div>
-        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">The Big Day</h3>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="dateTitle">The Big Day</h3>
         <p class="text-text-medium text-lg">
-          Monday, November 3, 2025<br/>
-          י"ב חשון תשפ"ו
+          <span data-translate-key="weddingDateEnglish">Monday, November 3, 2025</span><br/>
+          <span data-translate-key="weddingDateHebrew">י"ב חשון תשפ"ו</span>
         </p>
-        <p class="text-text-medium text-md mt-2 italic">
+        <p class="text-text-medium text-md mt-2 italic" data-translate-key="dateDescription">
           Circle it, highlight it, tattoo it! (Okay, maybe just mark it.) It's gonna be epic!
         </p>
       </div>
@@ -942,12 +989,12 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">The Flow of Simcha</h3>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="scheduleTitle">The Flow of Simcha</h3>
         <p class="text-text-medium text-lg leading-relaxed">
-          <strong>Kabulas Panim</strong> – 6:30 PM (Arrive early, good food starts punctually!)<br/>
-          <strong>Chuppah</strong> – 7:30 PM (Prepare for happy tears and timeless moments!)<br/>
-          <strong>Seudah</strong> – 8:30 PM (Let the feasting begin! You'll be glad you wore stretchy pants.)<br/>
-          <strong>Dancing Begins</strong> – 10:00 PM (Bring your dancing shoes and prepare for maximum simcha!)
+          <strong data-translate-key="kabulasPanimTime">Kabulas Panim</strong> – <span data-translate-key="kabulasPanimValue">6:30 PM (Arrive early, good food starts punctually!)</span><br/>
+          <strong data-translate-key="chuppahTime">Chuppah</strong> – <span data-translate-key="chuppahValue">7:30 PM (Prepare for happy tears and timeless moments!)</span><br/>
+          <strong data-translate-key="seudahTime">Seudah</strong> – <span data-translate-key="seudahValue">8:30 PM (Let the feasting begin! You'll be glad you wore stretchy pants.)</span><br/>
+          <strong data-translate-key="dancingBeginsTime">Dancing Begins</strong> – <span data-translate-key="dancingBeginsValue">10:00 PM (Bring your dancing shoes and prepare for maximum simcha!)</span>
         </p>
       </div>
 
@@ -959,8 +1006,8 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
         </div>
-        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">The Vibe</h3>
-        <p class="text-text-medium text-lg">
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="vibeTitle">The Vibe</h3>
+        <p class="text-text-medium text-lg" data-translate-key="vibeDescription">
           Come ready to celebrate in joy and dignity. The evening will be full of music, warmth, and true simcha – expect some serious dancing!
         </p>
       </div>
@@ -973,8 +1020,8 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5a2 2 0 00-2 2v2a2 2 0 002 2h14a2 2 0 002-2v-2a2 2 0 00-2-2zM7 11V7a2 2 0 012-2h6a2 2 0 012 2v4M12 17v2m-2-2h4"/>
           </svg>
         </div>
-        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">Getting There</h3>
-        <p class="text-text-medium text-lg">
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="transportationTitle">Getting There</h3>
+        <p class="text-text-medium text-lg" data-translate-key="transportationDescription">
           Parking's on us! Carpool for extra good vibes (and to make sure you have a designated dance partner).
         </p>
       </div>
@@ -983,8 +1030,8 @@
 
   <!-- Fun Facts Section - New section with playful trivia -->
   <section id="fun-facts-section" class="section-padding bg-gradient-accent text-center">
-    <h2 class="section-title text-white mb-10">Fun Facts & Funtastic Tidbits!</h2>
-    <p class="text-lg text-white opacity-80 mb-12 max-w-2xl mx-auto">
+    <h2 class="section-title text-white mb-10 font-heading" data-translate-key="funFactsTitle">Fun Facts & Funtastic Tidbits!</h2>
+    <p class="text-lg text-white opacity-80 mb-12 max-w-2xl mx-auto font-body" data-translate-key="funFactsDescription">
       Because every epic love story deserves a few surprising footnotes and random trivia. Prepare to be amused!
     </p>
 
@@ -992,43 +1039,43 @@
     <div class="max-w-5xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6 fun-fact-grid">
 
       <div class="fun-fact-card fade-in-hidden">
-        <h3 class="font-heading text-primary-navy">Did You Know?</h3>
-        <p class="fun-fact-text text-text-medium">
+        <h3 class="font-heading text-primary-navy fun-fact-title" data-translate-key="factDidYouKnowTitle">Did You Know?</h3>
+        <p class="fun-fact-text text-text-medium font-body" data-translate-key="factDidYouKnowText">
           On November 3rd, our wedding day, we're not just tying the knot—we're also celebrating National Sandwich Day! Coincidence? We think not. Prepare for a love that's as layered and satisfying as your favorite deli creation!
         </p>
       </div>
 
       <div class="fun-fact-card fade-in-hidden">
-        <h3 class="font-heading text-primary-navy">Musical Interlude</h3>
-        <p class="fun-fact-text text-text-medium">
+        <h3 class="font-heading text-primary-navy fun-fact-title" data-translate-key="factMusicalTitle">Musical Interlude</h3>
+        <p class="fun-fact-text text-text-medium font-body" data-translate-key="factMusicalText">
           Prepare your vocal cords! We're anticipating a symphony of enthusiastic 'Mazel Tovs!' and joyous singing that will shake the rafters (in the best way possible, of course!).
         </p>
       </div>
 
       <div class="fun-fact-card fade-in-hidden">
-        <h3 class="font-heading text-primary-navy">Royal Status</h3>
-        <p class="fun-fact-text text-text-medium">
+        <h3 class="font-heading text-primary-navy fun-fact-title" data-translate-key="factRoyalStatusTitle">Royal Status</h3>
+        <p class="fun-fact-text text-text-medium font-body" data-translate-key="factRoyalStatusText">
           According to Jewish tradition, the Kallah is a queen and the Chassan is a king on their wedding day. So, feel free to address us by our royal titles! (Only for November 3rd, promise.)
         </p>
       </div>
 
       <div class="fun-fact-card fade-in-hidden">
-        <h3 class="font-heading text-primary-navy">Sweet Predictions</h3>
-        <p class="fun-fact-text text-text-medium">
+        <h3 class="font-heading text-primary-navy fun-fact-title" data-translate-key="factSweetPredictionsTitle">Sweet Predictions</h3>
+        <p class="fun-fact-text text-text-medium font-body" data-translate-key="factSweetPredictionsText">
           Our top secret culinary forecast predicts the wedding cake will vanish faster than a plate of fresh kugel at a simcha. Consider yourselves warned... and bring a fork!
         </p>
       </div>
 
       <div class="fun-fact-card fade-in-hidden">
-        <h3 class="font-heading text-primary-navy">Dancing Shoes Alert</h3>
-        <p class="fun-fact-text text-text-medium">
+        <h3 class="font-heading text-primary-navy fun-fact-title" data-translate-key="factDancingShoesTitle">Dancing Shoes Alert</h3>
+        <p class="fun-fact-text text-text-medium font-body" data-translate-key="factDancingShoesText">
           Good news, dance enthusiasts! We've surveyed the dance floor, and it's officially certified for maximum simcha! There's plenty of room for all your best moves, so don't hold back!
         </p>
       </div>
 
       <div class="fun-fact-card fade-in-hidden">
-        <h3 class="font-heading text-primary-navy">Historic Day</h3>
-        <p class="fun-fact-text text-text-medium">
+        <h3 class="font-heading text-primary-navy fun-fact-title" data-translate-key="factHistoricDayTitle">Historic Day</h3>
+        <p class="fun-fact-text text-text-medium font-body" data-translate-key="factHistoricDayText">
           Our wedding day shares its date with a historic launch: on November 3rd, 1957, Sputnik 2 carried the dog Laika into space. We're also launching into something boundless—marriage! (With slightly less zero-gravity, thankfully).
         </p>
       </div>
@@ -1038,83 +1085,83 @@
 
   <!-- FAQ Section - New section for common questions with humorous answers -->
   <section id="faq-section" class="section-padding bg-gradient-base text-center">
-    <h2 class="section-title text-primary-navy mb-10">Your Burning Questions (and Our Honest Answers)</h2>
-    <p class="text-lg text-text-medium mb-12 max-w-2xl mx-auto">
+    <h2 class="section-title text-primary-navy mb-10 font-heading" data-translate-key="faqTitle">Your Burning Questions (and Our Honest Answers)</h2>
+    <p class="text-lg text-text-medium mb-12 max-w-2xl mx-auto font-body" data-translate-key="faqDescription">
       We know you've got 'em. Here are the answers to the questions you're *actually* thinking.
     </p>
 
     <!-- Accordion-style FAQ using <details> and <summary> tags -->
-    <div class="max-w-3xl mx-auto text-left space-y-6 faq-container">
+    <div class="max-w-3xl mx-auto space-y-6 faq-container">
 
       <details class="faq-item group">
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
-          What time should I arrive?
+          <span data-translate-key="faqQ1">What time should I arrive?</span>
           <!-- Arrow icon for accordion toggle -->
           <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </summary>
-        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body" data-translate-key="faqA1">
           <p>We'd love to see you for Kabulas Panim at <strong>6:30 PM</strong>. Don't miss the Chuppah at 7:30 PM – it's the main event! Seriously, the good parts (and food!) start punctually.</p>
         </div>
       </details>
 
       <details class="faq-item group">
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
-          What's the dress code?
+          <span data-translate-key="faqQ2">What's the dress code?</span>
           <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </summary>
-        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body" data-translate-key="faqA2">
           <p>Dress to impress, but also dress to dance! Formal, modest attire is appreciated. Think "Simcha Chic" – because comfort meets elegance when you're celebrating!</p>
         </div>
       </details>
 
       <details class="faq-item group">
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
-          Can I bring my kids?
+          <span data-translate-key="faqQ3">Can I bring my kids?</span>
           <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </summary>
-        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body" data-translate-key="faqA3">
           <p>Absolutely! The more simcha, the merrier. Just remember to keep them away from the band's drum set and the dessert table (unless you brought extra for us!).</p>
         </div>
       </details>
 
       <details class="faq-item group">
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
-          Is there food?
+          <span data-translate-key="faqQ4">Is there food?</span>
           <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </summary>
-        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body" data-translate-key="faqA4">
           <p>Is the sky blue?! We're having a wedding, so yes, there will be plenty of delicious food. Come hungry, leave happy!</p>
         </div>
       </details>
 
       <details class="faq-item group">
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
-          Where can I park?
+          <span data-translate-key="faqQ5">Where can I park?</span>
           <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
           </svg>
         </summary>
-        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body" data-translate-key="faqA5">
           <p>Ample parking is available on-site. For the full Monsey experience, allow an extra 15 minutes for unexpected traffic (especially on simcha days!).</p>
         </div>
       </details>
 
       <details class="faq-item group">
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
-          Can I take photos?
+          <span data-translate-key="faqQ6">Can I take photos?</span>
           <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </summary>
-        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body" data-translate-key="faqA6">
           <p>We kindly request no flash photography during the Chuppah. Otherwise, snap away and share the simcha! Just don't block the professional photographers – they've got a job to do!</p>
         </div>
       </details>
@@ -1122,24 +1169,24 @@
       <!-- NEW: Flashmob FAQ -->
       <details class="faq-item group">
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
-          Can I be part of the flashmob?
+          <span data-translate-key="faqQ7">Can I be part of the flashmob?</span>
           <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </summary>
-        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
-          <p>You're asking the real questions! Absolutely! If you've got moves (or even just enthusiasm!), we'd love to have you. Just reach out to <strong>Tzippy the kallah</strong>, and she'll share all the secret steps and make sure you're ready to bust a move! Get ready to dance the night away!</p>
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body" data-translate-key="faqA7">
+          <p>You're asking the real questions! Absolutely! If you've got moves (or even just enthusiasm!), we'd love to have you. Just reach out to <strong data-translate-key="tzippyKallah">Tzippy the kallah</strong>, and she'll share all the secret steps and make sure you're ready to bust a move! Get ready to dance the night away!</p>
         </div>
       </details>
 
       <details class="faq-item group">
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
-          What if I have a question not listed here?
+          <span data-translate-key="faqQ8">What if I have a question not listed here?</span>
           <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </summary>
-        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed">
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body" data-translate-key="faqA8">
           <p>No worries! Scroll down to our "Chat" section – we're (virtually) here to help with almost anything. Or just find us at the dessert table on the night!</p>
         </div>
       </details>
@@ -1149,11 +1196,11 @@
 
   <!-- Map Section - Provides directions and key locations -->
   <section id="map-section" class="section-padding bg-gradient-details text-center">
-    <h2 class="section-title text-primary-navy mb-10">Where to Find the Fun</h2>
-    <p class="text-lg text-text-medium mb-4 max-w-2xl mx-auto">
+    <h2 class="section-title text-primary-navy mb-10 font-heading" data-translate-key="mapTitle">Where to Find the Fun</h2>
+    <p class="text-lg text-text-medium mb-4 max-w-2xl mx-auto font-body" data-translate-key="mapLost">
       Lost? Don’t worry! We've pinned all the essential simcha stops just for you.
     </p>
-    <p class="text-md text-text-medium mb-10 italic max-w-2xl mx-auto">
+    <p class="text-md text-text-medium mb-10 italic max-w-2xl mx-auto font-body" data-translate-key="mapFollowMusic">
       Need help finding us? Just follow the music and smiles — we’ll be there!
     </p>
     <!-- Embedded Google Map - Now within its own info-card for consistent styling and smaller size -->
@@ -1166,7 +1213,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
         </div>
-        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-4">Location Map</h3>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-4" data-translate-key="locationMapTitle">Location Map</h3>
         <div class="map-embed rounded-2xl w-full"> <!-- w-full ensures it takes 100% width of its parent info-card -->
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3013.9175390779774!2d-74.0150998!3d41.139634200000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2c62c9c7f66bf%3A0xb3e1c6b1b4a8e637!2sAteres%20Chaya%20Surah!5e0!3m2!1sen!2us!4v1700688654477!5m2!1sen!2us"
@@ -1175,7 +1222,7 @@
             referrerpolicy="no-referrer-when-downgrade"
           ></iframe>
         </div>
-        <p class="text-text-medium mt-6 max-w-2xl mx-auto">
+        <p class="text-text-medium mt-6 max-w-2xl mx-auto font-body" data-translate-key="mapGuideText">
           Your guide to the grand celebration! See you there, ready to party!
         </p>
         <a href="https://www.google.com/maps/dir/?api=1&destination=Ateres+Chaya+Surah,+106+S+Madison+Ave,+Spring+Valley,+NY" target="_blank" rel="noopener noreferrer" class="btn btn-secondary mt-4 inline-flex items-center space-x-2 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
@@ -1183,7 +1230,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
-          <span>Get Directions</span>
+          <span data-translate-key="btnGetDirections">Get Directions</span>
         </a>
       </div>
     </div>
@@ -1196,13 +1243,13 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M12 16h.01" />
           </svg>
         </div>
-        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-3">What’s Pinned?</h3>
-        <ul class="list-disc list-inside text-text-medium space-y-2">
-          <li><strong>Wedding Venue:</strong> Ateres Chaya Surah, Spring Valley</li>
-          <li><strong>Oifruf:</strong> 3 Harvest Ct, Monsey</li>
-          <li><strong>Bogleiten:</strong> 15 Sophia St, Monsey</li>
-          <li><strong>Bovarfen:</strong> Belz Shul, 1 Harvest Ct</li>
-          <li><strong>Shabbos Sheva Brachas:</strong> Bobov Shul, Jill Ln</li>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-3" data-translate-key="whatsPinnedTitle">What’s Pinned?</h3>
+        <ul class="list-disc list-inside text-text-medium space-y-2 font-body">
+          <li><strong data-translate-key="venueLabel">Wedding Venue:</strong> Ateres Chaya Surah, Spring Valley</li>
+          <li><strong data-translate-key="oifrufLabel">Oifruf:</strong> 3 Harvest Ct, Monsey</li>
+          <li><strong data-translate-key="bogleitenLabel">Bogleiten:</strong> 15 Sophia St, Monsey</li>
+          <li><strong data-translate-key="bovarfenLabel">Bovarfen:</strong> Belz Shul, 1 Harvest Ct</li>
+          <li><strong data-translate-key="shabbosBrachasLabel">Shabbos Sheva Brachas:</strong> Bobov Shul, Jill Ln</li>
         </ul>
       </div>
       <div class="info-card fade-in-hidden">
@@ -1212,8 +1259,8 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17H5.93a2 2 0 00-1.932 2.56L5 21h14a2 2 0 001.932-2.56L14.337 17H9.663zM12 7a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
         </div>
-        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-3">Top Tip:</h3>
-        <p class="text-text-medium">
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-3" data-translate-key="topTipTitle">Top Tip:</h3>
+        <p class="text-text-medium font-body" data-translate-key="topTipText">
           Monsey traffic: A wild card! Leave extra time to avoid missing appetizers (the horror!).
         </p>
       </div>
@@ -1222,8 +1269,8 @@
 
   <!-- Shabbos Events Section - Details for surrounding Shabbos gatherings -->
   <section id="shabbos-section" class="section-padding bg-gradient-accent text-center">
-    <h2 class="section-title text-white mb-10">Shabbos Oifruf & Sheva Brachas</h2>
-    <p class="text-lg text-white opacity-80 mb-12 max-w-2xl mx-auto">
+    <h2 class="section-title text-white mb-10 font-heading" data-translate-key="shabbosEventsTitle">Shabbos Oifruf & Sheva Brachas</h2>
+    <p class="text-lg text-white opacity-80 mb-12 max-w-2xl mx-auto font-body" data-translate-key="shabbosEventsDescription">
       The simcha continues! Join us for these special Shabbos gatherings surrounding our wedding celebration.
     </p>
     <!-- Grid for Shabbos event cards -->
@@ -1237,13 +1284,13 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253" />
           </svg>
         </div>
-        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">Shabbos Oifruf Seudah</h3>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="oifrufSeudahTitle">Shabbos Oifruf Seudah</h3>
         <p class="text-text-medium text-lg">
           Beth Medrash D'Monsey Simcha Hall<br/>
           3 Harvest Ct.<br/>
           Monsey, NY 10952
         </p>
-        <p class="text-text-medium text-md mt-2 italic">
+        <p class="text-text-medium text-md mt-2 italic font-body" data-translate-key="oifrufSeudahDescription">
           Join us to wish the Chassan a thunderous Mazel Tov before the big day! Expect an atmosphere buzzing with good vibes!
         </p>
       </div>
@@ -1256,13 +1303,13 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292V15a4 4 0 010 5.292V21m0-16V3a1 1 0 00-1-1H4a1 1 0 00-1 1v2m0 13V9a1 1 0 011-1h7a1 1 0 011 1v7m0 0a1 1 0 001 1h7a1 1 0 001-1v-2m0 0a1 1 0 011-1h7a1 1 0 011 1v2" />
           </svg>
         </div>
-        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">Bogleiten</h3>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="bogleitenTitle">Bogleiten</h3>
         <p class="text-text-medium text-lg">
-          Departing from:<br/>
+          <span data-translate-key="bogleitenDepartingFrom">Departing from:</span><br/>
           15 Sophia St.<br/>
           Monsey, NY 10952
         </p>
-        <p class="text-text-medium text-md mt-2 italic">
+        <p class="text-text-medium text-md mt-2 italic font-body" data-translate-key="bogleitenDescription">
           The Kallah's grand send-off! Bring your loudest singing voices and prepare for a joyous procession!
         </p>
       </div>
@@ -1275,13 +1322,13 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c1.657 0 3-4.5 3-9S13.657 0 12 0 9 4.5 9 9s1.343 9 3 9zM12 21a2 2 0 100-4 2 2 0 000 4zM12 17a2 2 0 100-4 2 2 0 000 4zM12 13a2 2 0 100-4 2 2 0 000 4z" />
           </svg>
         </div>
-        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">Bovarfen</h3>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="bovarfenTitle">Bovarfen</h3>
         <p class="text-text-medium text-lg">
           Belz Shul<br/>
           1 Harvest Ct.<br/>
           Monsey, NY 10952
         </p>
-        <p class="text-text-medium text-md mt-2 italic">
+        <p class="text-text-medium text-md mt-2 italic font-body" data-translate-key="bovarfenDescription">
           Get ready for sweet treats and even sweeter moments! (Strategic candy-catching highly encouraged.)
         </p>
       </div>
@@ -1294,13 +1341,13 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.324 1.114l1.519 4.674c.3.921-.755 1.688-1.539 1.114l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.574-1.839-.193-1.539-1.114l1.519-4.674a1 1 0 00-.324-1.114L2.093 10.09c-.783-.57-.381-1.81.588-1.81h4.915a1 1 0 00.95-.69l1.519-4.674z" />
           </svg>
         </div>
-        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2">Shabbos Sheva Brachas</h3>
+        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="shevaBrachasTitle">Shabbos Sheva Brachas</h3>
         <p class="text-text-medium text-lg">
           Bobov Shul<br/>
           20 Jill Ln.<br/>
           Monsey, NY 10952
         </p>
-        <p class="text-text-medium text-md mt-2 italic">
+        <p class="text-text-medium text-md mt-2 italic font-body" data-translate-key="shevaBrachasDescription">
           Extend the simcha on Shabbos with us! Expect more delicious food and even more incredible company.
         </p>
       </div>
@@ -1309,8 +1356,8 @@
 
   <!-- Blessings Section - Displays rotating blessings from family/friends -->
   <section id="blessings-section" class="section-padding bg-gradient-base text-center">
-    <h2 class="section-title text-primary-navy mb-10">Your Heartfelt Wishes & Happy Thoughts!</h2>
-    <p class="text-lg text-text-medium mb-12 max-w-2xl mx-auto">
+    <h2 class="section-title text-primary-navy mb-10 font-heading" data-translate-key="blessingsTitle">Your Heartfelt Wishes & Happy Thoughts!</h2>
+    <p class="text-lg text-text-medium mb-12 max-w-2xl mx-auto font-body" data-translate-key="blessingsDescription">
       Leave your special blessings for Meilech & Tzippy right here!
     </p>
 
@@ -1320,26 +1367,26 @@
     <!-- The blessings-loading spinner is removed as pre-saved blessings are shown initially -->
     <!-- Call to Action button for sharing blessings -->
     <div class="mt-16">
-      <button id="send-brucha-btn" class="btn btn-secondary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105" aria-label="Add your blessing">
+      <button id="send-brucha-btn" class="btn btn-secondary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105" aria-label="Add your blessing" data-translate-aria-label-key="addBlessing" data-translate-key="btnAddBruchas">
         Add Your Bruchas! ✨
       </button>
     </div>
 
     <!-- Current User ID Display -->
-    <p class="current-user-id-display">Your User ID: <span id="current-user-id">Loading...</span></p>
+    <p class="current-user-id-display"><span data-translate-key="yourUserId">Your User ID:</span> <span id="current-user-id">Loading...</span></p>
 
   </section>
 
   <!-- Chat & Questions Section - Form for guests to ask questions -->
   <section id="chat-section" class="section-padding bg-gradient-details text-center">
-    <h2 class="section-title text-primary-navy mb-10">Got a Burning Question?</h2>
-    <p class="text-lg text-text-medium mb-10 max-w-2xl mx-auto">
+    <h2 class="section-title text-primary-navy mb-10 font-heading" data-translate-key="chatTitle">Got a Burning Question?</h2>
+    <p class="text-lg text-text-medium mb-10 max-w-2xl mx-auto font-body" data-translate-key="chatDescription">
       Whether it's about directions, what time to show up, or where to find the best kugel — we’re (virtually) here to help!
     </p>
 
     <!-- Contact Form -->
     <div class="max-w-2xl mx-auto bg-card rounded-2xl shadow-2xl p-8 md:p-10">
-      <form id="contact-form" class="space-y-6 text-left">
+      <form id="contact-form" class="space-y-6">
         <!-- Hidden input to disable reCAPTCHA for verified domains on Formsubmit -->
         <input type="hidden" name="_captcha" value="false">
         <!-- Add _subject to define email subject line -->
@@ -1347,36 +1394,36 @@
 
         <!-- Honeypot field for basic bot spam protection (visually hidden) -->
         <div style="display: none;">
-          <label for="hp_field">Leave this blank</label>
+          <label for="hp_field" data-translate-key="hpFieldLabel">Leave this blank</label>
           <input type="text" id="hp_field" name="hp_field" autocomplete="off">
         </div>
 
         <!-- Name Input -->
-        <div>
-          <label for="chat-name" class="block text-lg text-primary-navy font-semibold mb-2">Your Name</label>
-          <input type="text" id="chat-name" name="name" required class="input-field" aria-label="Your Name">
+        <div class="text-left">
+          <label for="chat-name" class="block text-lg text-primary-navy font-semibold mb-2 font-body" data-translate-key="yourNameLabel">Your Name</label>
+          <input type="text" id="chat-name" name="name" required class="input-field" aria-label="Your Name" data-translate-aria-label-key="yourName" data-translate-placeholder-key="yourNamePlaceholder">
         </div>
 
         <!-- Email Input -->
-        <div>
-          <label for="chat-email" class="block text-lg text-primary-navy font-semibold mb-2">Your Email</label>
-          <input type="email" id="chat-email" name="email" required class="input-field" aria-label="Your Email">
+        <div class="text-left">
+          <label for="chat-email" class="block text-lg text-primary-navy font-semibold mb-2 font-body" data-translate-key="yourEmailLabel">Your Email</label>
+          <input type="email" id="chat-email" name="email" required class="input-field" aria-label="Your Email" data-translate-aria-label-key="yourEmail" data-translate-placeholder-key="yourEmailPlaceholder">
         </div>
 
         <!-- Message/Question Textarea -->
-        <div>
-          <label for="question" class="block text-lg text-primary-navy font-semibold mb-2">Your Question / Message</label>
-          <textarea id="question" name="question" rows="5" required class="input-field" aria-label="Your Question or Message"></textarea>
+        <div class="text-left">
+          <label for="question" class="block text-lg text-primary-navy font-semibold mb-2 font-body" data-translate-key="yourQuestionLabel">Your Question / Message</label>
+          <textarea id="question" name="question" rows="5" required class="input-field" aria-label="Your Question or Message" data-translate-aria-label-key="yourQuestionMessage" data-translate-placeholder-key="yourQuestionPlaceholder"></textarea>
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" id="submit-contact-btn" class="btn btn-primary w-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+        <button type="submit" id="submit-contact-btn" class="btn btn-primary w-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105" data-translate-key="btnSendMessage">
           Send Your Message!
         </button>
       </form>
 
       <!-- Humorous closing note -->
-      <div class="mt-10 text-text-medium italic text-lg">
+      <div class="mt-10 text-text-medium italic text-lg font-body" data-translate-key="chatClosingNote">
         <p>We’ll get back to you ASAP – or just find us by the dessert table (we'll probably be there!) 😉</p>
       </div>
     </div>
@@ -1384,29 +1431,29 @@
 
   <!-- Thank You Section - A heartfelt message to guests -->
   <section id="thankyou-section" class="section-padding bg-gradient-base text-center">
-    <h2 class="section-title text-primary-navy mb-8">A Heartfelt Thank You, from Meilech and Tzippy!</h2>
+    <h2 class="section-title text-primary-navy mb-8 font-heading" data-translate-key="thankYouTitle">A Heartfelt Thank You, from Meilech and Tzippy!</h2>
     <!-- Thank you message container -->
-    <div class="max-w-4xl mx-auto text-lg text-text-medium space-y-6 bg-card rounded-2xl shadow-2xl p-8 md:p-10">
-      <p>Dearest family and friends,</p>
-      <p>As our wedding day draws near, our hearts are absolutely bursting with excitement and an overwhelming sense of gratitude. Looking back at all the incredible moments leading up to this, we realize just how lucky we are to have each of you in our lives. Your unwavering support, endless encouragement, and the sheer joy you've shared with us have made every step of this journey truly unforgettable.</p>
-      <p>From the bottom of our hearts, thank you for being a part of our story. Thank you for the laughs, the advice, the simcha, and for simply being *you*. Knowing you're celebrating with us, whether in person or in spirit, fills us with so much happiness.</p>
-      <p>Get ready for a night of epic dancing, delicious food, and memories we'll cherish forever. We truly can't wait to share this momentous occasion with you and begin our lives together as husband and wife.</p>
-      <p class="text-2xl md:text-3xl font-bold font-heading text-primary-navy mt-8">With all our love and excitement,</p>
-      <p class="text-3xl md:text-4xl font-bold font-heading text-primary-navy">Meilech & Tzippy</p>
+    <div class="max-w-4xl mx-auto text-lg text-text-medium space-y-6 bg-card rounded-2xl shadow-2xl p-8 md:p-10 font-body">
+      <p data-translate-key="thankYouGreeting">Dearest family and friends,</p>
+      <p data-translate-key="thankYouPara1">As our wedding day draws near, our hearts are absolutely bursting with excitement and an overwhelming sense of gratitude. Looking back at all the incredible moments leading up to this, we realize just how lucky we are to have each of you in our lives. Your unwavering support, endless encouragement, and the sheer joy you've shared with us have made every step of this journey truly unforgettable.</p>
+      <p data-translate-key="thankYouPara2">From the bottom of our hearts, thank you for being a part of our story. Thank you for the laughs, the advice, the simcha, and for simply being *you*. Knowing you're celebrating with us, whether in person or in spirit, fills us with so much happiness.</p>
+      <p data-translate-key="thankYouPara3">Get ready for a night of epic dancing, delicious food, and memories we'll cherish forever. We truly can't wait to share this momentous occasion with you and begin our lives together as husband and wife.</p>
+      <p class="text-2xl md:text-3xl font-bold font-heading text-primary-navy mt-8" data-translate-key="thankYouClosing">With all our love and excitement,</p>
+      <p class="text-3xl md:text-4xl font-bold font-heading text-primary-navy" data-translate-key="thankYouNames">Meilech & Tzippy</p>
     </div>
 
     <!-- Button to navigate back to the chat section -->
     <div class="mt-12">
-      <a href="#chat-section" class="btn btn-secondary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+      <a href="#chat-section" class="btn btn-secondary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105" data-translate-key="btnStillQuestion">
         Still Have a Question? Chat With Us!
       </a>
     </div>
   </section>
 
   <!-- Footer - Copyright and contact information -->
-  <footer class="text-center py-8 text-text-medium text-sm border-t border-gray-200">
-    <p class="mb-2">&copy; 2025 Meilech & Tzippy. Built with love, laughter, and a touch of magic.</p>
-    <p>Questions? Reach out to us at <a href="mailto:elimelechmoster@gmail.com" class="text-primary-navy hover:underline">elimelechmoster@gmail.com</a></p>
+  <footer class="text-center py-8 text-text-medium text-sm border-t border-gray-200 font-body">
+    <p class="mb-2" data-translate-key="footerCopyright">&copy; 2025 Meilech & Tzippy. Built with love, laughter, and a touch of magic.</p>
+    <p data-translate-key="footerQuestions">Questions? Reach out to us at <a href="mailto:elimelechmoster@gmail.com" class="text-primary-navy hover:underline">elimelechmoster@gmail.com</a></p>
   </footer>
 
   <!-- Message box for copy confirmation -->
@@ -1415,21 +1462,21 @@
   <!-- Blessing Submission Modal -->
   <div id="blessing-modal-overlay" class="modal-overlay">
     <div class="modal-content">
-      <button class="close-btn" id="close-blessing-modal" aria-label="Close blessing form">&times;</button>
-      <h3 class="font-heading text-2xl font-bold text-primary-navy mb-4 text-center">Share Your Joy! 🎉</h3>
-      <p class="text-text-medium mb-6 text-center">
+      <button class="close-btn" id="close-blessing-modal" aria-label="Close blessing form" data-translate-aria-label-key="closeBlessingForm">&times;</button>
+      <h3 class="font-heading text-2xl font-bold text-primary-navy mb-4 text-center" data-translate-key="modalBlessingTitle">Share Your Joy! 🎉</h3>
+      <p class="text-text-medium mb-6 text-center font-body" data-translate-key="modalBlessingDescription">
           Pour your heart out! Leave a special message for Meilech & Tzippy.
       </p>
-      <form id="blessing-form" class="space-y-4 text-left">
-        <div>
-          <label for="blessing-name" class="block text-lg text-primary-navy font-semibold mb-2">Your Name</label>
-          <input type="text" id="blessing-name" required class="input-field" placeholder="Your Name" aria-label="Your Name for the blessing">
+      <form id="blessing-form" class="space-y-4">
+        <div class="text-left">
+          <label for="blessing-name" class="block text-lg text-primary-navy font-semibold mb-2 font-body" data-translate-key="modalYourNameLabel">Your Name</label>
+          <input type="text" id="blessing-name" required class="input-field" placeholder="Your Name" aria-label="Your Name for the blessing" data-translate-aria-label-key="yourBlessingName" data-translate-placeholder-key="yourNamePlaceholder">
         </div>
-        <div>
-          <label for="blessing-text" class="block text-lg text-primary-navy font-semibold mb-2">Your Blessing</label>
-          <textarea id="blessing-text" rows="4" required class="input-field" placeholder="Write your heartfelt blessing here..." aria-label="Your Blessing Text"></textarea>
+        <div class="text-left">
+          <label for="blessing-text" class="block text-lg text-primary-navy font-semibold mb-2 font-body" data-translate-key="modalYourBlessingLabel">Your Blessing</label>
+          <textarea id="blessing-text" rows="4" required class="input-field" placeholder="Write your heartfelt blessing here..." aria-label="Your Blessing Text" data-translate-aria-label-key="yourBlessingText" data-translate-placeholder-key="yourBlessingPlaceholder"></textarea>
         </div>
-        <button type="submit" id="submit-blessing-btn" class="btn btn-primary w-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+        <button type="submit" id="submit-blessing-btn" class="btn btn-primary w-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105" data-translate-key="btnSendLove">
           Send Our Love! ❤️
         </button>
       </form>
@@ -1454,15 +1501,20 @@
 
       // --- DOM Element References ---
       // General Layout & Navigation
+      const htmlElement         = document.documentElement;
+      const headElement         = document.head;
       const navHeader           = document.querySelector(".header-nav");
       const hamburgerMenu       = document.getElementById("hamburger-menu");
       const navLinksContainer   = document.getElementById("nav-links-container");
       const navLinks            = document.querySelectorAll(".nav-link"); // Get all navigation links
+      const langToggleButton    = document.getElementById("lang-toggle-btn");
 
       // Hero Section
       const heroContent         = document.querySelector(".hero-content");
       const saveDateBtn         = document.getElementById("save-date");
       const progressButton      = document.getElementById("progress-button");
+      // progressFillEl and percentDoneEl are now direct children, not within a data-translate-key parent
+      const progressFillEl      = document.getElementById("progress-fill");
       const percentDoneEl       = document.getElementById("percentDone");
       const secretMessageTrigger= document.getElementById('secret-message-trigger');
       const secretMessageContent= document.getElementById('secret-message-content');
@@ -1476,7 +1528,6 @@
       const hoursEl             = document.getElementById("hours");
       const minsEl              = document.getElementById("minutes");
       const secsEl              = document.getElementById("seconds");
-      const progressFillEl      = document.getElementById("progress-fill");
       const weeksCard           = document.getElementById("weeks-card");
       const daysCard            = document.getElementById("days-card");
       const hoursCard           = document.getElementById("hours-card");
@@ -1505,6 +1556,15 @@
 
       // Elements for scroll-fade-in (General sections, info cards, fun facts, blessings)
       const elementsToFadeIn = document.querySelectorAll('.info-card, .fun-fact-card, .blessing-card');
+      // Update allTranslatableElements selector to only target spans/elements that directly hold translatable text
+      const allTranslatableElements = document.querySelectorAll(
+          '[data-translate-key]:not([id="percentDone"]):not([id="minutesToWedding"]), ' +
+          '[data-translate-aria-label-key], [data-translate-placeholder-key]'
+      );
+      const metaTitle = headElement.querySelector('title');
+      const metaDescription = headElement.querySelector('meta[name="description"]');
+      const metaKeywords = headElement.querySelector('meta[name="keywords"]');
+
 
       // --- State Variables ---
       let secretMessageTimeout; // For auto-hiding secret message
@@ -1513,15 +1573,356 @@
       let currentHighlightedBlessingIndex = 0; // Tracks currently highlighted blessing card
       let lastJokeIndex = -1; // To ensure a different joke each time if possible
       let currentAnimatedPercent = 0; // For progress bar animation, controlled by requestAnimationFrame
+      let currentLang = 'en'; // Default language
 
       // Firebase variables (initialized later)
       let app, db, auth, userId;
       let isAuthReady = false; // Flag to indicate Firebase auth is ready
 
+      // --- Initial Blessings Data (Fallback/Placeholder) ---
+      const initialBlessingsData_en = [
+          { name: "Aunt Sarah", text: "Wishing you a lifetime of joy and laughter! Mazel Tov!", timestamp: { seconds: Date.now() / 1000 - 86400 } }, // 1 day ago
+          { name: "The Goldsteins", text: "May your home be filled with peace, happiness, and abundant blessings!", timestamp: { seconds: Date.now() / 1000 - 172800 } }, // 2 days ago
+          { name: "Rabbi & Mrs. Cohen", text: "Chassan V'Kallah Mazel Tov! May your union bring much Nachas to Klal Yisroel.", timestamp: { seconds: Date.now() / 1000 - 259200 } }, // 3 days ago
+          { name: "Your Cousins", text: "So excited to dance the night away with you both! So much love!", timestamp: { seconds: Date.now() / 1000 - 345600 } }, // 4 days ago
+          { name: "Grandma Esther", text: "Always remember to appreciate each other. I love you both so much.", timestamp: { seconds: Date.now() / 1000 - 432000 } }  // 5 days ago
+      ];
 
-      // --- Data Arrays ---
+      const initialBlessingsData_he = [
+          { name: "דודה שרה", text: "מאחלת לכם חיים מלאי שמחה וצחוק! מזל טוב!", timestamp: { seconds: Date.now() / 1000 - 86400 } },
+          { name: "משפחת גולדשטיין", text: "יהי רצון שביתכם יתמלא בשלום, אושר וברכות רבות!", timestamp: { seconds: Date.now() / 1000 - 172800 } },
+          { name: "הרב והרבנית כהן", text: "חתן וכלה מזל טוב! מי ייתן ואיחודכם יביא הרבה נחת לכלל ישראל.", timestamp: { seconds: Date.now() / 1000 - 259200 } },
+          { name: "הבני דודים שלכם", text: "כל כך מתרגשים לרקוד איתכם כל הלילה! המון אהבה!", timestamp: { seconds: Date.now() / 1000 - 345600 } },
+          { name: "סבתא אסתר", text: "תמיד תזכרו להעריך אחד את השני. אוהבת אתכם כל כך.", timestamp: { seconds: Date.now() / 1000 - 432000 } }
+      ];
+
+
+      // --- Data Arrays (Multilingual) ---
+      const translations = {
+        en: {
+          siteTitle: 'Meilech & Tzippy',
+          navHome: 'Home',
+          navCountdown: 'Countdown',
+          navDetails: 'Details',
+          navFunFacts: 'Fun Facts',
+          navQandA: 'Q&A',
+          navMap: 'Map',
+          navShabbos: 'Shabbos',
+          navBrachos: 'Brachos',
+          navChat: 'Chat',
+          openNavMenu: 'Open navigation menu',
+          heroNames: 'Meilech & Tzippy',
+          heroTagline: 'Are Tying the Knot!',
+          heroDescription: 'With hearts full of joy and excitement, we invite you to join us as we embark on our greatest adventure yet: building a shared future together! Your presence would make our celebration truly complete.',
+          btnSaveDate: 'Save the Date!',
+          btnFindFlights: 'Find Your Flights!',
+          progressPrefix: 'The excitement is brewing! Our love meter is at ',
+          progressSuffix: ' for the big day!',
+          unlockSecret: 'Unlock a Tiny Treasure... 🤫',
+          discoverSecretMessage: 'Discover a little secret message',
+          triggerConfetti: 'Trigger confetti',
+          countdownTitle: 'The Countdown Is On!',
+          countdownDaysLeftOnly: 'Only',
+          countdownDaysLeftToGo: 'Days to Go!',
+          weeks: 'Weeks',
+          days: 'Days',
+          hours: 'Hours',
+          minutes: 'Minutes',
+          seconds: 'Seconds',
+          totalMinutesPrefix: 'Our grand adventure is just ',
+          totalMinutesSuffix: ' minutes away! Get ready for a celebration that\'s worth every second!',
+          detailsTitle: 'Wedding Day Details',
+          venueTitle: 'The Grand Venue',
+          venueDescription: 'Where the magic happens, and the dance floor is always ready for action!',
+          dateTitle: 'The Big Day',
+          weddingDateEnglish: 'Monday, November 3, 2025',
+          weddingDateHebrew: 'י"ב חשון תשפ"ו',
+          dateDescription: 'Circle it, highlight it, tattoo it! (Okay, maybe just mark it.) It\'s gonna be epic!',
+          scheduleTitle: 'The Flow of Simcha',
+          kabulasPanimTime: 'Kabulas Panim',
+          kabulasPanimValue: '6:30 PM (Arrive early, good food starts punctually!)',
+          chuppahTime: 'Chuppah',
+          chuppahValue: '7:30 PM (Prepare for happy tears and timeless moments!)',
+          seudahTime: 'Seudah',
+          seudahValue: '8:30 PM (Let the feasting begin! You\'ll be glad you wore stretchy pants.)',
+          dancingBeginsTime: 'Dancing Begins',
+          dancingBeginsValue: '10:00 PM (Bring your dancing shoes and prepare for maximum simcha!)',
+          vibeTitle: 'The Vibe',
+          vibeDescription: 'Come ready to celebrate in joy and dignity. The evening will be full of music, warmth, and true simcha – expect some serious dancing!',
+          transportationTitle: 'Getting There',
+          transportationDescription: 'Parking\'s on us! Carpool for extra good vibes (and to make sure you have a designated dance partner).',
+          funFactsTitle: 'Fun Facts & Funtastic Tidbits!',
+          funFactsDescription: 'Because every epic love story deserves a few surprising footnotes and random trivia. Prepare to be amused!',
+          factDidYouKnownTitle: 'Did You Know?',
+          factDidYouKnowText: 'On November 3rd, our wedding day, we\'re not just tying the knot—we\'re also celebrating National Sandwich Day! Coincidence? We think not. Prepare for a love that\'s as layered and satisfying as your favorite deli creation!',
+          factMusicalTitle: 'Musical Interlude',
+          factMusicalText: 'Prepare your vocal cords! We\'re anticipating a symphony of enthusiastic \'Mazel Tovs!\' and joyous singing that will shake the rafters (in the best way possible, of course!).',
+          factRoyalStatusTitle: 'Royal Status',
+          factRoyalStatusText: 'According to Jewish tradition, the Kallah is a queen and the Chassan is a king on their wedding day. So, feel free to address us by our royal titles! (Only for November 3rd, promise.)',
+          factSweetPredictionsTitle: 'Sweet Predictions',
+          factSweetPredictionsText: 'Our top secret culinary forecast predicts the wedding cake will vanish faster than a plate of fresh kugel at a simcha. Consider yourselves warned... and bring a fork!',
+          factDancingShoesTitle: 'Dancing Shoes Alert',
+          factDancingShoesText: 'Good news, dance enthusiasts! We\'ve surveyed the dance floor, and it\'s officially certified for maximum simcha! There\'s plenty of room for all your best moves, so don\'t hold back!',
+          factHistoricDayTitle: 'Historic Day',
+          factHistoricDayText: 'Our wedding day shares its date with a historic launch: on November 3rd, 1957, Sputnik 2 carried the dog Laika into space. We\'re also launching into something boundless—marriage! (With slightly less zero-gravity, thankfully).',
+          faqTitle: 'Your Burning Questions (and Our Honest Answers)',
+          faqDescription: 'We know you\'ve got \'em. Here are the answers to the questions you\'re *actually* thinking.',
+          faqQ1: 'What time should I arrive?',
+          faqA1: 'We\'d love to see you for Kabulas Panim at <strong>6:30 PM</strong>. Don\'t miss the Chuppah at 7:30 PM – it\'s the main event! Seriously, the good parts (and food!) start punctually.',
+          faqQ2: 'What\'s the dress code?',
+          faqA2: 'Dress to impress, but also dress to dance! Formal, modest attire is appreciated. Think "Simcha Chic" – because comfort meets elegance when you\'re celebrating!',
+          faqQ3: 'Can I bring my kids?',
+          faqA3: 'Absolutely! The more simcha, the merrier. Just remember to keep them away from the band\'s drum set and the dessert table (unless you brought extra for us!).',
+          faqQ4: 'Is there food?',
+          faqA4: 'Is the sky blue?! We\'re having a wedding, so yes, there will be plenty of delicious food. Come hungry, leave happy!',
+          faqQ5: 'Where can I park?',
+          faqA5: 'Ample parking is available on-site. For the full Monsey experience, allow an extra 15 minutes for unexpected traffic (especially on simcha days!).',
+          faqQ6: 'Can I take photos?',
+          faqA6: 'We kindly request no flash photography during the Chuppah. Otherwise, snap away and share the simcha! Just don\'t block the professional photographers – they\'ve got a job to do!',
+          faqQ7: 'Can I be part of the flashmob?',
+          faqA7: 'You\'re asking the real questions! Absolutely! If you\'ve got moves (or even just enthusiasm!), we\'d love to have you. Just reach out to <strong>Tzippy the kallah</strong>, and she\'ll share all the secret steps and make sure you\'re ready to bust a move! Get ready to dance the night away!',
+          tzippyKallah: 'Tzippy the kallah',
+          faqQ8: 'What if I have a question not listed here?',
+          faqA8: 'No worries! Scroll down to our "Chat" section – we\'re (virtually) here to help with almost anything. Or just find us at the dessert table on the night!',
+          mapTitle: 'Where to Find the Fun',
+          mapLost: 'Lost? Don’t worry! We\'ve pinned all the essential simcha stops just for you.',
+          mapFollowMusic: 'Need help finding us? Just follow the music and smiles — we’ll be there!',
+          locationMapTitle: 'Location Map',
+          mapGuideText: 'Your guide to the grand celebration! See you there, ready to party!',
+          btnGetDirections: 'Get Directions',
+          whatsPinnedTitle: 'What’s Pinned?',
+          venueLabel: 'Wedding Venue:',
+          oifrufLabel: 'Oifruf:',
+          bogleitenLabel: 'Bogleiten:',
+          bovarfenLabel: 'Bovarfen:',
+          shabbosBrachasLabel: 'Shabbos Sheva Brachas:',
+          topTipTitle: 'Top Tip:',
+          topTipText: 'Monsey traffic: A wild card! Leave extra time to avoid missing appetizers (the horror!).',
+          shabbosEventsTitle: 'Shabbos Oifruf & Sheva Brachas',
+          shabbosEventsDescription: 'The simcha continues! Join us for these special Shabbos gatherings surrounding our wedding celebration. ',
+          oifrufSeudahTitle: 'Shabbos Oifruf Seudah',
+          oifrufSeudahDescription: 'Join us to wish the Chassan a thunderous Mazel Tov before the big day! Expect an atmosphere buzzing with good vibes!',
+          bogleitenTitle: 'Bogleiten',
+          bogleitenDepartingFrom: 'Departing from:',
+          bogleitenDescription: 'The Kallah\'s grand send-off! Bring your loudest singing voices and prepare for a joyous procession!',
+          bovarfenTitle: 'Bovarfen',
+          bovarfenDescription: 'Get ready for sweet treats and even sweeter moments! (Strategic candy-catching highly encouraged.)',
+          shevaBrachasTitle: 'Shabbos Sheva Brachas',
+          shevaBrachasDescription: 'Extend the simcha on Shabbos with us! Expect more delicious food and even more incredible company.',
+          blessingsTitle: 'Your Heartfelt Wishes & Happy Thoughts!',
+          blessingsDescription: 'Leave your special blessings for Meilech & Tzippy right here!',
+          btnAddBruchas: 'Add Your Bruchas! ✨',
+          yourUserId: 'Your User ID:',
+          chatTitle: 'Got a Burning Question?',
+          chatDescription: 'Whether it\'s about directions, what time to show up, or where to find the best kugel — we’re (virtually) here to help!',
+          hpFieldLabel: 'Leave this blank',
+          yourNameLabel: 'Your Name',
+          yourNamePlaceholder: 'Your Name',
+          yourEmailLabel: 'Your Email',
+          yourEmailPlaceholder: 'Your Email',
+          yourQuestionLabel: 'Your Question / Message',
+          yourQuestionMessage: 'Your Question or Message',
+          yourQuestionPlaceholder: 'Write your question or message here...',
+          btnSendMessage: 'Send Your Message!',
+          chatClosingNote: 'We’ll get back to you ASAP – or just find us by the dessert table (we\'ll probably be there!) 😉',
+          thankYouTitle: 'A Heartfelt Thank You, from Meilech and Tzippy!',
+          thankYouGreeting: 'Dearest family and friends,',
+          thankYouPara1: 'As our wedding day draws near, our hearts are absolutely bursting with excitement and an overwhelming sense of gratitude. Looking back at all the incredible moments leading up to this, we realize just how lucky we are to have each of you in our lives. Your unwavering support, endless encouragement, and the sheer joy you\'ve shared with us have made every step of this journey truly unforgettable.',
+          thankYouPara2: 'From the bottom of our hearts, thank you for being a part of our story. Thank you for the laughs, the advice, the simcha, and for simply being *you*. Knowing you\'re celebrating with us, whether in person or in spirit, fills us with so much happiness.',
+          thankYouPara3: 'Get ready for a night of epic dancing, delicious food, and memories we\'ll cherish forever. We truly can\'t wait to share this momentous occasion with you and begin our lives together as husband and wife.',
+          thankYouClosing: 'With all our love and excitement,',
+          thankYouNames: 'Meilech & Tzippy',
+          btnStillQuestion: 'Still Have a Question? Chat With Us!',
+          footerCopyright: '&copy; 2025 Meilech & Tzippy. Built with love, laughter, and a touch of magic.',
+          footerQuestions: 'Questions? Reach out to us at',
+          yourBruchaAdded: 'Your brucha was added to the wall! Thank you!',
+          authNotReady: 'Authentication not ready. Please try again in a moment.',
+          fillNameBlessing: 'Please fill in both your name and blessing!',
+          failedSendBrucha: 'Failed to send brucha. Please try again.',
+          fillAllFields: 'Please fill in all fields before sending your message!',
+          messageSentSuccess: 'Your message zoomed right to us! We\'ll get back to you faster than you can say \'Mazel Tov!\'',
+          messageSentError: 'Oops! Something went wrong sending your message. Please try again.',
+          networkError: 'Network error: Couldn\'t send your message. Check your connection!',
+          authFailed: 'Failed to authenticate. Features requiring sign-in may not function.',
+          excitementOffCharts: 'Excitement levels are off the charts!',
+          markedCalendar: 'Can\'t wait to celebrate with you! Thanks for marking your calendar!',
+          modalBlessingTitle: 'Share Your Joy! 🎉',
+          modalBlessingDescription: 'Pour your heart out! Leave a special message for Meilech & Tzippy.',
+          modalYourNameLabel: 'Your Name',
+          yourBlessingName: 'Your Name for the blessing',
+          modalYourBlessingLabel: 'Your Blessing',
+          yourBlessingText: 'Your Blessing Text',
+          yourBlessingPlaceholder: 'Write your heartfelt blessing here...',
+          btnSendLove: 'Send Our Love! ❤️',
+          loading: 'Loading...',
+          authError: 'Auth Error!',
+          viewWeddingProgress: 'View wedding progress',
+          closeBlessingForm: 'Close blessing form',
+        },
+        he: {
+          siteTitle: 'מיילך וציפי',
+          navHome: 'ראשי',
+          navCountdown: 'ספירה לאחור',
+          navDetails: 'פרטים',
+          navFunFacts: 'עובדות פיקנטיות', // More playful
+          navQandA: 'שאלות בוערות ותשובות כנות', // More witty
+          navMap: 'מפה',
+          navShabbos: 'שבת',
+          navBrachos: 'ברכות',
+          navChat: 'שאלות ודיבורים', // More conversational
+          openNavMenu: 'פתח תפריט ניווט',
+          heroNames: 'מיילך וציפי',
+          heroTagline: 'קושרים את הקשר... וגם את הלבבות! 💍', // Cute and witty
+          heroDescription: 'הלב שלנו קופץ משמחה ומהתרגשות! אנחנו יוצאים להרפתקה הכי מטורפת שיש: לבנות עתיד משותף יחד. נוכחותכם תהפוך את החגיגה שלנו למושלמת באמת, אז בואו לרקוד איתנו את הדרך אל האושר!', // More personal, cute, and exciting
+          btnSaveDate: 'שמרו את התאריך בחום!', // More inviting
+          btnFindFlights: 'מצאו טיסות שיביאו אתכם לשמחה!', // More engaging
+          progressPrefix: 'ההתרגשות מבעבעת! מד האהבה שלנו ב-',
+          progressSuffix: ' לקראת היום הגדול, וזה רק הולך ומתחמם!', // More dynamic
+          unlockSecret: 'גלו אוצר קטן וסודי... 🤫', // More mysterious and cute
+          discoverSecretMessage: 'גלו הודעה סודית קטנה', // Keep as is, it's good
+          triggerConfetti: 'הפעילו קונפטי!', // More active
+          countdownTitle: 'הספירה לאחור – הדופק עולה!', // More engaging
+          countdownDaysLeftOnly: 'רק',
+          countdownDaysLeftToGo: 'ימים לשיגעון!', // More exciting
+          weeks: 'שבועות',
+          days: 'ימים',
+          hours: 'שעות',
+          minutes: 'דקות',
+          seconds: 'שניות',
+          totalMinutesPrefix: 'ההרפתקה הגדולה שלנו במרחק ',
+          totalMinutesSuffix: ' דקות בודדות! תתחילו להתכונן לחגיגה ששווה כל שנייה וכל דקה!', // More enthusiastic and cute
+          detailsTitle: 'פרטי יום החתונה המרגשים!', // More engaging
+          venueTitle: 'האולם המרכזי', // Simpler, more direct
+          venueDescription: 'המקום שבו הקסם מתחיל, ורחבת הריקודים כבר מחכה לרגליים שלכם!', // More inviting and playful
+          dateTitle: 'היום הגדול והמיוחד', // More special
+          weddingDateEnglish: 'Monday, November 3, 2025',
+          weddingDateHebrew: 'י"ב חשון תשפ"ו',
+          dateDescription: 'סמנו אותו ביומן, הדגישו בזרחן, ואולי אפילו קעקעו! (טוב, אולי רק סמנו 😉) זה הולך להיות מטורף!', // Funnier, more personal
+          scheduleTitle: 'סדר היום של השמחה הבלתי נשכחת', // More descriptive
+          kabulasPanimTime: 'קבלת פנים',
+          kabulasPanimValue: '18:30 (מומלץ להגיע מוקדם, האוכל הטוב מתחיל בדיוק בזמן!)', // Witty, encouraging early arrival for food
+          chuppahTime: 'חופה',
+          chuppahValue: '19:30 (הכינו את הטישו לרגעים מרגשים ובלתי נשכחים!)', // More emotional and personal
+          seudahTime: 'סעודה',
+          seudahValue: '20:30 (תנו למשתה להתחיל! תשמחו שלבשתם מכנסיים נוחים...)', // Funnier, practical advice
+          dancingBeginsTime: 'תחילת ריקודים',
+          dancingBeginsValue: '22:00 (תביאו את נעלי הריקוד ותתכוננו לשמחה מקסימלית – בלי מעצורים!)', // More energetic
+          vibeTitle: 'האווירה שתהיה', // More colloquial
+          vibeDescription: 'בואו מוכנים לחגוג באושר וכבוד. הערב יהיה מלא במוזיקה שתעיף אתכם, חום בלב ושמחה אמיתית – צפו לריקודים רציניים במיוחד!', // More vivid and exciting
+          transportationTitle: 'איך מגיעים לכיף?', // More playful
+          transportationDescription: 'החניה עלינו! בואו יחד ברכב לאווירה טובה יותר (ותדאגו שיהיה לכם בן/בת זוג לריקודים!).', // More personal and fun
+          funFactsTitle: 'עובדות קטנות ופיקנטיות על הזוג!', // More cute and engaging
+          funFactsDescription: 'כי כל סיפור אהבה אגדי ראוי לכמה הערות שוליים מפתיעות וטריוויה אקראית. תתכוננו להתגלגל מצחוק!', // More humorous
+          factDidYouKnowTitle: 'הידעתם כבר?',
+          factDidYouKnowText: 'ב-3 בנובמבר, יום חתונתנו המיוחד, אנחנו לא רק נקושר קשר - אנחנו גם נחגוג את יום הסנדוויץ\' הלאומי! צירוף מקרים? לא חושבים כך. התכוננו לאהבה שהיא עשירה ומשביעה כמו סנדוויץ\' הדלי האהוב עליכם!', // More playful and descriptive
+          factMusicalTitle: 'רגע מוזיקלי מרגש',
+          factMusicalText: 'הכינו את מיתרי הקול! אנחנו מצפים לסימפוניה של \'מזל טוב!\' נלהבים ושירה שמחה שתטלטל את התקרה (בצורה הכי טובה שיש, כמובן!).', // Enthusiastic
+          factRoyalStatusTitle: 'מעמד מלכותי רשמי',
+          factRoyalStatusText: 'על פי המסורת היהודית, הכלה היא מלכה והחתן הוא מלך ביום חתונתם. אז, הרגישו חופשי לפנות אלינו בתארינו המלכותיים! (רק ל-3 בנובמבר, מבטיחים 😉).', // More playful
+          factSweetPredictionsTitle: 'תחזיות מתוקות במיוחד',
+          factSweetPredictionsText: 'התחזית הקולינרית הסודית שלנו חוזה שעוגת החתונה תיעלם מהר יותר מצלחת קוגל טרי בשמחה. אתם מוזהרים... ותביאו מזלג!', // Funny warning
+          factDancingShoesTitle: 'התראת נעלי ריקוד!',
+          factDancingShoesText: 'חדשות טובות, חובבי ריקוד! סקרנו את רחבת הריקודים, והיא מאושרת רשמית לשמחה מקסימלית! יש המון מקום לכל הצעדים הכי שווים שלכם, אז אל תתאפקו!', // Encouraging and energetic
+          factHistoricDayTitle: 'יום היסטורי ומרגש',
+          factHistoricDayText: 'יום חתונתנו חולק תאריך עם שיגור היסטורי: ב-3 בנובמבר 1957, ספוטניק 2 נשא את הכלבה לייקה לחלל. אנחנו גם משגרים את עצמנו למשהו אינסופי – חיי נישואין! (עם קצת פחות חוסר כבידה, למרבה השמחה).', // Witty comparison
+          faqTitle: 'השאלות הבוערות שלכם (והתשובות הכנות שלנו, עם קצת חיוך!)', // More playful and witty
+          faqDescription: 'אנחנו יודעים שיש לכם המון שאלות בראש. הנה התשובות לשאלות שאתם *באמת* חושבים עליהן, בתוספת קורטוב של הומור.', // More humorous
+          faqQ1: 'באיזו שעה כדאי לי להגיע כדי לא להפסיד כלום?',
+          faqA1: 'נשמח לראות אתכם בקבלת פנים בשעה <strong>18:30</strong>! אל תחמיצו את החופה ב-19:30 – זה המאורע המרכזי! וברצינות, החלקים הכי שווים (והאוכל הטעים!) מתחילים בזמן, אז כדאי להגיע עם תיאבון!',
+          faqQ2: 'מה קוד הלבוש? כמה חגיגי זה יהיה?',
+          faqA2: 'התלבשו להרשים, אבל גם לרקוד! לבוש רשמי וצנוע מוערך. חשבו "שיק שמחה" – כי נוחות פוגשת אלגנטיות כשחוגגים בגדול!',
+          faqQ3: 'האם מותר להביא את הילדים הקטנים?',
+          faqA3: 'בהחלט! ככל שיותר שמחה, כך יותר עליז! רק זכרו להרחיק אותם מערכת התופים של הלהקה ומלחתן הקינוחים (אלא אם כן הבאתם לנו תוספות!).',
+          faqQ4: 'ואיך האוכל? יש מספיק?',
+          faqA4: 'האם השמיים כחולים?! יש לנו חתונה, אז כן, יהיה שפע של אוכל מדהים וטעים. בואו רעבים, לכו מאושרים... ומלאים!',
+          faqQ5: 'איפה אפשר לחנות את הרכב?',
+          faqA5: 'חניה בשפע זמינה במקום! לחוויית מונסי האולטימטיבית, השאירו לעצמכם עוד 15 דקות לכל פקק בלתי צפוי (במיוחד בימי שמחה!).',
+          faqQ6: 'האם מותר לצלם תמונות וסרטונים?',
+          faqA6: 'אנו מבקשים בחביבות לא להשתמש בפלאש במהלך החופה. חוץ מזה, תצלמו ותשתפו את השמחה! רק אל תחסמו את הצלמים המקצועיים – יש להם עבודה חשובה לעשות!',
+          faqQ7: 'האם אני יכול/ה להיות חלק מהפלאשמוב המטורף?',
+          faqA7: 'אתם שואלים את השאלות האמיתיות! בהחלט! אם יש לכם מהלכים (או אפילו רק התלהבות שמדבקת!), נשמח שתיקחו חלק. פשוט צרו קשר עם <strong>ציפי הכלה</strong>, והיא תשתף אתכם בכל הצעדים הסודיים ותוודא שאתם מוכנים לרקוד בשיגעון! התכוננו לרקוד כל הלילה!',
+          tzippyKallah: 'ציפי הכלה',
+          faqQ8: 'What if I have a question not listed here?',
+          faqA8: 'אל דאגה! גללו למטה למקטע "שאלות ודיבורים" שלנו – אנחנו כאן (וירטואלית) כדי לעזור עם כמעט כל דבר. או פשוט מצאו אותנו ליד שולחן הקינוחים בלילה – כנראה שנהיה שם!',
+          mapTitle: 'איפה למצוא את כל הכיף!', // More playful
+          mapLost: 'הלכתם לאיבוד? אל דאגה! סימנו לכם את כל נקודות השמחה החשובות, כדי שלא תפספסו כלום.',
+          mapFollowMusic: 'צריכים עזרה במציאתנו? פשוט עקבו אחרי המוזיקה והחיוכים – אנחנו נהיה שם, מחכים לכם!',
+          locationMapTitle: 'מפת המיקום המדויקת',
+          mapGuideText: 'המדריך שלכם לחגיגה הגדולה! נתראה שם, מוכנים לשיגעון!',
+          btnGetDirections: 'קבלו הוראות הגעה בקלות',
+          whatsPinnedTitle: 'מה סימנו לכם על המפה?',
+          venueLabel: 'מקום החתונה:',
+          oifrufLabel: 'אויפרוף:',
+          bogleitenLabel: 'בוגלייטן:',
+          bovarfenLabel: 'בוארופן:',
+          shabbosBrachasLabel: 'שבע ברכות שבת:',
+          topTipTitle: 'טיפ הזהב שלנו:',
+          topTipText: 'התנועה במונסי: קלף פראי! השאירו תמיד זמן עודף כדי לא להחמיץ את המנות הראשונות (הזוועה!).',
+          shabbosEventsTitle: 'שבת אויפרוף ושבע ברכות – ממשיכים לחגוג!', // More engaging
+          shabbosEventsDescription: 'השמחה לא נגמרת! הצטרפו אלינו להתכנסויות השבת המיוחדות שמסביב לחגיגת חתונתנו. הולך להיות שמח במיוחד!',
+          oifrufSeudahTitle: 'סעודת אויפרוף שבת',
+          oifrufSeudahDescription: 'הצטרפו אלינו לאחל לחתן "מזל טוב!" רועם לפני היום הגדול! צפו לאווירה שוקקת באנרגיות מטורפות!',
+          bogleitenTitle: 'בוגלייטן',
+          bogleitenDepartingFrom: 'יוצאים מ:',
+          bogleitenDescription: 'הפרידה הגדולה והשמחה של הכלה! תביאו את קולות השירה החזקים ביותר שלכם ותתכוננו לתהלוכה עליזה!',
+          bovarfenTitle: 'בוארופן',
+          bovarfenDescription: 'התכוננו למתוקים ולרגעים מתוקים עוד יותר! (תפיסת ממתקים אסטרטגית מומלצת בחום רב.)',
+          shevaBrachasTitle: 'שבת שבע ברכות',
+          shevaBrachasDescription: 'האריכו את השמחה בשבת קודש איתנו! צפו לעוד אוכל משובח ועוד חברה מדהימה. אי אפשר לפספס!',
+          blessingsTitle: 'משאלות ליבכם ומחשבותיכם הטובות עבורנו!', // More personal
+          blessingsDescription: 'שפכו את ליבכם! השאירו ברכה מיוחדת למיילך וציפי כאן על הקיר המכובד שלנו.',
+          btnAddBruchas: 'הוסיפו את הברכות הכי שוות שלכם! ✨', // More engaging
+          yourUserId: 'מזהה המשתמש שלך:',
+          chatTitle: 'יש לכם שאלה ששורפת לכם על קצה הלשון?', // More dramatic/witty
+          chatDescription: 'בין אם זה על הוראות הגעה, באיזו שעה כדאי להופיע, או איפה מוצאים את הקוגל הכי טעים – אנחנו כאן (וירטואלית) כדי לעזור! אל תתביישו לשאול.',
+          hpFieldLabel: 'נא להשאיר שדה זה ריק',
+          yourNameLabel: 'שמך המלא',
+          yourNamePlaceholder: 'שמך',
+          yourEmailLabel: 'האימייל שלך',
+          yourEmailPlaceholder: 'האימייל שלך',
+          yourQuestionLabel: 'שאלתך / הודעתך האישית',
+          yourQuestionMessage: 'שאלתך או הודעתך',
+          yourQuestionPlaceholder: 'כתבו את ברכתכם הכנה והמצחיקה/מרגשת כאן...',
+          btnSendMessage: 'שלחו את הודעתכם אלינו!',
+          chatClosingNote: 'נחזור אליכם במהירות שיא – או פשוט תמצאו אותנו ליד שולחן הקינוחים בלילה – כנראה שנהיה שם!',
+          thankYouTitle: 'תודה ענקית מהלב, ממיילך וציפי!', // More heartfelt
+          thankYouGreeting: 'משפחה וחברים יקרים שלנו,',
+          thankYouPara1: 'ככל שיום חתונתנו מתקרב, הלב שלנו פשוט מתפוצץ מאושר ומכרת תודה עצומה. כשאנחנו מסתכלים אחורה על כל הרגעים המדהימים שהובילו עד לכאן, אנחנו מבינים כמה בני מזל אנחנו שיש לנו כל אחד ואחת מכם בחיים שלנו. התמיכה הבלתי מתפשרת שלכם, העידוד האינסופי והשמחה הטהורה ששיתפתם איתנו, הפכו כל צעד במסע הזה לבלתי נשכח באמת.',
+          thankYouPara2: 'מעומק ליבנו, תודה לכם על היותכם חלק מהסיפור המיוחד שלנו. תודה על הצחוקים, העצות, השמחה, ופשוט על כך שאתם *אתם*. הידיעה שאתם חוגגים איתנו, בין אם פיזית ובין אם ברוח, ממלאת אותנו באושר שאין כדוגמתו.',
+          thankYouPara3: 'תתכוננו ללילה של ריקודים משוגעים, אוכל שפשוט תתמכרו אליו, וזיכרונות שננצור לנצח. אנחנו באמת, אבל באמת, לא יכולים לחכות לחלוק איתכם את האירוע ההיסטורי הזה ולהתחיל את חיינו יחד כבעל ואישה. בואו לעשות שמח!',
+          thankYouClosing: 'באהבה גדולה והתרגשות עצומה,',
+          thankYouNames: 'מיילך וציפי',
+          btnStillQuestion: 'עדיין יש שאלה? בואו נדבר צ\'אט!',
+          footerCopyright: '&copy; 2025 מיילך וציפי. נבנה באהבה, המון צחוק וקצת קסם.',
+          footerQuestions: 'שאלות כלשהן? מוזמנים ליצור קשר איתנו בכתובת:',
+          yourBruchaAdded: 'הברכה שלכם נוספה לקיר הברכות! תודה רבה!',
+          authNotReady: 'שירות האימות עדיין לא מוכן. אנא נסה שוב בעוד רגע קצר.',
+          fillNameBlessing: 'אנא מלאו בבקשה גם את שמכם וגם את תוכן הברכה!',
+          failedSendBrucha: 'שליחת הברכה נכשלה. אנא נסה שוב בעוד כמה שניות.',
+          fillAllFields: 'אנא מלא את כל השדות הנדרשים לפני שליחת הודעתך!',
+          messageSentSuccess: 'ההודעה שלך שוגרה אלינו במהירות האור! נחזור אליך מהר יותר ממה שתוכל לומר \'מזל טוב!\' כפול שתיים!',
+          messageSentError: 'אופס! משהו השתבש בשליחת ההודעה שלך. אנא נסה שוב, אנחנו מחכים לה!',
+          networkError: 'שגיאת רשת: לא ניתן לשלוח את הודעתך. אנא בדוק את חיבור האינטרנט שלך!',
+          authFailed: 'שגיאת אימות: הכניסה למערכת נכשלה. תכונות הדורשות אימות עשויות שלא לפעול כרגע.',
+          excitementOffCharts: 'רמות ההתרגשות פשוט מטורפות!',
+          markedCalendar: 'לא יכולים לחכות לחגוג איתכם! תודה ענקית שסימנתם ביומן!',
+          modalBlessingTitle: 'שתפו את השמחה שלכם איתנו! 🎉',
+          modalBlessingDescription: 'שפכו את ליבכם! השאירו ברכה מיוחדת ומרגשת למיילך וציפי.',
+          modalYourNameLabel: 'שמכם המלא',
+          yourBlessingName: 'שמכם עבור הברכה',
+          modalYourBlessingLabel: 'הברכה המיוחדת שלכם',
+          yourBlessingText: 'תוכן הברכה שלכם',
+          yourBlessingPlaceholder: 'כתבו את ברכתכם הכנה והמצחיקה/מרגשת כאן...',
+          btnSendLove: 'שלחו את האהבה שלכם אלינו! ❤️',
+          loading: 'בטעינה...',
+          authError: 'שגיאת אימות!',
+          viewWeddingProgress: 'צפו בהתקדמות החתונה',
+          closeBlessingForm: 'סגור טופס ברכה',
+        }
+      };
+
       // Array of secret messages for the Easter egg button
-      const secretMessages = [
+      const secretMessages_en = [
         "Spoiler Alert: We're totally getting married!",
         "Warning: May spontaneously break into dance at any moment!",
         "Fun Fact: We're practicing our 'just married' smiles. They're dazzling!",
@@ -1529,9 +1930,17 @@
         "Get ready for a celebration so epic, it'll make history (or at least family legend!)",
         "Don't tell anyone, but we're pretty excited to see *you* there!"
       ];
+      const secretMessages_he = [
+        "ספוילר: אנחנו לגמרי מתחתנים, וזה סופי!", // More emphatic
+        "אזהרה: עלולים לפרוץ בריקודים ספונטניים בכל רגע נתון!", // More descriptive
+        "עובדה מצחיקה: אנחנו מתרגלים את חיוכי ה'רק התחתנו' שלנו. הם פשוט מסנוורים!", // More playful
+        "סיפור האהבה שלנו קיבל דירוג 'מתוק' – במיוחד לחובבי עוגות!", // Cute rating
+        "תתכוננו לחגיגה כזו אגדית, שהיא תיכנס לספרי ההיסטוריה (או לפחות לאגדות המשפחתיות!)", // More dramatic and funny
+        "אל תגלו לאף אחד, אבל אנחנו ממש, אבל ממש, נרגשים לראות *אתכם* שם!" // More personal and emphatic
+      ];
 
       // Array of funny jokes/quotes for countdown cards (new feature)
-      const countdownJokes = [
+      const countdownJokes_en = [
           "Tick-tock, goes the clock! But seriously, don't miss the cake.",
           "We're getting closer! Our excitement levels are reaching critical mass.",
           "Soon, 'single' will just be a word in the dictionary for us!",
@@ -1542,31 +1951,80 @@
           "Don't worry, we're practicing our 'just married' smiles. They're dazzling!",
           "It's happening! We're not just counting days, we're counting memories to make!"
       ];
-
-      // Pre-saved blessings data (displayed before real blessings load from Firebase)
-      const initialBlessingsData = [
-        { name: "A Loving Friend", text: "Wishing you a lifetime of laughter, joy, and endless mazel! So thrilled for you both!" },
-        { name: "Family Member", text: "May your home be built on foundations of love, happiness, and incredible memories. We cherish you!" },
-        { name: "Well-Wisher", text: "Mazel Tov, Meilech & Tzippy! May your journey together be as sweet as your wedding cake!" },
-        { name: "Simcha Seeker", text: "Get ready for a lifetime of dancing and simcha! So happy to celebrate with you!" },
-        { name: "Supporter", text: "May your lives be filled with abundant blessings and a bond that grows stronger every day. Chassan Kallah Mazel Tov!" },
-        { name: "Future Guest", text: "Wishing you countless happy years and a partnership that's truly out of this world! Ad-Meya Ve-Esrim!" },
-        { name: "Good Friend", text: "From this day forward, may every day be an adventure. So excited for your beautiful future!" },
-        { name: "Community Member", text: "May you build a bayis ne'eman b'Yisrael, radiating light and warmth to all around you." },
-        { name: "Proud Relative", text: "Our hearts are overflowing with pride and joy for the incredible couple you are becoming. So much love!" },
-        { name: "Anon Friend", "text": "May you be blessed with everything good, physically and spiritually. Mazel Tov!" }
+      const countdownJokes_he = [
+          "טיק-טוק, השעון מתקתק! אבל ברצינות, אל תחמיצו את העוגה – היא שווה את זה.", // Emphasize cake worth
+          "אנחנו מתקרבים בצעדי ענק! רמות ההתרגשות שלנו הגיעו למסה קריטית ומשם רק עולות!", // More dramatic
+          "בקרוב, 'רווק' יהיה רק מילה מיושנת בארכיון המילון שלנו!", // Witty
+          "אזהרה: עלולים לפרוץ בריקודים ספונטניים עקב עודף התרגשות בלתי נשלט!", // More descriptive
+          "הספירה לאחור לחתונה היא כמו יין משובח, היא רק משתבחת עם כל שנייה שעוברת!", // More poetic
+          "עדיין יש לכם זמן למצוא דייט חמוד, או פשוט לבוא עם נעלי הריקוד הכי נוחות שלכם!", // Friendly advice
+          "פחות זמן לרגליים קרות, יותר זמן ללבבות חמים ומלאי אהבה!", // Cute and warm
+          "אל דאגה, אנחנו מתרגלים את חיוכי ה'רק התחתנו' שלנו. הם יאירו לכם את הערב!", // Reassuring and charming
+          "זה קורה! אנחנו לא רק סופרים ימים, אנחנו סופרים את הזיכרונות המדהימים שעומדים להיווצר!" // More profound and exciting
       ];
 
 
       // --- Utility Functions ---
 
       /**
+       * Sets the language of the page and updates all translatable elements.
+       * @param {string} lang - The language code ('en' or 'he').
+       */
+      function setLanguage(lang) {
+          currentLang = lang;
+          htmlElement.setAttribute('lang', lang);
+
+          // Update meta tags
+          if (metaTitle) {
+              metaTitle.textContent = metaTitle.getAttribute(`data-${lang}-title`) || translations[lang].siteTitle;
+          }
+          if (metaDescription) {
+              metaDescription.setAttribute('content', metaDescription.getAttribute(`data-${lang}-content`));
+          }
+          if (metaKeywords) {
+              metaKeywords.setAttribute('content', metaKeywords.getAttribute(`data-${lang}-content`));
+          }
+
+          // Update all elements with data-translate-key
+          allTranslatableElements.forEach(element => {
+              const key = element.getAttribute('data-translate-key');
+              const ariaLabelKey = element.getAttribute('data-translate-aria-label-key');
+              const placeholderKey = element.getAttribute('data-translate-placeholder-key');
+
+              if (key && translations[lang][key]) {
+                  element.textContent = translations[lang][key]; // Now, always use textContent for direct translations
+              }
+              if (ariaLabelKey && translations[lang][ariaLabelKey]) {
+                  element.setAttribute('aria-label', translations[lang][ariaLabelKey]);
+              }
+              if (placeholderKey && translations[lang][placeholderKey]) {
+                  element.setAttribute('placeholder', translations[lang][placeholderKey]);
+              }
+          });
+
+          // Update language button text
+          langToggleButton.textContent = (currentLang === 'en') ? 'עברית' : 'English';
+
+          // Re-render initial blessings if currently displayed to update names (if they are translated)
+          // This also ensures new blessings picked from Firebase apply the correct timestamp format.
+          if (!initialBlessingsInterval) { // Only if real blessings are not active
+             displayInitialBlessings();
+          }
+
+          // Force a re-calculation of countdown elements to update any text there
+          updateAllCountdownElements();
+      }
+
+      /**
        * Shows a temporary message box at the bottom of the screen.
-       * @param {string} message - The message to display.
+       * @param {string} key - The translation key for the message to display.
        * @param {number} duration - How long to display the message in milliseconds.
        */
-      function showMessageBox(message, duration = 5000) { // Standardized duration to 5000ms
-          messageBox.textContent = message;
+      function showMessageBox(key, duration = 5000) {
+          // If 'key' is directly the message (e.g., from countdownJokes), use it as is
+          // Otherwise, look it up in the translations object
+          const messageText = translations[currentLang][key] || key;
+          messageBox.textContent = messageText;
           messageBox.classList.add('show');
           setTimeout(() => {
               messageBox.classList.remove('show');
@@ -1627,14 +2085,14 @@
        * Reveals a random joke/quote from the countdownJokes array in a message box.
        */
       function revealCountdownJoke() {
+          const jokesArray = (currentLang === 'en') ? countdownJokes_en : countdownJokes_he;
           let randomIndex;
           do {
-              randomIndex = Math.floor(Math.random() * countdownJokes.length);
-          } while (randomIndex === lastJokeIndex && countdownJokes.length > 1); // Avoid repeating the same joke if possible
+              randomIndex = Math.floor(Math.random() * jokesArray.length);
+          } while (randomIndex === lastJokeIndex && jokesArray.length > 1); // Avoid repeating the same joke if possible
 
-          const joke = countdownJokes[randomIndex];
-          lastJokeIndex = randomIndex;
-          showMessageBox(joke); // Uses default 5000ms duration
+          const joke = jokesArray[randomIndex];
+          showMessageBox(joke); // Pass the joke directly, not a key
       }
 
 
@@ -1757,7 +2215,11 @@
           secsEl.innerText = "0";
           // Also set progress to 100% and hide save date button if it's the wedding day or after
           percentDoneEl.innerText = "100%";
-          heroContent.querySelector('p:first-of-type').textContent = "They tied the knot! 🎉";
+          // Update hero tagline for passed wedding
+          const heroTaglineElement = document.querySelector('[data-translate-key="heroTagline"]');
+          if (heroTaglineElement) {
+              heroTaglineElement.textContent = translations[currentLang].weddingPassed || "They tied the knot! 🎉";
+          }
           saveDateBtn.style.display = "none";
           triggerConfetti(); // Final burst of confetti
         }
@@ -1767,9 +2229,10 @@
        * Sets up the Google Calendar "Save the Date" link.
        */
       function setupSaveDate() {
-        const title    = encodeURIComponent("Meilech & Tzippy’s Wedding!");
+        // Updated: calendarTitle now explicitly passed to translations or uses fallback
+        const title    = encodeURIComponent(translations[currentLang].calendarTitle || "Meilech & Tzippy’s Wedding!");
         const details = encodeURIComponent(
-          "Join us for the chuppah, seudah, dancing & simcha!\nVenue: Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY"
+          (currentLang === 'en' ? "Join us for the chuppah, seudah, dancing & simcha!\nVenue: Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY" : "הצטרפו אלינו לחופה, לסעודה, לריקודים ולשמחה!\nמיקום: עטרת חיה שרה, 106 S Madison Ave, Spring Valley, NY")
         );
         const loc      = encodeURIComponent("Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY");
         // Dates format:YYYYMMDDTHHMMSSZ/YYYYMMDDTHHMMSSZ
@@ -1829,7 +2292,7 @@
         const div = document.createElement('div');
         div.className = 'blessing-card fade-in-hidden relative overflow-hidden group';
         // Only show timestamp for real blessings, not initial ones
-        const date = blessing.timestamp && !isInitial ? new Date(blessing.timestamp.seconds * 1000).toLocaleString('en-US') : '';
+        const date = blessing.timestamp && !isInitial ? new Date(blessing.timestamp.seconds * 1000).toLocaleString(currentLang === 'en' ? 'en-US' : 'he-IL') : '';
         div.innerHTML = `
           <p class="relative z-10 text-center font-body text-lg">${blessing.text}</p>
           <p class="relative z-10 text-center text-sm font-semibold mt-4 text-primary-navy group-hover:text-white transition-colors duration-300">- ${blessing.name} ${date ? `<span class="text-xs">(${date})</span>` : ''}</p>
@@ -1847,8 +2310,9 @@
        * Displays the pre-saved blessings and starts their rotation.
        */
       function displayInitialBlessings() {
+          const initialData = (currentLang === 'en') ? initialBlessingsData_en : initialBlessingsData_he;
           blessingWall.innerHTML = ''; // Clear any existing content
-          initialBlessingsData.forEach(blessing => createBlessingCard(blessing, true)); // Pass true for isInitial
+          initialData.forEach(blessing => createBlessingCard(blessing, true)); // Pass true for isInitial
 
           // Start rotation only if not already running
           if (!initialBlessingsInterval) {
@@ -1887,7 +2351,7 @@
         }
 
         // Display initial blessings while waiting for Firebase data to load initially
-        displayInitialBlessings();
+        displayInitialBlessings(); // Show initial blessings as a fallback/loading state
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const q = query(collection(db, `/artifacts/${appId}/public/data/wedding_blessings`));
@@ -1936,7 +2400,7 @@
           event.preventDefault();
 
           if (!db || !isAuthReady) {
-              showMessageBox("Authentication not ready. Please try again in a moment.", 3000);
+              showMessageBox("authNotReady", 3000);
               return;
           }
 
@@ -1944,7 +2408,7 @@
           const text = blessingTextInput.value.trim();
 
           if (!name || !text) {
-              showMessageBox("Please fill in both your name and blessing!", 2000);
+              showMessageBox("fillNameBlessing", 2000);
               return;
           }
 
@@ -1956,13 +2420,13 @@
                   timestamp: serverTimestamp(), // Firestore automatically adds a server-side timestamp
                   userId: userId // Store the user ID for debugging/moderation
               });
-              showMessageBox("Your brucha was added to the wall! Thank you! "); // Removed emoji
+              showMessageBox("yourBruchaAdded"); // Removed emoji
               blessingNameInput.value = '';
               blessingTextInput.value = '';
               hideModal(blessingModalOverlay); // Hide the modal after submission
           } catch (e) {
               console.error("Error adding blessing: ", e);
-              showMessageBox("Failed to send brucha. Please try again.", 3000);
+              showMessageBox("failedSendBrucha", 3000);
           }
       }
 
@@ -1981,7 +2445,7 @@
           const question = chatQuestionInput.value.trim();
 
           if (!name || !email || !question) {
-              showMessageBox("Please fill in all fields before sending your message!", 3000);
+              showMessageBox("fillAllFields", 3000);
               return;
           }
 
@@ -2006,16 +2470,16 @@
               });
 
               if (response.ok) {
-                  showMessageBox("Your message zoomed right to us! We'll get back to you faster than you can say 'Mazel Tov!'"); // Standardized duration
+                  showMessageBox("messageSentSuccess"); // Standardized duration
                   contactForm.reset(); // Clear the form fields
               } else {
                   const errorData = await response.json();
                   console.error('Formsubmit error:', errorData);
-                  showMessageBox("Oops! Something went wrong sending your message. Please try again.");
+                  showMessageBox("messageSentError");
               }
           } catch (error) {
               console.error('Network or fetch error:', error);
-              showMessageBox("Network error: Couldn't send your message. Check your connection!");
+              showMessageBox("networkError");
           }
       }
 
@@ -2028,7 +2492,7 @@
               db = getFirestore(app);
               auth = getAuth(app);
 
-              currentUserIdDisplay.textContent = 'Authenticating...';
+              currentUserIdDisplay.textContent = translations[currentLang].loading;
 
               // Listen for auth state changes
               onAuthStateChanged(auth, async (user) => {
@@ -2049,15 +2513,15 @@
                           // This will trigger onAuthStateChanged again
                       } catch (error) {
                           console.error("Firebase Auth Error:", error);
-                          currentUserIdDisplay.textContent = "Auth Error!";
-                          showMessageBox("Failed to authenticate. Features requiring sign-in may not function.");
+                          currentUserIdDisplay.textContent = translations[currentLang].authError;
+                          showMessageBox("authFailed");
                           isAuthReady = false;
                       }
                   }
               });
           } catch (error) {
               console.error("Firebase initialization failed:", error);
-              showMessageBox("Failed to load Firebase. Some features may not function.");
+              showMessageBox("authFailed");
               isAuthReady = false;
           }
       }
@@ -2086,6 +2550,14 @@
       document.addEventListener("DOMContentLoaded", () => {
         // Initialize hero content fade-in animation
         heroContent.classList.add('opacity-100', 'scale-100');
+
+        // Set initial language based on browser preference or default to English
+        const browserLang = navigator.language.split('-')[0];
+        if (browserLang === 'he') {
+            setLanguage('he');
+        } else {
+            setLanguage('en');
+        }
 
         // Set up countdown timer and start updating every second
         setupSaveDate();
@@ -2117,6 +2589,14 @@
           });
         });
 
+        // Language toggle button functionality
+        langToggleButton.addEventListener('click', () => {
+            setLanguage(currentLang === 'en' ? 'he' : 'en');
+            // Re-setup save date link to ensure translated title/details
+            setupSaveDate();
+        });
+
+
         // Trigger confetti on specific elements
         totalDaysHiddenEl.addEventListener('click', () => triggerConfetti({ particleCount: 150 }));
         heroContent.querySelector('h1').addEventListener('click', () => triggerConfetti({ particleCount: 150 }));
@@ -2145,12 +2625,12 @@
             spread: 60,
             colors: ['#B85C3A', '#1E2C4F', '#84A98C']
           });
-          showMessageBox("Excitement levels are off the charts!"); // Standardized duration
+          showMessageBox("excitementOffCharts"); // Standardized duration
         });
 
         // Event listener for Save the Date button (enhanced feedback)
         saveDateBtn.addEventListener('click', () => {
-            showMessageBox("Can't wait to celebrate with you! Thanks for marking your calendar!"); // Standardized duration
+            showMessageBox("markedCalendar"); // Standardized duration
         });
 
         // Blessing Modal Event Listeners
@@ -2183,10 +2663,11 @@
                 clearTimeout(secretMessageTimeout);
             }
 
+            const currentSecretMessages = (currentLang === 'en') ? secretMessages_en : secretMessages_he;
             // Update content with the next secret message from the array
-            secretMessageContent.textContent = secretMessages[currentSecretMessageIndex];
+            secretMessageContent.textContent = currentSecretMessages[currentSecretMessageIndex];
             // Cycle to the next message, looping back to the start if at the end
-            currentSecretMessageIndex = (currentSecretMessageIndex + 1) % secretMessages.length;
+            currentSecretMessageIndex = (currentSecretMessageIndex + 1) % currentSecretMessages.length;
 
             // Reveal the message with a smooth transition
             secretMessageContent.classList.remove('hidden');
