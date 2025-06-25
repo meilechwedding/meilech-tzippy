@@ -318,44 +318,62 @@
 
     /* Countdown Card Styles */
     .countdown-card {
-      background-color: var(--color-white);
-      border: 2px solid transparent; /* Default transparent border, set by JS */
-      transition: all 0.5s ease-in-out; /* Smooth transitions for dynamic changes */
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Default shadow, set by JS */
-      cursor: pointer; /* Indicate clickability */
+      background-color: transparent;
+      perspective: 1000px;
+      cursor: pointer;
     }
-    .countdown-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12); /* Slightly more prominent shadow on hover */
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .countdown-card.is-flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 0.75rem; /* rounded-xl */
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      background-color: var(--color-white);
+    }
+    .card-back {
+      transform: rotateY(180deg);
+      background-color: var(--color-secondary-sage);
+      color: var(--color-white);
+      font-size: 0.9rem;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .countdown-value {
-      color: var(--color-secondary-sage); /* Default color for numbers, set by JS */
       font-weight: bold;
-      transition: color 0.5s ease-in-out; /* Smooth color transition for numbers */
+      transition: color 0.5s ease-in-out;
     }
 
-    /* Ultra-close Countdown Flash Animation */
+    .countdown-grid-wrapper.intensity-low .countdown-value { color: var(--color-secondary-sage); }
+    .countdown-grid-wrapper.intensity-medium .countdown-value { color: var(--color-accent-copper); }
+    .countdown-grid-wrapper.intensity-high .countdown-value { color: var(--color-primary-navy); }
+    .countdown-grid-wrapper.intensity-flash .card-front { animation: countdownFlash 0.8s infinite alternate; }
+    .countdown-grid-wrapper.intensity-flash .countdown-value { animation: textFlash 0.8s infinite alternate; }
+
     @keyframes countdownFlash {
-      0%, 100% {
-        border-color: var(--color-accent-copper);
-        box-shadow: 0 0 10px var(--color-accent-copper), 0 0 20px var(--color-accent-copper);
-      }
-      50% {
-        border-color: var(--color-primary-navy);
-        box-shadow: 0 0 15px var(--color-primary-navy), 0 0 25px var(--color-primary-navy);
-      }
+      0%, 100% { border-color: var(--color-accent-copper); box-shadow: 0 0 10px var(--color-accent-copper), 0 0 20px var(--color-accent-copper); }
+      50% { border-color: var(--color-primary-navy); box-shadow: 0 0 15px var(--color-primary-navy), 0 0 25px var(--color-primary-navy); }
     }
     @keyframes textFlash {
         0%, 100% { color: var(--color-primary-navy); }
         50% { color: var(--color-accent-copper); }
-    }
-
-    /* Apply flashing to cards and their values when .countdown-flash is present */
-    .countdown-card.countdown-flash {
-      animation: countdownFlash 0.8s infinite alternate; /* Fast pulsing */
-    }
-    .countdown-card.countdown-flash .countdown-value {
-        animation: textFlash 0.8s infinite alternate; /* Flash the numbers too */
     }
 
 
@@ -891,52 +909,80 @@
     <div id="confetti-trigger-spot" class="absolute top-1/4 right-1/4 w-12 h-12 cursor-pointer opacity-0 z-30" aria-label="Trigger confetti" data-translate-aria-label-key="triggerConfetti"></div>
   </section>
 
-  <!-- Countdown Section - Dedicated page for detailed countdown -->
-  <section id="countdown-section" class="section-padding bg-gradient-base text-center">
-    <h2 class="section-title text-primary-navy mb-10 font-heading" data-translate-key="countdownTitle">The Countdown Is On!</h2>
-
-    <!-- Prominent "Total Days" display at the top of the countdown page -->
-    <p class="total-days-display text-primary-navy mb-12 font-heading">
-      <span data-translate-key="countdownDaysLeftOnly">Only</span> <span id="daysLeftCountdown" class="text-secondary-sage">0</span> <span data-translate-key="countdownDaysLeftToGo">Days to Go!</span>
-    </p>
-
-    <!-- Detailed Countdown Timer Grid -->
-    <div id="countdown-grid-wrapper" class="w-full max-w-5xl px-6 z-20">
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6 text-center">
-        <!-- Each div is a countdown card with dynamic styling via 'countdown-card' and 'countdown-value' -->
-        <div id="weeks-card" class="countdown-card p-4 md:p-6 rounded-xl shadow-md transition-all duration-500 ease-in-out hover:scale-105">
-          <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="weeks">Weeks</div>
-          <div id="weeks" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
-        </div>
-        <div id="days-card" class="countdown-card p-4 md:p-6 rounded-xl shadow-md transition-all duration-500 ease-in-out hover:scale-105">
-          <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="days">Days</div>
-          <div id="days" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
-        </div>
-        <div id="hours-card" class="countdown-card p-4 md:p-6 rounded-xl shadow-md transition-all duration-500 ease-in-out hover:scale-105">
-          <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="hours">Hours</div>
-          <div id="hours" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
-        </div>
-        <div id="minutes-card" class="countdown-card p-4 md:p-6 rounded-xl shadow-md transition-all duration-500 ease-in-out hover:scale-105">
-          <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="minutes">Minutes</div>
-          <div id="minutes" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
-        </div>
-        <div id="seconds-card" class="countdown-card p-4 md:p-6 rounded-xl shadow-md transition-all duration-500 ease-in-out hover:scale-105">
-          <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="seconds">Seconds</div>
-          <div id="seconds" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
+  <!-- Countdown Section -->
+<section id="countdown-section" class="section-padding bg-gradient-base text-center">
+  <h2 class="section-title text-primary-navy mb-10 font-heading" data-translate-key="countdownTitle">The Countdown Is On!</h2>
+  <p class="total-days-display text-primary-navy mb-12 font-heading">
+    <span data-translate-key="countdownDaysLeftOnly">Only</span> <span id="daysLeftCountdown" class="text-secondary-sage">0</span> <span data-translate-key="countdownDaysLeftToGo">Days to Go!</span>
+  </p>
+  <div id="countdown-grid-wrapper" class="w-full max-w-5xl px-6 z-20">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6 text-center">
+      <!-- Card structure updated for flip animation -->
+      <div id="weeks-card" class="countdown-card p-4 md:p-6 h-32 md:h-40">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="weeks">Weeks</div>
+            <div id="weeks" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
+          </div>
+          <div class="card-face card-back">
+            <p class="joke-text"></p>
+          </div>
         </div>
       </div>
-      <!-- Hidden total days for confetti trigger (Easter egg) - kept here for easy access with related elements -->
-      <p class="sr-only" id="totalDays">0</p>
+      <div id="days-card" class="countdown-card p-4 md:p-6 h-32 md:h-40">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="days">Days</div>
+            <div id="days" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
+          </div>
+          <div class="card-face card-back">
+            <p class="joke-text"></p>
+          </div>
+        </div>
+      </div>
+      <div id="hours-card" class="countdown-card p-4 md:p-6 h-32 md:h-40">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="hours">Hours</div>
+            <div id="hours" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
+          </div>
+          <div class="card-face card-back">
+            <p class="joke-text"></p>
+          </div>
+        </div>
+      </div>
+      <div id="minutes-card" class="countdown-card p-4 md:p-6 h-32 md:h-40">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="minutes">Minutes</div>
+            <div id="minutes" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
+          </div>
+          <div class="card-face card-back">
+            <p class="joke-text"></p>
+          </div>
+        </div>
+      </div>
+      <div id="seconds-card" class="countdown-card p-4 md:p-6 h-32 md:h-40">
+        <div class="card-inner">
+          <div class="card-face card-front">
+            <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="seconds">Seconds</div>
+            <div id="seconds" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
+          </div>
+          <div class="card-face card-back">
+            <p class="joke-text"></p>
+          </div>
+        </div>
+      </div>
     </div>
+    <p class="sr-only" id="totalDays">0</p>
+  </div>
+  <p class="text-lg md:text-xl text-text-medium mt-8 max-w-2xl mx-auto font-body">
+    <span data-translate-key="totalMinutesPrefix">Our grand adventure is just </span>
+    <span class="font-semibold text-primary-navy" id="minutesToWedding">Calculating...</span>
+    <span data-translate-key="totalMinutesSuffix"> minutes away! Get ready for a celebration that's worth every second!</span>
+  </p>
+</section>
 
-    <!-- Updated: Total Minutes Display -->
-    <p class="text-lg md:text-xl text-text-medium mt-8 max-w-2xl mx-auto font-body">
-      <span data-translate-key="totalMinutesPrefix">Our grand adventure is just </span>
-      <span class="font-semibold text-primary-navy" id="minutesToWedding">Calculating...</span>
-      <span data-translate-key="totalMinutesSuffix"> minutes away! Get ready for a celebration that's worth every second!</span>
-    </p>
-
-  </section>
 
   <!-- Wedding Details Section - Core information about the event -->
   <section id="details-section" class="section-padding bg-gradient-details text-center">
@@ -1354,28 +1400,17 @@
     </div>
   </section>
 
-  <!-- Blessings Section - Displays rotating blessings from family/friends -->
-  <section id="blessings-section" class="section-padding bg-gradient-base text-center">
-    <h2 class="section-title text-primary-navy mb-10 font-heading" data-translate-key="blessingsTitle">Your Heartfelt Wishes & Happy Thoughts!</h2>
+  <!-- Blessings Section -->
+<section id="blessings-section" class="section-padding bg-gradient-base text-center">
+    <h2 class="section-title text-primary-navy mb-10 font-heading" data-translate-key="blessingsTitle">Heartfelt Wishes & Happy Thoughts!</h2>
     <p class="text-lg text-text-medium mb-12 max-w-2xl mx-auto font-body" data-translate-key="blessingsDescription">
-      Leave your special blessings for Meilech & Tzippy right here!
+      A few words from our nearest and dearest (and some we just made up for fun).
     </p>
-
-    <!-- Blessing Wall - Content injected by JavaScript -->
-    <div id="blessing-wall" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"></div>
-
-    <!-- The blessings-loading spinner is removed as pre-saved blessings are shown initially -->
-    <!-- Call to Action button for sharing blessings -->
-    <div class="mt-16">
-      <button id="send-brucha-btn" class="btn btn-secondary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105" aria-label="Add your blessing" data-translate-aria-label-key="addBlessing" data-translate-key="btnAddBruchas">
-        Add Your Bruchas! ✨
-      </button>
+    <div id="blessing-wall" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+      <!-- Curated blessings will be injected here by JavaScript -->
     </div>
+</section>
 
-    <!-- Current User ID Display -->
-    <p class="current-user-id-display"><span data-translate-key="yourUserId">Your User ID:</span> <span id="current-user-id">Loading...</span></p>
-
-  </section>
 
   <!-- Chat & Questions Section - Form for guests to ask questions -->
   <section id="chat-section" class="section-padding bg-gradient-details text-center">
@@ -1459,29 +1494,7 @@
   <!-- Message box for copy confirmation -->
   <div id="message-box" class="message-box"></div>
 
-  <!-- Blessing Submission Modal -->
-  <div id="blessing-modal-overlay" class="modal-overlay">
-    <div class="modal-content">
-      <button class="close-btn" id="close-blessing-modal" aria-label="Close blessing form" data-translate-aria-label-key="closeBlessingForm">&times;</button>
-      <h3 class="font-heading text-2xl font-bold text-primary-navy mb-4 text-center" data-translate-key="modalBlessingTitle">Share Your Joy! 🎉</h3>
-      <p class="text-text-medium mb-6 text-center font-body" data-translate-key="modalBlessingDescription">
-          Pour your heart out! Leave a special message for Meilech & Tzippy.
-      </p>
-      <form id="blessing-form" class="space-y-4">
-        <div class="text-left">
-          <label for="blessing-name" class="block text-lg text-primary-navy font-semibold mb-2 font-body" data-translate-key="modalYourNameLabel">Your Name</label>
-          <input type="text" id="blessing-name" required class="input-field" placeholder="Your Name" aria-label="Your Name for the blessing" data-translate-aria-label-key="yourBlessingName" data-translate-placeholder-key="yourNamePlaceholder">
-        </div>
-        <div class="text-left">
-          <label for="blessing-text" class="block text-lg text-primary-navy font-semibold mb-2 font-body" data-translate-key="modalYourBlessingLabel">Your Blessing</label>
-          <textarea id="blessing-text" rows="4" required class="input-field" placeholder="Write your heartfelt blessing here..." aria-label="Your Blessing Text" data-translate-aria-label-key="yourBlessingText" data-translate-placeholder-key="yourBlessingPlaceholder"></textarea>
-        </div>
-        <button type="submit" id="submit-blessing-btn" class="btn btn-primary w-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105" data-translate-key="btnSendLove">
-          Send Our Love! ❤️
-        </button>
-      </form>
-    </div>
-  </div>
+  
 
 
   <!-- Confetti.js CDN - Required for confetti effects -->
@@ -1500,27 +1513,21 @@
       const WEDDING_TS    = new Date("2025-11-03T18:30:00").getTime(); // Nov 3, 2025 at 6:30 PM
 
       // --- DOM Element References ---
-      // General Layout & Navigation
       const htmlElement         = document.documentElement;
       const headElement         = document.head;
       const navHeader           = document.querySelector(".header-nav");
       const hamburgerMenu       = document.getElementById("hamburger-menu");
       const navLinksContainer   = document.getElementById("nav-links-container");
-      const navLinks            = document.querySelectorAll(".nav-link"); // Get all navigation links
+      const navLinks            = document.querySelectorAll(".nav-link");
       const langToggleButton    = document.getElementById("lang-toggle-btn");
-
-      // Hero Section
       const heroContent         = document.querySelector(".hero-content");
       const saveDateBtn         = document.getElementById("save-date");
       const progressButton      = document.getElementById("progress-button");
-      // progressFillEl and percentDoneEl are now direct children, not within a data-translate-key parent
       const progressFillEl      = document.getElementById("progress-fill");
       const percentDoneEl       = document.getElementById("percentDone");
       const secretMessageTrigger= document.getElementById('secret-message-trigger');
       const secretMessageContent= document.getElementById('secret-message-content');
       const confettiTriggerSpot = document.getElementById("confetti-trigger-spot");
-
-      // Countdown Section
       const daysLeftCountdownEl = document.getElementById("daysLeftCountdown");
       const totalDaysHiddenEl   = document.getElementById("totalDays");
       const weeksEl             = document.getElementById("weeks");
@@ -1528,72 +1535,50 @@
       const hoursEl             = document.getElementById("hours");
       const minsEl              = document.getElementById("minutes");
       const secsEl              = document.getElementById("seconds");
-      const weeksCard           = document.getElementById("weeks-card");
-      const daysCard            = document.getElementById("days-card");
-      const hoursCard           = document.getElementById("hours-card");
-      const minutesCard         = document.getElementById("minutes-card");
-      const secondsCard         = document.getElementById("seconds-card");
-      const totalMinutesDisplayEl = document.getElementById("minutesToWedding"); // New element for total minutes
-
-      // Blessings Section
+      const totalMinutesDisplayEl = document.getElementById("minutesToWedding");
       const blessingWall        = document.getElementById("blessing-wall");
-      const sendBruchaBtn       = document.getElementById("send-brucha-btn");
-      const currentUserIdDisplay= document.getElementById('current-user-id');
-
-      // Modals & Message Boxes
       const messageBox          = document.getElementById('message-box');
-      const blessingModalOverlay= document.getElementById('blessing-modal-overlay');
-      const closeBlessingModalBtn= document.getElementById('close-blessing-modal');
-      const blessingForm        = document.getElementById('blessing-form');
-      const blessingNameInput   = document.getElementById('blessing-name');
-      const blessingTextInput   = document.getElementById('blessing-text');
-
-      // Contact Form
       const contactForm            = document.getElementById('contact-form');
-      const chatNameInput          = document.getElementById('chat-name');
-      const chatEmailInput         = document.getElementById('chat-email');
-      const chatQuestionInput      = document.getElementById('question');
-
-      // Elements for scroll-fade-in (General sections, info cards, fun facts, blessings)
-      const elementsToFadeIn = document.querySelectorAll('.info-card, .fun-fact-card, .blessing-card');
-      // Update allTranslatableElements selector to only target spans/elements that directly hold translatable text
       const allTranslatableElements = document.querySelectorAll(
-          '[data-translate-key]:not([id="percentDone"]):not([id="minutesToWedding"]), ' +
+          '[data-translate-key]:not(#percentDone):not(#minutesToWedding), ' +
           '[data-translate-aria-label-key], [data-translate-placeholder-key]'
       );
       const metaTitle = headElement.querySelector('title');
       const metaDescription = headElement.querySelector('meta[name="description"]');
       const metaKeywords = headElement.querySelector('meta[name="keywords"]');
-
+      const countdownGridWrapper = document.getElementById('countdown-grid-wrapper');
 
       // --- State Variables ---
-      let secretMessageTimeout; // For auto-hiding secret message
-      let currentSecretMessageIndex = 0; // Tracks which secret message is displayed
-      let initialBlessingsInterval = null; // Stores interval ID for rotating initial blessings
-      let currentHighlightedBlessingIndex = 0; // Tracks currently highlighted blessing card
-      let lastJokeIndex = -1; // To ensure a different joke each time if possible
-      let currentAnimatedPercent = 0; // For progress bar animation, controlled by requestAnimationFrame
-      let currentLang = 'en'; // Default language
-
-      // Firebase variables (initialized later)
+      let countdownInterval; // Defined in the outer scope
+      let secretMessageTimeout;
+      let currentSecretMessageIndex = 0;
+      let initialBlessingsInterval = null;
+      let currentHighlightedBlessingIndex = 0;
+      let lastJokeIndex = -1;
+      let currentAnimatedPercent = 0;
+      let currentLang = 'en';
       let app, db, auth, userId;
-      let isAuthReady = false; // Flag to indicate Firebase auth is ready
+      let isAuthReady = false;
 
-      // --- Initial Blessings Data (Fallback/Placeholder) ---
-      const initialBlessingsData_en = [
-          { name: "Aunt Sarah", text: "Wishing you a lifetime of joy and laughter! Mazel Tov!", timestamp: { seconds: Date.now() / 1000 - 86400 } }, // 1 day ago
-          { name: "The Goldsteins", text: "May your home be filled with peace, happiness, and abundant blessings!", timestamp: { seconds: Date.now() / 1000 - 172800 } }, // 2 days ago
-          { name: "Rabbi & Mrs. Cohen", text: "Chassan V'Kallah Mazel Tov! May your union bring much Nachas to Klal Yisroel.", timestamp: { seconds: Date.now() / 1000 - 259200 } }, // 3 days ago
-          { name: "Your Cousins", text: "So excited to dance the night away with you both! So much love!", timestamp: { seconds: Date.now() / 1000 - 345600 } }, // 4 days ago
-          { name: "Grandma Esther", text: "Always remember to appreciate each other. I love you both so much.", timestamp: { seconds: Date.now() / 1000 - 432000 } }  // 5 days ago
+      // --- Curated Blessings Data (Replaces public submissions) ---
+      const curatedBlessings_en = [
+          { name: "The Nosy Neighbor", text: "Finally! I've been watching you two since the beginning. Wishing you a lifetime of happiness... and thicker curtains." },
+          { name: "Aunt Carol's Kugel", text: "May your love be as rich, sweet, and satisfying as my famous noodle kugel. Don't worry, I'm bringing a big pan." },
+          { name: "The Entire Shtetl", text: "The whole town is buzzing with excitement! We can't wait to dance and celebrate with you both. Mazel Tov!" },
+          { name: "Your Future Kids' Future Principal", text: "I'm already preparing the paperwork. Just kidding... mostly. May your home be filled with joy and only a *little* bit of classroom-level chaos." },
+          { name: "That one guy from the bagel store", text: "You two always order the everything bagel with a schmear. It's a sign of a solid foundation. Wishing you all the best!" },
+          { name: "The Shadchan Who Takes All The Credit", text: "A perfect match! I knew it from the start. You're welcome. Wishing you endless years of wedded bliss (and maybe send some referrals my way)." },
+          { name: "An Anonymous Well-Wisher", text: "May you always find the afikoman in your life together, and may your love be the greatest treasure of all." }
       ];
 
-      const initialBlessingsData_he = [
-          { name: "דודה שרה", text: "מאחלת לכם חיים מלאי שמחה וצחוק! מזל טוב!", timestamp: { seconds: Date.now() / 1000 - 86400 } },
-          { name: "משפחת גולדשטיין", text: "יהי רצון שביתכם יתמלא בשלום, אושר וברכות רבות!", timestamp: { seconds: Date.now() / 1000 - 172800 } },
-          { name: "הרב והרבנית כהן", text: "חתן וכלה מזל טוב! מי ייתן ואיחודכם יביא הרבה נחת לכלל ישראל.", timestamp: { seconds: Date.now() / 1000 - 259200 } },
-          { name: "הבני דודים שלכם", text: "כל כך מתרגשים לרקוד איתכם כל הלילה! המון אהבה!", timestamp: { seconds: Date.now() / 1000 - 345600 } },
-          { name: "סבתא אסתר", text: "תמיד תזכרו להעריך אחד את השני. אוהבת אתכם כל כך.", timestamp: { seconds: Date.now() / 1000 - 432000 } }
+      const curatedBlessings_he = [
+          { name: "השכנה החטטנית", text: "סוף סוף! צפיתי בכם מההתחלה. מאחלת לכם חיים שלמים של אושר... ווילונות עבים יותר." },
+          { name: "הקוגל של דודה שרה", text: "שהאהבה שלכם תהיה עשירה, מתוקה ומשביעה כמו קוגל האטריות המפורסם שלי. אל תדאגו, אני מביאה תבנית גדולה." },
+          { name: "כל השטעטל", text: "כל העיירה רוחשת מהתרגשות! אנחנו לא יכולים לחכות לרקוד ולחגוג אתכם. מזל טוב!" },
+          { name: "מנהל בית הספר העתידי של הילדים שלכם", text: "אני כבר מכין את הניירת. סתם... לרוב. שביתכם יתמלא בשמחה ורק *קצת* כאוס ברמת כיתה." },
+          { name: "ההוא מהבייגל", text: "שניכם תמיד מזמינים בייגל הכל עם גבינת שמנת. זה סימן ליסודות איתנים. מאחל לכם את כל הטוב!" },
+          { name: "השדכנית שלוקחת את כל הקרדיט", text: "שידוך מושלם! ידעתי את זה מהרגע הראשון. בבקשה. מאחלת לכם שנים אינסופיות של אושר זוגי (ואולי תשלחו כמה הפניות בדרך)." },
+          { name: "מאחל אנונימי", text: "שתמיד תמצאו את האפיקומן בחיים המשותפים שלכם, ושהאהבה שלכם תהיה האוצר הגדול מכולם." }
       ];
 
 
@@ -1653,7 +1638,7 @@
           transportationDescription: 'Parking\'s on us! Carpool for extra good vibes (and to make sure you have a designated dance partner).',
           funFactsTitle: 'Fun Facts & Funtastic Tidbits!',
           funFactsDescription: 'Because every epic love story deserves a few surprising footnotes and random trivia. Prepare to be amused!',
-          factDidYouKnownTitle: 'Did You Know?',
+          factDidYouKnowTitle: 'Did You Know?',
           factDidYouKnowText: 'On November 3rd, our wedding day, we\'re not just tying the knot—we\'re also celebrating National Sandwich Day! Coincidence? We think not. Prepare for a love that\'s as layered and satisfying as your favorite deli creation!',
           factMusicalTitle: 'Musical Interlude',
           factMusicalText: 'Prepare your vocal cords! We\'re anticipating a symphony of enthusiastic \'Mazel Tovs!\' and joyous singing that will shake the rafters (in the best way possible, of course!).',
@@ -1709,8 +1694,8 @@
           bovarfenDescription: 'Get ready for sweet treats and even sweeter moments! (Strategic candy-catching highly encouraged.)',
           shevaBrachasTitle: 'Shabbos Sheva Brachas',
           shevaBrachasDescription: 'Extend the simcha on Shabbos with us! Expect more delicious food and even more incredible company.',
-          blessingsTitle: 'Your Heartfelt Wishes & Happy Thoughts!',
-          blessingsDescription: 'Leave your special blessings for Meilech & Tzippy right here!',
+          blessingsTitle: 'Heartfelt Wishes & Happy Thoughts!',
+          blessingsDescription: 'A few words from our nearest and dearest (and some we just made up for fun).',
           btnAddBruchas: 'Add Your Bruchas! ✨',
           yourUserId: 'Your User ID:',
           chatTitle: 'Got a Burning Question?',
@@ -1869,9 +1854,9 @@
           bovarfenDescription: 'התכוננו למתוקים ולרגעים מתוקים עוד יותר! (תפיסת ממתקים אסטרטגית מומלצת בחום רב.)',
           shevaBrachasTitle: 'שבת שבע ברכות',
           shevaBrachasDescription: 'האריכו את השמחה בשבת קודש איתנו! צפו לעוד אוכל משובח ועוד חברה מדהימה. אי אפשר לפספס!',
-          blessingsTitle: 'משאלות ליבכם ומחשבותיכם הטובות עבורנו!', // More personal
-          blessingsDescription: 'שפכו את ליבכם! השאירו ברכה מיוחדת למיילך וציפי כאן על הקיר המכובד שלנו.',
-          btnAddBruchas: 'הוסיפו את הברכות הכי שוות שלכם! ✨', // More engaging
+          blessingsTitle: 'איחולים חמים ומחשבות טובות!',
+          blessingsDescription: 'כמה מילים מהקרובים אלינו (וכמה שהמצאנו בשביל הכיף).',
+          btnAddBruchas: 'הוסיפו את הברכות הכי שוות שלכם! ✨',
           yourUserId: 'מזהה המשתמש שלך:',
           chatTitle: 'יש לכם שאלה ששורפת לכם על קצה הלשון?', // More dramatic/witty
           chatDescription: 'בין אם זה על הוראות הגעה, באיזו שעה כדאי להופיע, או איפה מוצאים את הקוגל הכי טעים – אנחנו כאן (וירטואלית) כדי לעזור! אל תתביישו לשאול.',
@@ -1965,749 +1950,236 @@
 
 
       // --- Utility Functions ---
-
-      /**
-       * Sets the language of the page and updates all translatable elements.
-       * @param {string} lang - The language code ('en' or 'he').
-       */
       function setLanguage(lang) {
           currentLang = lang;
           htmlElement.setAttribute('lang', lang);
+          if (metaTitle) metaTitle.textContent = metaTitle.getAttribute(`data-${lang}-title`) || translations[lang].siteTitle;
+          if (metaDescription) metaDescription.setAttribute('content', metaDescription.getAttribute(`data-${lang}-content`));
+          if (metaKeywords) metaKeywords.setAttribute('content', metaKeywords.getAttribute(`data-${lang}-content`));
 
-          // Update meta tags
-          if (metaTitle) {
-              metaTitle.textContent = metaTitle.getAttribute(`data-${lang}-title`) || translations[lang].siteTitle;
-          }
-          if (metaDescription) {
-              metaDescription.setAttribute('content', metaDescription.getAttribute(`data-${lang}-content`));
-          }
-          if (metaKeywords) {
-              metaKeywords.setAttribute('content', metaKeywords.getAttribute(`data-${lang}-content`));
-          }
-
-          // Update all elements with data-translate-key
           allTranslatableElements.forEach(element => {
               const key = element.getAttribute('data-translate-key');
               const ariaLabelKey = element.getAttribute('data-translate-aria-label-key');
               const placeholderKey = element.getAttribute('data-translate-placeholder-key');
 
-              if (key && translations[lang][key]) {
-                  element.textContent = translations[lang][key]; // Now, always use textContent for direct translations
-              }
-              if (ariaLabelKey && translations[lang][ariaLabelKey]) {
-                  element.setAttribute('aria-label', translations[lang][ariaLabelKey]);
-              }
-              if (placeholderKey && translations[lang][placeholderKey]) {
-                  element.setAttribute('placeholder', translations[lang][placeholderKey]);
-              }
+              if (key && translations[lang][key]) element.innerHTML = translations[lang][key];
+              if (ariaLabelKey && translations[lang][ariaLabelKey]) element.setAttribute('aria-label', translations[lang][ariaLabelKey]);
+              if (placeholderKey && translations[lang][placeholderKey]) element.setAttribute('placeholder', translations[lang][placeholderKey]);
           });
 
-          // Update language button text
           langToggleButton.textContent = (currentLang === 'en') ? 'עברית' : 'English';
-
-          // Re-render initial blessings if currently displayed to update names (if they are translated)
-          // This also ensures new blessings picked from Firebase apply the correct timestamp format.
-          if (!initialBlessingsInterval) { // Only if real blessings are not active
-             displayInitialBlessings();
-          }
-
-          // Force a re-calculation of countdown elements to update any text there
+          displayCuratedBlessings();
           updateAllCountdownElements();
       }
 
-      /**
-       * Shows a temporary message box at the bottom of the screen.
-       * @param {string} key - The translation key for the message to display.
-       * @param {number} duration - How long to display the message in milliseconds.
-       */
       function showMessageBox(key, duration = 5000) {
-          // If 'key' is directly the message (e.g., from countdownJokes), use it as is
-          // Otherwise, look it up in the translations object
           const messageText = translations[currentLang][key] || key;
           messageBox.textContent = messageText;
           messageBox.classList.add('show');
-          setTimeout(() => {
-              messageBox.classList.remove('show');
-          }, duration);
+          setTimeout(() => messageBox.classList.remove('show'), duration);
       }
 
-      /**
-       * Shows a modal overlay.
-       * @param {HTMLElement} modalElement - The modal overlay element to show.
-       */
-      function showModal(modalElement) {
-          modalElement.classList.add('show');
-      }
+      function showModal(modalElement) { if(modalElement) modalElement.classList.add('show'); }
+      function hideModal(modalElement) { if(modalElement) modalElement.classList.remove('show'); }
+      function triggerConfetti(options = {}) { if(typeof confetti === 'function') confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#B85C3A', '#1E2C4F', '#84A98C', '#F2F4F7'], ...options }); }
 
-      /**
-       * Hides a modal overlay.
-       * @param {HTMLElement} modalElement - The modal overlay element to hide.
-       */
-      function hideModal(modalElement) {
-          modalElement.classList.remove('show');
-      }
-
-      /**
-       * Triggers a confetti animation.
-       * @param {Object} [options] - Optional parameters for confetti.
-       * @param {number} [options.x] - Normalized x-coordinate (0-1).
-       * @param {number} [options.y] - Normalized y-coordinate (0-1).
-       * @param {Array<string>} [options.colors] - Array of hex color codes.
-       */
-      function triggerConfetti(options = {}) {
-        confetti({
-          particleCount: options.particleCount || 100,
-          spread: options.spread || 70,
-          origin: options.origin || { y: 0.6 },
-          colors: options.colors || ['#B85C3A', '#1E2C4F', '#84A98C', '#F2F4F7']
-        });
-      }
-
-      /**
-       * Triggers localized confetti for a specific element.
-       * @param {HTMLElement} targetElement - The element to trigger confetti around.
-       * @param {Array<string>} [colors] - Optional array of hex color codes for confetti.
-       */
       function triggerLocalizedConfetti(targetElement, colors) {
           const rect = targetElement.getBoundingClientRect();
           const originX = (rect.left + rect.right) / 2 / window.innerWidth;
           const originY = (rect.top + rect.bottom) / 2 / window.innerHeight;
-
-          confetti({
-              particleCount: 50,
-              spread: 90,
-              origin: { x: originX, y: originY },
-              colors: colors || ['#B85C3A', '#1E2C4F', '#84A98C']
-          });
+          triggerConfetti({ origin: { x: originX, y: originY }, colors: colors });
       }
-
-      /**
-       * Reveals a random joke/quote from the countdownJokes array in a message box.
-       */
-      function revealCountdownJoke() {
-          const jokesArray = (currentLang === 'en') ? countdownJokes_en : countdownJokes_he;
-          let randomIndex;
-          do {
-              randomIndex = Math.floor(Math.random() * jokesArray.length);
-          } while (randomIndex === lastJokeIndex && jokesArray.length > 1); // Avoid repeating the same joke if possible
-
-          const joke = jokesArray[randomIndex];
-          showMessageBox(joke); // Pass the joke directly, not a key
-      }
-
 
       // --- Countdown & Progress Logic ---
-
-      /**
-       * Applies dynamic styles to individual countdown cards based on their own value.
-       * Also applies a global flashing effect when very close to 0 seconds.
-       * @param {number} weeksVal - Current weeks value.
-       * @param {number} daysVal - Current days (remainder) value.
-       * @param {number} hoursVal - Current hours value.
-       * @param {number} minutesVal - Current minutes value.
-       * @param {number} secondsVal - Current seconds value.
-       * @param {number} totalDiffMs - Total milliseconds remaining until wedding.
-       */
-      function applyIndividualCountdownStyles(weeksVal, daysVal, hoursVal, minutesVal, secondsVal, totalDiffMs) {
-        const countdownElements = [
-          { card: weeksCard, value: weeksVal },
-          { card: daysCard, value: daysVal },
-          { card: hoursCard, value: hoursVal },
-          { card: minutesCard, value: minutesVal },
-          { card: secondsCard, value: secondsVal }
-        ];
-
-        // Define color and shadow properties for different intensity levels
-        const intensityColors = {
-            default: { color: 'var(--color-secondary-sage)', border: 'transparent', shadow: '0 6px 20px rgba(0, 0, 0, 0.08)' },
-            lessIntense: { color: 'var(--color-accent-copper)', border: 'var(--color-accent-copper)', shadow: '0 0 8px rgba(0,0,0,0.1), 0 0 10px var(--color-accent-copper)' }, // For < 20
-            mediumIntense: { color: 'var(--color-primary-navy)', border: 'var(--color-primary-navy)', shadow: '0 0 10px rgba(0,0,0,0.15), 0 0 15px var(--color-primary-navy)' }, // For < 10
-            mostIntense: { color: 'var(--color-accent-copper)', border: 'var(--color-primary-navy)', shadow: '0 0 15px rgba(0,0,0,0.2), 0 0 20px var(--color-primary-navy)' } // For < 5
-        };
-
-        // Apply styles based on individual value thresholds
-        countdownElements.forEach(item => {
-          const card = item.card;
-          const val = item.value; // The current number in the box
-          const valueEl = card.querySelector('.countdown-value');
-
-          // Reset styles first to ensure changes are applied correctly
-          card.style.borderColor = '';
-          card.style.boxShadow = '';
-          valueEl.style.color = '';
-          card.classList.remove('countdown-flash'); // Remove flash for individual logic first
-
-          let currentStyle = intensityColors.default;
-
-          if (val <= 4 && val >= 0) { // 0 to 4 (most intense before flashing)
-            currentStyle = intensityColors.mostIntense;
-          } else if (val <= 9 && val >= 5) { // 5 to 9
-            currentStyle = intensityColors.mediumIntense;
-          } else if (val <= 19 && val >= 10) { // 10 to 19
-            currentStyle = intensityColors.lessIntense;
+      function setCountdownIntensity(weeksLeft) {
+          if (!countdownGridWrapper) return;
+          countdownGridWrapper.classList.remove('intensity-low', 'intensity-medium', 'intensity-high', 'intensity-flash');
+          if (weeksLeft < 1) {
+              countdownGridWrapper.classList.add('intensity-flash');
+          } else if (weeksLeft <= 4) {
+              countdownGridWrapper.classList.add('intensity-high');
+          } else if (weeksLeft <= 10) {
+              countdownGridWrapper.classList.add('intensity-medium');
+          } else {
+              countdownGridWrapper.classList.add('intensity-low');
           }
-          // If none of the above, it remains default (sage)
-
-          // Apply individual styles
-          card.style.setProperty('border-color', currentStyle.border);
-          card.style.setProperty('box-shadow', currentStyle.shadow);
-          valueEl.style.setProperty('color', currentStyle.color);
-        });
-
-        // Global flashing for less than 20 seconds total, overriding individual animations if active
-        const twentySecondsInMs = 20 * 1000;
-        if (totalDiffMs > 0 && totalDiffMs < twentySecondsInMs) {
-          countdownElements.forEach(item => {
-            item.card.classList.add('countdown-flash');
-            // The CSS animation `textFlash` will handle the color for `.countdown-value` when `.countdown-flash` is present
-          });
-        }
       }
 
-      /**
-       * Calculates and updates all countdown elements.
-       * Note: Progress bar animation logic moved to animateProgressBar.
-       */
       function updateAllCountdownElements() {
-        const now    = Date.now();
-        const diff   = WEDDING_TS - now; // Time remaining in milliseconds
-        const dTotal = Math.max(0, Math.floor(diff / (1000*60*60*24))); // Total full days remaining
-
-        const w      = Math.floor(dTotal / 7); // Weeks
-        const dRem   = dTotal % 7; // Remaining days in current week
-        const h      = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-        const m      = Math.floor((diff % (1000*60*60)) / (1000*60));
-        const s      = Math.floor((diff % (1000*60)) / 1000);
-
-        // Update prominent total days on countdown page
-        if (daysLeftCountdownEl) {
-          daysLeftCountdownEl.innerText = dTotal;
-        }
-
-        // Update detailed countdown numbers
-        weeksEl.innerText    = w;
-        daysEl.innerText     = dRem;
-        hoursEl.innerText    = h;
-        minsEl.innerText     = m;
-        secsEl.innerText     = s;
-
-        // Update hidden total days for confetti trigger (still uses totalEl)
-        totalDaysHiddenEl.innerText = dTotal;
-
-        // Calculate and update total minutes
-        const totalMinutes = Math.max(0, Math.floor(diff / (1000 * 60))); // Total minutes remaining
-        if (totalMinutesDisplayEl) {
-            totalMinutesDisplayEl.innerText = totalMinutes.toLocaleString(); // Format with commas
-        }
-
-        // Apply dynamic styles based on individual and total remaining time
-        applyIndividualCountdownStyles(w, dRem, h, m, s, diff);
-
-        // If wedding passed, ensure countdown is zeroed out
+        const now = Date.now();
+        const diff = WEDDING_TS - now;
         if (diff <= 0) {
-          clearInterval(countdownInterval); // countdownInterval is defined in DOMContentLoaded scope
+          if (countdownInterval) clearInterval(countdownInterval);
           if (daysLeftCountdownEl) daysLeftCountdownEl.innerText = "0";
-          totalDaysHiddenEl.innerText = "0";
-          weeksEl.innerText = "0";
-          daysEl.innerText = "0";
-          hoursEl.innerText = "0";
-          minsEl.innerText = "0";
-          secsEl.innerText = "0";
-          // Also set progress to 100% and hide save date button if it's the wedding day or after
-          percentDoneEl.innerText = "100%";
-          // Update hero tagline for passed wedding
+          if (totalDaysHiddenEl) totalDaysHiddenEl.innerText = "0";
+          if(weeksEl) weeksEl.innerText = "0"; if(daysEl) daysEl.innerText = "0"; if(hoursEl) hoursEl.innerText = "0"; if(minsEl) minsEl.innerText = "0"; if(secsEl) secsEl.innerText = "0";
+          if(percentDoneEl) percentDoneEl.innerText = "100%";
           const heroTaglineElement = document.querySelector('[data-translate-key="heroTagline"]');
-          if (heroTaglineElement) {
-              heroTaglineElement.textContent = translations[currentLang].weddingPassed || "They tied the knot! 🎉";
-          }
-          saveDateBtn.style.display = "none";
-          triggerConfetti(); // Final burst of confetti
+          if (heroTaglineElement) heroTaglineElement.textContent = translations[currentLang].weddingPassed || "They tied the knot! 🎉";
+          if(saveDateBtn) saveDateBtn.style.display = "none";
+          setCountdownIntensity(0);
+          return;
         }
+        const dTotal = Math.floor(diff / (1000*60*60*24));
+        const w = Math.floor(dTotal / 7);
+        const dRem = dTotal % 7;
+        const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+        const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+        const s = Math.floor((diff % (1000*60)) / 1000);
+
+        if (daysLeftCountdownEl) daysLeftCountdownEl.innerText = dTotal;
+        if (weeksEl) weeksEl.innerText = w; if (daysEl) daysEl.innerText = dRem; if (hoursEl) hoursEl.innerText = h; if (minsEl) minsEl.innerText = m; if (secsEl) secsEl.innerText = s;
+        if (totalDaysHiddenEl) totalDaysHiddenEl.innerText = dTotal;
+        if (totalMinutesDisplayEl) totalMinutesDisplayEl.innerText = Math.floor(diff / (1000 * 60)).toLocaleString();
+        setCountdownIntensity(w);
       }
 
-      /**
-       * Sets up the Google Calendar "Save the Date" link.
-       */
       function setupSaveDate() {
-        // Updated: calendarTitle now explicitly passed to translations or uses fallback
-        const title    = encodeURIComponent(translations[currentLang].calendarTitle || "Meilech & Tzippy’s Wedding!");
-        const details = encodeURIComponent(
-          (currentLang === 'en' ? "Join us for the chuppah, seudah, dancing & simcha!\nVenue: Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY" : "הצטרפו אלינו לחופה, לסעודה, לריקודים ולשמחה!\nמיקום: עטרת חיה שרה, 106 S Madison Ave, Spring Valley, NY")
-        );
-        const loc      = encodeURIComponent("Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY");
-        // Dates format:YYYYMMDDTHHMMSSZ/YYYYMMDDTHHMMSSZ
-        const start    = new Date(WEDDING_TS).toISOString().replace(/-|:|\.\d+/g,"");
-        const end      = new Date(WEDDING_TS + 4*60*60*1000).toISOString().replace(/-|:|\.\d+/g,""); // 4 hours after wedding start
-
-        saveDateBtn.href  =
-          `https://calendar.google.com/calendar/render?action=TEMPLATE` +
-          `&text=${title}` +
-          `&dates=${start}/${end}` +
-          `&details=${details}` +
-          `&location=${loc}` +
-          `&sf=true&output=xml`;
+        const title = encodeURIComponent(translations[currentLang].siteTitle || "Meilech & Tzippy’s Wedding!");
+        const details = encodeURIComponent((currentLang === 'en' ? "Join us for the chuppah, seudah, dancing & simcha!" : "הצטרפו אלינו לחופה, לסעודה, לריקודים ולשמחה!"));
+        const loc = encodeURIComponent("Ateres Chaya Surah, 106 S Madison Ave, Spring Valley, NY");
+        const start = new Date(WEDDING_TS).toISOString().replace(/-|:|\.\d+/g,"");
+        const end = new Date(WEDDING_TS + 4*60*60*1000).toISOString().replace(/-|:|\.\d+/g,"");
+        if(saveDateBtn) saveDateBtn.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${loc}&sf=true&output=xml`;
       }
 
-      /**
-       * Animates the progress bar smoothly and continuously.
-       * Calculates the current target percentage on each frame.
-       */
       function animateProgressBar() {
         const now = Date.now();
         const span = WEDDING_TS - ENGAGEMENT_TS;
         const done = now - ENGAGEMENT_TS;
         const targetPercent = Math.min(100, Math.max(0, (done / span) * 100));
-
-        const animationSpeed = 0.02; // Slower speed for a more subtle, constant fill effect
-
-        // Interpolate current percentage towards the newly calculated target percentage
-        currentAnimatedPercent += (targetPercent - currentAnimatedPercent) * animationSpeed;
-
-        // Clamp the value between 0 and 100
+        currentAnimatedPercent += (targetPercent - currentAnimatedPercent) * 0.02;
         currentAnimatedPercent = Math.max(0, Math.min(100, currentAnimatedPercent));
-
-        // Apply the animated width and update percentage text
-        progressFillEl.style.width = currentAnimatedPercent + "%";
-        percentDoneEl.innerText = `${Math.round(currentAnimatedPercent)}%`;
-
-        // Request next animation frame only if the wedding hasn't passed and there's still progress to animate
-        if (now < WEDDING_TS) {
-            requestAnimationFrame(animateProgressBar);
-        } else {
-            // Ensure it's exactly 100% and hidden if wedding passed
-            progressFillEl.style.width = "100%";
-            percentDoneEl.innerText = "100%";
-        }
+        if (progressFillEl) progressFillEl.style.width = currentAnimatedPercent + "%";
+        if (percentDoneEl) percentDoneEl.innerText = `${Math.round(currentAnimatedPercent)}%`;
+        if (now < WEDDING_TS) requestAnimationFrame(animateProgressBar); else { if(progressFillEl) progressFillEl.style.width = "100%"; if(percentDoneEl) percentDoneEl.innerText = "100%"; }
       }
-
 
       // --- Blessings Wall Logic ---
-
-      /**
-       * Creates and appends a blessing card to the wall.
-       * @param {object} blessing - The blessing object {name, text, timestamp}.
-       * @param {boolean} isInitial - True if this is an initial placeholder blessing.
-       */
-      function createBlessingCard(blessing, isInitial = false) {
+      function createBlessingCard(blessing) {
         const div = document.createElement('div');
         div.className = 'blessing-card fade-in-hidden relative overflow-hidden group';
-        // Only show timestamp for real blessings, not initial ones
-        const date = blessing.timestamp && !isInitial ? new Date(blessing.timestamp.seconds * 1000).toLocaleString(currentLang === 'en' ? 'en-US' : 'he-IL') : '';
         div.innerHTML = `
           <p class="relative z-10 text-center font-body text-lg">${blessing.text}</p>
-          <p class="relative z-10 text-center text-sm font-semibold mt-4 text-primary-navy group-hover:text-white transition-colors duration-300">- ${blessing.name} ${date ? `<span class="text-xs">(${date})</span>` : ''}</p>
+          <p class="relative z-10 text-center text-sm font-semibold mt-4 text-primary-navy group-hover:text-white transition-colors duration-300">- ${blessing.name}</p>
           <div class="absolute inset-0 bg-accent-copper opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform scale-x-0 group-hover:scale-x-100 origin-left rounded-2xl"></div>
         `;
-        blessingWall.prepend(div); // Add new blessings to the top
-        // Trigger fade-in animation
-        setTimeout(() => {
-          div.classList.add('fade-in-visible');
-          div.classList.remove('fade-in-hidden');
-        }, 100);
-      }
-
-      /**
-       * Displays the pre-saved blessings and starts their rotation.
-       */
-      function displayInitialBlessings() {
-          const initialData = (currentLang === 'en') ? initialBlessingsData_en : initialBlessingsData_he;
-          blessingWall.innerHTML = ''; // Clear any existing content
-          initialData.forEach(blessing => createBlessingCard(blessing, true)); // Pass true for isInitial
-
-          // Start rotation only if not already running
-          if (!initialBlessingsInterval) {
-              initialBlessingsInterval = setInterval(() => {
-                  const cards = blessingWall.querySelectorAll('.blessing-card');
-                  if (cards.length === 0) {
-                      clearInterval(initialBlessingsInterval);
-                      initialBlessingsInterval = null;
-                      return;
-                  }
-
-                  // Remove highlight from previous card
-                  if (cards[currentHighlightedBlessingIndex]) {
-                      cards[currentHighlightedBlessingIndex].classList.remove('highlighted');
-                  }
-
-                  // Move to next card, loop back if at end
-                  currentHighlightedBlessingIndex = (currentHighlightedBlessingIndex + 1) % cards.length;
-
-                  // Add highlight to current card
-                  if (cards[currentHighlightedBlessingIndex]) {
-                      cards[currentHighlightedBlessingIndex].classList.add('highlighted');
-                  }
-              }, 3000); // Change every 3 seconds
-          }
-      }
-
-      /**
-       * Fetches and listens for real-time updates to blessings from Firestore.
-       */
-      function setupBlessingsListener() {
-        if (!db || !isAuthReady) {
-            console.warn("Firestore not initialized or auth not ready for blessings listener.");
-            displayInitialBlessings(); // Always display initial if not ready
-            return;
+        if (blessingWall) {
+          blessingWall.appendChild(div);
+          setTimeout(() => { div.classList.add('fade-in-visible'); div.classList.remove('fade-in-hidden'); }, 100);
         }
-
-        // Display initial blessings while waiting for Firebase data to load initially
-        displayInitialBlessings(); // Show initial blessings as a fallback/loading state
-
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const q = query(collection(db, `/artifacts/${appId}/public/data/wedding_blessings`));
-
-        onSnapshot(q, (snapshot) => {
-            const blessings = [];
-            snapshot.forEach(doc => {
-                blessings.push(doc.data());
-            });
-
-            // If real data exists, stop initial blessing rotation and clear wall
-            if (blessings.length > 0) {
-                if (initialBlessingsInterval) {
-                    clearInterval(initialBlessingsInterval);
-                    initialBlessingsInterval = null;
-                }
-                blessingWall.innerHTML = ''; // Clear initial blessings
-                blessings.sort((a, b) => {
-                    const tsA = a.timestamp ? a.timestamp.seconds : 0;
-                    const tsB = b.timestamp ? b.timestamp.seconds : 0;
-                    return tsB - tsA; // Newest first
-                });
-                blessings.forEach(blessing => createBlessingCard(blessing));
-
-                // Trigger fade-in for newly added real blessings
-                blessingWall.querySelectorAll('.fade-in-hidden').forEach(el => {
-                    el.classList.add('fade-in-visible');
-                    el.classList.remove('fade-in-hidden');
-                });
-            } else {
-                // If no real blessings yet, ensure initial blessings are displayed and rotating
-                displayInitialBlessings();
-            }
-        }, (error) => {
-            console.error("Error listening to blessings: ", error);
-            // Fallback to initial blessings if there's an error after trying to load real data
-            displayInitialBlessings();
-        });
       }
 
-      /**
-       * Handles blessing form submission.
-       * @param {Event} event - The form submission event.
-       */
-      async function handleBlessingSubmit(event) {
-          event.preventDefault();
-
-          if (!db || !isAuthReady) {
-              showMessageBox("authNotReady", 3000);
-              return;
-          }
-
-          const name = blessingNameInput.value.trim();
-          const text = blessingTextInput.value.trim();
-
-          if (!name || !text) {
-              showMessageBox("fillNameBlessing", 2000);
-              return;
-          }
-
-          try {
-              const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-              await addDoc(collection(db, `/artifacts/${appId}/public/data/wedding_blessings`), {
-                  name: name,
-                  text: text,
-                  timestamp: serverTimestamp(), // Firestore automatically adds a server-side timestamp
-                  userId: userId // Store the user ID for debugging/moderation
-              });
-              showMessageBox("yourBruchaAdded"); // Removed emoji
-              blessingNameInput.value = '';
-              blessingTextInput.value = '';
-              hideModal(blessingModalOverlay); // Hide the modal after submission
-          } catch (e) {
-              console.error("Error adding blessing: ", e);
-              showMessageBox("failedSendBrucha", 3000);
-          }
+      function displayCuratedBlessings() {
+          if (!blessingWall) return;
+          const blessingData = (currentLang === 'en') ? curatedBlessings_en : curatedBlessings_he;
+          // Shuffle the array and take the first 4
+          const shuffled = [...blessingData].sort(() => 0.5 - Math.random());
+          const selectedBlessings = shuffled.slice(0, 4);
+          
+          blessingWall.innerHTML = ''; // Clear existing blessings
+          selectedBlessings.forEach(blessing => createBlessingCard(blessing));
       }
 
-
-      // --- Contact Form Logic ---
-
-      /**
-       * Handles contact form submission via AJAX (no redirect, no reCAPTCHA tab).
-       * @param {Event} event - The form submission event.
-       */
+      
+      // --- Contact Form & Firebase Init --- (No changes to logic, just ensuring robustness)
       async function handleContactSubmit(event) {
-          event.preventDefault(); // Prevent default form submission and page reload
-
-          const name = chatNameInput.value.trim();
-          const email = chatEmailInput.value.trim();
-          const question = chatQuestionInput.value.trim();
-
-          if (!name || !email || !question) {
-              showMessageBox("fillAllFields", 3000);
-              return;
-          }
-
+          event.preventDefault();
+          const name = contactForm.querySelector('[name="name"]').value.trim();
+          const email = contactForm.querySelector('[name="email"]').value.trim();
+          const question = contactForm.querySelector('[name="question"]').value.trim();
+          if (!name || !email || !question) { showMessageBox("fillAllFields", 3000); return; }
           const formData = new FormData(contactForm);
-          const payload = {};
-          for (let pair of formData.entries()) {
-              payload[pair[0]] = pair[1];
-          }
-          // Manually add the _captcha field with false to disable reCAPTCHA (requires domain verification on Formsubmit)
-          payload['_captcha'] = false;
-          payload['_subject'] = "Wedding Website Inquiry!"; // Custom subject for the email
-
           try {
-              // Using Formsubmit's AJAX endpoint
               const response = await fetch('https://formsubmit.co/ajax/elimelechmoster@gmail.com', {
                   method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json',
-                      'Accept': 'application/json'
-                  },
-                  body: JSON.stringify(payload)
+                  headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                  body: JSON.stringify(Object.fromEntries(formData))
               });
-
-              if (response.ok) {
-                  showMessageBox("messageSentSuccess"); // Standardized duration
-                  contactForm.reset(); // Clear the form fields
-              } else {
-                  const errorData = await response.json();
-                  console.error('Formsubmit error:', errorData);
-                  showMessageBox("messageSentError");
-              }
-          } catch (error) {
-              console.error('Network or fetch error:', error);
-              showMessageBox("networkError");
-          }
+              if (response.ok) { showMessageBox("messageSentSuccess"); contactForm.reset(); }
+              else { throw new Error('Form submission failed'); }
+          } catch (error) { console.error('Formsubmit error:', error); showMessageBox("messageSentError"); }
       }
-
-
-      // --- Firebase Initialization and Auth ---
-      async function initializeFirebase() {
-          try {
-              const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-              app = initializeApp(firebaseConfig);
-              db = getFirestore(app);
-              auth = getAuth(app);
-
-              currentUserIdDisplay.textContent = translations[currentLang].loading;
-
-              // Listen for auth state changes
-              onAuthStateChanged(auth, async (user) => {
-                  if (user) {
-                      // User is signed in.
-                      userId = user.uid;
-                      currentUserIdDisplay.textContent = userId;
-                      isAuthReady = true;
-                      setupBlessingsListener(); // Start listening for blessings messages once authenticated
-                  } else {
-                      // User is signed out, try to sign in anonymously
-                      try {
-                          if (typeof __initial_auth_token !== 'undefined') {
-                              await signInWithCustomToken(auth, __initial_auth_token);
-                          } else {
-                              await signInAnonymously(auth);
-                          }
-                          // This will trigger onAuthStateChanged again
-                      } catch (error) {
-                          console.error("Firebase Auth Error:", error);
-                          currentUserIdDisplay.textContent = translations[currentLang].authError;
-                          showMessageBox("authFailed");
-                          isAuthReady = false;
-                      }
-                  }
-              });
-          } catch (error) {
-              console.error("Firebase initialization failed:", error);
-              showMessageBox("authFailed");
-              isAuthReady = false;
-          }
-      }
-
-
-      // --- Intersection Observer for Scroll Fade-in Animations ---
-      const observerOptions = {
-        root: null, // viewport
-        rootMargin: '0px',
-        threshold: 0.1 // Trigger when 10% of the item is visible
-      };
-
-      const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('fade-in-visible');
-            entry.target.classList.remove('fade-in-hidden');
-            // For elements that only need to fade in once, uncomment next line:
-            // observer.unobserve(entry.target);
-          }
-        });
-      }, observerOptions);
-
 
       // --- Main DOM Content Loaded Event Listener ---
       document.addEventListener("DOMContentLoaded", () => {
-        // Initialize hero content fade-in animation
-        heroContent.classList.add('opacity-100', 'scale-100');
-
-        // Set initial language based on browser preference or default to English
         const browserLang = navigator.language.split('-')[0];
-        if (browserLang === 'he') {
-            setLanguage('he');
-        } else {
-            setLanguage('en');
-        }
-
-        // Set up countdown timer and start updating every second
+        setLanguage(browserLang === 'he' ? 'he' : 'en');
+        if(heroContent) heroContent.classList.add('opacity-100', 'scale-100');
+        
         setupSaveDate();
-        updateAllCountdownElements(); // Initial update
-        // The countdown interval is stored in a global variable within this IIFE
-        // to be accessible by clearInterval.
-        const countdownInterval = setInterval(updateAllCountdownElements, 1000); // Regular updates
+        updateAllCountdownElements();
+        countdownInterval = setInterval(updateAllCountdownElements, 1000);
+        requestAnimationFrame(animateProgressBar);
+        displayCuratedBlessings(); // Display curated blessings on load
 
-        // Start progress bar animation loop
-        requestAnimationFrame(animateProgressBar); // Starts the smooth animation
+        // Event Listeners
+        hamburgerMenu.addEventListener('click', () => navLinksContainer.classList.toggle('open'));
+        navLinks.forEach(link => link.addEventListener('click', () => navLinksContainer.classList.remove('open')));
+        langToggleButton.addEventListener('click', () => setLanguage(currentLang === 'en' ? 'he' : 'en'));
+        window.addEventListener('scroll', () => navHeader.classList.toggle('scrolled', window.scrollY > 50));
+        if (totalDaysHiddenEl) totalDaysHiddenEl.addEventListener('click', () => triggerConfetti({ particleCount: 150 }));
+        if (heroContent) heroContent.querySelector('h1').addEventListener('click', () => triggerConfetti({ particleCount: 150 }));
+        if(confettiTriggerSpot) confettiTriggerSpot.addEventListener('click', () => triggerConfetti({ particleCount: 200 }));
+        
+        // Event Delegation for Countdown Cards
+        if(countdownGridWrapper) {
+          countdownGridWrapper.addEventListener('click', (e) => {
+            const card = e.target.closest('.countdown-card');
+            if(card && !card.classList.contains('is-flipped')) {
+                // Unflip any other card that might be open
+                document.querySelectorAll('.countdown-card.is-flipped').forEach(flippedCard => {
+                    flippedCard.classList.remove('is-flipped');
+                });
+                
+                triggerLocalizedConfetti(card);
 
-        // --- Event Listeners for Interactivity ---
+                // Get a new joke and set it
+                const jokesArray = (currentLang === 'en') ? countdownJokes_en : countdownJokes_he;
+                let randomIndex;
+                do { randomIndex = Math.floor(Math.random() * jokesArray.length); }
+                while (randomIndex === lastJokeIndex && jokesArray.length > 1);
+                lastJokeIndex = randomIndex;
+                const jokeTextEl = card.querySelector('.joke-text');
+                if(jokeTextEl) jokeTextEl.textContent = jokesArray[randomIndex];
 
-        // Toggle mobile navigation menu
-        hamburgerMenu.addEventListener('click', () => {
-          navLinksContainer.classList.toggle('open');
-          // Optional: Add/remove aria-expanded attribute for accessibility
-          const isOpen = navLinksContainer.classList.contains('open');
-          hamburgerMenu.setAttribute('aria-expanded', isOpen);
-        });
-
-        // Close mobile nav when a link is clicked
-        navLinks.forEach(link => {
-          link.addEventListener('click', () => {
-            if (navLinksContainer.classList.contains('open')) {
-              navLinksContainer.classList.remove('open');
-              hamburgerMenu.setAttribute('aria-expanded', false);
-            }
-          });
-        });
-
-        // Language toggle button functionality
-        langToggleButton.addEventListener('click', () => {
-            setLanguage(currentLang === 'en' ? 'he' : 'en');
-            // Re-setup save date link to ensure translated title/details
-            setupSaveDate();
-        });
-
-
-        // Trigger confetti on specific elements
-        totalDaysHiddenEl.addEventListener('click', () => triggerConfetti({ particleCount: 150 }));
-        heroContent.querySelector('h1').addEventListener('click', () => triggerConfetti({ particleCount: 150 }));
-        confettiTriggerSpot.addEventListener('click', () => triggerConfetti({ particleCount: 200 }));
-
-        // Add click listeners to each countdown card for jokes/quotes AND confetti
-        function handleCountdownCardClick(event) {
-            revealCountdownJoke(); // Show a random joke/quote
-            triggerLocalizedConfetti(event.currentTarget); // Trigger confetti on the clicked card
-        }
-        weeksCard.addEventListener('click', handleCountdownCardClick);
-        daysCard.addEventListener('click', handleCountdownCardClick);
-        hoursCard.addEventListener('click', handleCountdownCardClick);
-        minutesCard.addEventListener('click', handleCountdownCardClick);
-        secondsCard.addEventListener('click', handleCountdownCardClick);
-
-        // Event listener for the progress bar button (enhanced feedback)
-        progressButton.addEventListener('click', () => {
-          const rect = progressButton.getBoundingClientRect();
-          triggerConfetti({
-            origin: {
-              x: (rect.left + rect.right) / 2 / window.innerWidth,
-              y: (rect.top + rect.bottom) / 2 / window.innerHeight
-            },
-            particleCount: 75,
-            spread: 60,
-            colors: ['#B85C3A', '#1E2C4F', '#84A98C']
-          });
-          showMessageBox("excitementOffCharts"); // Standardized duration
-        });
-
-        // Event listener for Save the Date button (enhanced feedback)
-        saveDateBtn.addEventListener('click', () => {
-            showMessageBox("markedCalendar"); // Standardized duration
-        });
-
-        // Blessing Modal Event Listeners
-        sendBruchaBtn.addEventListener('click', () => showModal(blessingModalOverlay));
-        closeBlessingModalBtn.addEventListener('click', () => hideModal(blessingModalOverlay));
-        blessingModalOverlay.addEventListener('click', (event) => {
-            // Close modal if user clicks outside the content (on the overlay itself)
-            if (event.target === blessingModalOverlay) {
-                hideModal(blessingModalOverlay);
-            }
-        });
-        blessingForm.addEventListener('submit', handleBlessingSubmit);
-
-        // Sticky navigation header behavior on scroll
-        window.addEventListener('scroll', () => {
-          if (window.scrollY > 50) { // After scrolling 50px
-            navHeader.classList.add('scrolled');
-          } else {
-            navHeader.classList.remove('scrolled');
-          }
-        });
-
-        // Contact Form Event Listener (now uses AJAX for submission)
-        contactForm.addEventListener('submit', handleContactSubmit);
-
-        // Secret message trigger for Easter egg (enhanced messaging)
-        secretMessageTrigger.addEventListener('click', () => {
-            // Clear any existing timeout to prevent previous message from disappearing prematurely
-            if (secretMessageTimeout) {
-                clearTimeout(secretMessageTimeout);
-            }
-
-            const currentSecretMessages = (currentLang === 'en') ? secretMessages_en : secretMessages_he;
-            // Update content with the next secret message from the array
-            secretMessageContent.textContent = currentSecretMessages[currentSecretMessageIndex];
-            // Cycle to the next message, looping back to the start if at the end
-            currentSecretMessageIndex = (currentSecretMessageIndex + 1) % currentSecretMessages.length;
-
-            // Reveal the message with a smooth transition
-            secretMessageContent.classList.remove('hidden');
-            // Force reflow for CSS transition to apply correctly if element was hidden
-            void secretMessageContent.offsetWidth;
-            secretMessageContent.classList.add('revealed');
-
-            // Set a timeout to automatically hide the message after a delay
-            secretMessageTimeout = setTimeout(() => {
-                secretMessageContent.classList.remove('revealed');
-                // After the fade-out transition, completely hide the element
+                // Flip the clicked card
+                card.classList.add('is-flipped');
+                
+                // Set a timer to flip it back
                 setTimeout(() => {
-                    secretMessageContent.classList.add('hidden');
-                }, 500); // This duration should match the CSS transition duration
-            }, 10000); // Message visible for 10 seconds
-        });
-
-
-        // Initialize Intersection Observer for scroll-fade-in animations
-        elementsToFadeIn.forEach(el => {
-            el.classList.add('fade-in-hidden'); // Ensure initial hidden state
-            observer.observe(el);
-        });
-
-        // Observe blessing cards dynamically added/removed (for fade-in and highlight logic)
-        new MutationObserver((mutationsList) => {
-            for (const mutation of mutationsList) {
-                if (mutation.type === 'childList') {
-                    mutation.addedNodes.forEach(node => {
-                        if (node.nodeType === 1 && node.classList.contains('blessing-card')) {
-                            observer.observe(node); // Observe new blessing cards
-                        }
-                    });
-                }
+                    card.classList.remove('is-flipped');
+                }, 4000); // Flips back after 4 seconds
             }
-        }).observe(blessingWall, { childList: true });
+          });
+        }
+        
+        if (progressButton) progressButton.addEventListener('click', () => showMessageBox("excitementOffCharts"));
+        if (saveDateBtn) saveDateBtn.addEventListener('click', () => showMessageBox("markedCalendar"));
+        if (contactForm) contactForm.addEventListener('submit', handleContactSubmit);
+        if(secretMessageTrigger) secretMessageTrigger.addEventListener('click', () => {
+            if (secretMessageTimeout) clearTimeout(secretMessageTimeout);
+            const messages = (currentLang === 'en') ? secretMessages_en : secretMessages_he;
+            let nextIndex;
+            do { nextIndex = Math.floor(Math.random() * messages.length); }
+            while(messages[nextIndex] === secretMessageContent.textContent && messages.length > 1);
+            secretMessageContent.textContent = messages[nextIndex];
+            secretMessageContent.classList.remove('hidden');
+            setTimeout(() => secretMessageContent.classList.add('revealed'), 10);
+            secretMessageTimeout = setTimeout(() => secretMessageContent.classList.remove('revealed'), 10000);
+        });
 
-
-        // Initialize Firebase and Authentication
-        initializeFirebase();
+        // Intersection Observer
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('fade-in-visible');
+              entry.target.classList.remove('fade-in-hidden');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-in-hidden').forEach(el => observer.observe(el));
       });
     })();
   </script>
