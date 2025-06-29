@@ -223,17 +223,24 @@
       left: -50%; /* Start off-screen */
       width: 200%; /* Cover entire area when animated */
       height: 200%; /* Cover entire area when animated */
-      background: radial-gradient(circle at 60% 40%, rgba(184, 92, 58, 0.15) 0%, transparent 40%), /* Increased opacity */
-                  radial-gradient(circle at 40% 60%, rgba(30, 44, 79, 0.15) 0%, transparent 40%); /* Increased opacity */
+      background: radial-gradient(circle at var(--grad1-x) var(--grad1-y), rgba(184, 92, 58, 0.4) 0%, transparent 40%), /* Increased opacity, dynamic position, more bold */
+                  radial-gradient(circle at var(--grad2-x) var(--grad2-y), rgba(30, 44, 79, 0.4) 0%, transparent 40%); /* Increased opacity, dynamic position, more bold */
       background-size: 80% 80%, 80% 80%; /* Ensure gradients are distinct and cover large area */
-      animation: subtleBackgroundMove 30s ease-in-out infinite alternate; /* Slow, smooth animation */
+      animation: dynamicBackgroundMove 40s ease-in-out infinite alternate; /* Slower, smoother, more dynamic */
       z-index: 0; /* Behind content */
       opacity: 1;
+      --grad1-x: 60%; /* Initial values */
+      --grad1-y: 40%;
+      --grad2-x: 40%;
+      --grad2-y: 60%;
     }
 
-    @keyframes subtleBackgroundMove {
-      0% { background-position: 0% 0%, 100% 100%; }
-      100% { background-position: 100% 100%, 0% 0%; }
+    @keyframes dynamicBackgroundMove {
+      0% { --grad1-x: 50%; --grad1-y: 30%; --grad2-x: 70%; --grad2-y: 50%; }
+      25% { --grad1-x: 30%; --grad1-y: 60%; --grad2-x: 50%; --grad2-y: 80%; }
+      50% { --grad1-x: 80%; --grad1-y: 40%; --grad2-x: 20%; --grad2-y: 60%; }
+      75% { --grad1-x: 40%; --grad1-y: 20%; --grad2-x: 60%; --grad2-y: 70%; }
+      100% { --grad1-x: 50%; --grad1-y: 30%; --grad2-x: 70%; --grad2-y: 50%; }
     }
 
 
@@ -258,6 +265,7 @@
       margin-bottom: 0.5rem; /* Adjust spacing */
       line-height: 1.1;
       font-weight: 700;
+      cursor: pointer; /* Indicate it's clickable for confetti */
     }
     @media (min-width: 768px) { /* md breakpoint */
       .hero-names { font-size: 5.5rem; } /* Larger on medium screens */
@@ -272,10 +280,10 @@
       height: 4rem;
       margin-top: -1rem; /* Pull it closer to the names */
       margin-bottom: 1rem;
-      transition: transform 0.3s ease-in-out;
+      transition: transform 0.3s ease-in-out; /* Keep a subtle transition for hover */
     }
     .monogram-svg:hover {
-      transform: rotate(360deg) scale(1.1); /* Spins 360 degrees and scales up */
+      transform: scale(1.1); /* Subtle scale on hover */
     }
     .monogram-initial {
       fill: var(--color-accent-copper); /* Use copper for the letters */
@@ -298,6 +306,7 @@
       border: none;
       cursor: pointer;
       text-decoration: none; /* For anchor buttons */
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
     }
     .btn-primary {
       background-color: var(--color-primary-navy);
@@ -306,6 +315,8 @@
     .btn-primary:hover {
       background-color: var(--color-accent-copper);
       color: var(--color-white);
+      transform: translateY(-2px) scale(1.02); /* Subtle lift and scale */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
     .btn-secondary {
       background-color: var(--color-secondary-sage);
@@ -314,19 +325,53 @@
     .btn-secondary:hover {
       background-color: var(--color-primary-navy);
       color: var(--color-white);
+      transform: translateY(-2px) scale(1.02); /* Subtle lift and scale */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
+
+    /* Custom SVG Icons for Buttons */
+    .btn svg {
+      width: 1.5rem; /* Equivalent to h-6 w-6 */
+      height: 1.5rem;
+      fill: currentColor; /* Inherit color from button text */
+      margin-right: 0.5rem; /* Space between icon and text */
+    }
+    /* Adjust for RTL */
+    [lang="he"] .btn svg {
+      margin-right: 0;
+      margin-left: 0.5rem;
+    }
+
 
     /* Countdown Card Styles */
     .countdown-card {
       background-color: transparent;
       perspective: 1000px;
       cursor: pointer;
+      height: 200px; /* Much larger */
+      width: 200px;  /* Much larger */
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
+    @media (min-width: 768px) {
+        .countdown-card {
+            height: 250px; /* Larger on medium screens */
+            width: 250px;
+        }
+    }
+    @media (min-width: 1024px) {
+        .countdown-card {
+            height: 280px; /* Even larger on large screens */
+            width: 280px;
+        }
+    }
+
     .card-inner {
       position: relative;
       width: 100%;
       height: 100%;
-      transition: transform 0.6s;
+      transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
       transform-style: preserve-3d;
     }
     .countdown-card.is-flipped .card-inner {
@@ -350,16 +395,25 @@
       transform: rotateY(180deg);
       background-color: var(--color-secondary-sage);
       color: var(--color-white);
-      font-size: 0.9rem;
-      padding: 1rem;
+      font-size: 1.1rem; /* Adjusted for text fit */
+      padding: 2rem; /* Increased padding for better text fit */
       display: flex;
       justify-content: center;
       align-items: center;
+      text-align: center; /* Ensure joke text is centered */
     }
     .countdown-value {
       font-weight: bold;
       transition: color 0.5s ease-in-out;
+      font-size: 4rem; /* Adjusted for better fit within larger squares */
     }
+    @media (min-width: 768px) {
+        .countdown-value { font-size: 5rem; } /* Adjusted for better fit */
+    }
+    @media (min-width: 1024px) {
+        .countdown-value { font-size: 5.5rem; } /* Adjusted for better fit */
+    }
+
 
     .countdown-grid-wrapper.intensity-low .countdown-value { color: var(--color-secondary-sage); }
     .countdown-grid-wrapper.intensity-medium .countdown-value { color: var(--color-accent-copper); }
@@ -443,7 +497,7 @@
       flex-direction: column;
       align-items: center;
       text-align: center; /* Center text within card */
-      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
     }
     .info-card:hover {
       transform: translateY(-5px);
@@ -460,9 +514,10 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     .icon-large {
-      width: 2.5rem; /* h-10 w-10 */
-      height: 2.5rem;
+      width: 2.5rem; /* Explicitly set size for SVG */
+      height: 2.5rem; /* Explicitly set size for SVG */
       color: var(--color-white); /* Icon color */
+      display: block; /* Ensure it behaves as a block for sizing */
     }
 
     /* Fun Facts Section */
@@ -490,7 +545,7 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     .fun-fact-card:hover {
       transform: translateY(-5px) rotate(1deg); /* Slight rotation on hover */
@@ -520,7 +575,7 @@
       overflow: hidden; /* Hide overflow when closed */
       margin-bottom: 1.5rem;
       border: 1px solid var(--color-base-dark); /* Subtle border */
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     .faq-item:hover {
       box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
@@ -549,6 +604,8 @@
     }
     .faq-arrow {
       color: var(--color-accent-copper);
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: inline-block; /* Ensure transform applies */
     }
     /* Adjust arrow rotation for RTL */
     [lang="en"] .faq-arrow { transform: rotate(0deg); }
@@ -604,7 +661,7 @@
       min-height: 200px;
       font-size: 1.15rem;
       line-height: 1.6;
-      transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; /* Added border-color, box-shadow */
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     .blessing-card:hover {
       transform: scale(1.04) rotate(0deg);
@@ -634,7 +691,7 @@
       border-radius: 0.5rem; /* rounded-lg */
       border: 1px solid var(--color-base-dark);
       background-color: var(--color-base-light);
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     /* Align input text left for LTR, right for RTL */
     [lang="en"] .input-field { text-align: left; }
@@ -797,6 +854,39 @@
     .close-btn:hover {
       color: var(--color-primary-navy);
     }
+
+    /* Back to Top Button */
+    #back-to-top-btn {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        background-color: var(--color-primary-navy);
+        color: var(--color-white);
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 1.8rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        z-index: 999;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    #back-to-top-btn.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    #back-to-top-btn:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    }
   </style>
 
 </head>
@@ -807,8 +897,9 @@
     <nav class="container mx-auto flex justify-between items-center py-4 px-6">
       <!-- Site Title / Couple's Names -->
       <a href="#hero-section" class="flex items-center space-x-2 text-primary-navy font-heading text-2xl font-bold tracking-tight hover:text-accent-copper transition-colors duration-300">
-          <svg class="h-8 w-8 text-accent-copper" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/>
+          <!-- Heart SVG Icon for Site Title -->
+          <svg class="h-8 w-8 text-accent-copper" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
           </svg>
           <span data-translate-key="siteTitle">Meilech & Tzippy</span>
       </a>
@@ -868,15 +959,18 @@
       <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-10 w-full max-w-md mx-auto">
         <a id="save-date" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center space-x-2 w-full sm:w-auto">
           <!-- Calendar SVG Icon -->
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
           <span data-translate-key="btnSaveDate">Save the Date!</span>
         </a>
         <a href="https://www.google.com/travel/flights/search?tfs=CBwQAhojEgoyMDI1LTEwLTI5ajwIAhIIL2m0dxzvyBwgBEgNFV1IaIxIKMjAyNS01LTA3ajHCAESA0VXUnIMCAISCC9tLzA3cXp2QAFIAXABggELCP___________wGYAQE" target="_blank" rel="noopener noreferrer" class="btn btn-primary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center space-x-2 w-full sm:w-auto">
           <!-- Plane SVG Icon -->
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
           </svg>
           <span data-translate-key="btnFindFlights">Find Your Flights!</span>
         </a>
@@ -918,55 +1012,55 @@
   <div id="countdown-grid-wrapper" class="w-full max-w-5xl px-6 z-20">
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6 text-center">
       <!-- Card structure updated for flip animation -->
-      <div id="weeks-card" class="countdown-card p-4 md:p-6 h-32 md:h-40">
+      <div id="weeks-card" class="countdown-card p-4 md:p-6">
         <div class="card-inner">
           <div class="card-face card-front">
             <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="weeks">Weeks</div>
-            <div id="weeks" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
+            <div id="weeks" class="font-bold countdown-value font-heading">0</div>
           </div>
           <div class="card-face card-back">
             <p class="joke-text"></p>
           </div>
         </div>
       </div>
-      <div id="days-card" class="countdown-card p-4 md:p-6 h-32 md:h-40">
+      <div id="days-card" class="countdown-card p-4 md:p-6">
         <div class="card-inner">
           <div class="card-face card-front">
             <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="days">Days</div>
-            <div id="days" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
+            <div id="days" class="font-bold countdown-value font-heading">0</div>
           </div>
           <div class="card-face card-back">
             <p class="joke-text"></p>
           </div>
         </div>
       </div>
-      <div id="hours-card" class="countdown-card p-4 md:p-6 h-32 md:h-40">
+      <div id="hours-card" class="countdown-card p-4 md:p-6">
         <div class="card-inner">
           <div class="card-face card-front">
             <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="hours">Hours</div>
-            <div id="hours" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
+            <div id="hours" class="font-bold countdown-value font-heading">0</div>
           </div>
           <div class="card-face card-back">
             <p class="joke-text"></p>
           </div>
         </div>
       </div>
-      <div id="minutes-card" class="countdown-card p-4 md:p-6 h-32 md:h-40">
+      <div id="minutes-card" class="countdown-card p-4 md:p-6">
         <div class="card-inner">
           <div class="card-face card-front">
             <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="minutes">Minutes</div>
-            <div id="minutes" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
+            <div id="minutes" class="font-bold countdown-value font-heading">0</div>
           </div>
           <div class="card-face card-back">
             <p class="joke-text"></p>
           </div>
         </div>
       </div>
-      <div id="seconds-card" class="countdown-card p-4 md:p-6 h-32 md:h-40">
+      <div id="seconds-card" class="countdown-card p-4 md:p-6">
         <div class="card-inner">
           <div class="card-face card-front">
             <div class="text-text-medium text-sm md:text-base mb-1" data-translate-key="seconds">Seconds</div>
-            <div id="seconds" class="text-4xl md:text-5xl font-bold countdown-value font-heading">0</div>
+            <div id="seconds" class="font-bold countdown-value font-heading">0</div>
           </div>
           <div class="card-face card-back">
             <p class="joke-text"></p>
@@ -993,9 +1087,10 @@
       <!-- Venue Card -->
       <div class="info-card fade-in-hidden">
         <div class="icon-wrapper">
-          <!-- House/Building SVG Icon for Venue -->
-          <svg class="icon-large text-accent-copper" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M5 10v9a2 2 0 002 2h10a2 2 0 002-2v-9"/>
+          <!-- Venue Icon (building) -->
+          <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
           </svg>
         </div>
         <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="venueTitle">The Grand Venue</h3>
@@ -1012,9 +1107,12 @@
       <!-- Date Card -->
       <div class="info-card fade-in-hidden">
         <div class="icon-wrapper">
-          <!-- Calendar SVG Icon -->
-          <svg class="icon-large text-accent-copper" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          <!-- Date Icon (calendar) -->
+          <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
         </div>
         <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="dateTitle">The Big Day</h3>
@@ -1030,9 +1128,10 @@
       <!-- Schedule Card - Spans two columns on larger screens -->
       <div class="info-card md:col-span-2 fade-in-hidden">
         <div class="icon-wrapper">
-          <!-- Clock SVG Icon -->
-          <svg class="icon-large text-accent-copper" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <!-- Schedule Icon (clock) -->
+          <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
           </svg>
         </div>
         <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="scheduleTitle">The Flow of Simcha</h3>
@@ -1047,9 +1146,10 @@
       <!-- Vibe Card -->
       <div class="info-card fade-in-hidden">
         <div class="icon-wrapper">
-          <!-- Happy Face SVG Icon for Vibe -->
-          <svg class="icon-large text-accent-copper" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          <!-- Vibe Icon (sparkles/celebration) -->
+          <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4L13 6 15 4 13 2 11 4Z"></path><path d="M19 8L21 10 19 12 17 10 19 8Z"></path><path d="M10 17L12 19 14 17 12 15 10 17Z"></path><path d="M2 12L4 14 6 12 4 10 2 12Z"></path>
+            <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5C22 12.28 18.6 15.36 13.45 20.03L12 21.35Z"></path>
           </svg>
         </div>
         <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="vibeTitle">The Vibe</h3>
@@ -1061,9 +1161,10 @@
       <!-- Transportation Card -->
       <div class="info-card fade-in-hidden">
         <div class="icon-wrapper">
-          <!-- Car SVG Icon for Transportation -->
-          <svg class="icon-large text-accent-copper" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5a2 2 0 00-2 2v2a2 2 0 002 2h14a2 2 0 002-2v-2a2 2 0 00-2-2zM7 11V7a2 2 0 012-2h6a2 2 0 012 2v4M12 17v2m-2-2h4"/>
+          <!-- Transportation Icon (car) -->
+          <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 17l-2 0l-2 3l6 0l-2 -3Z"></path><path d="M10 17h4l-2 -3h-2Z"></path><path d="M17 17h-2l-2 3h6l-2 -3Z"></path>
+            <path d="M17 17l4 0"></path><path d="M5 17l-2 0"></path><path d="M7 17l0 -4"></path><path d="M17 17l0 -4"></path><path d="M12 17l0 -4"></path>
           </svg>
         </div>
         <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="transportationTitle">Getting There</h3>
@@ -1108,7 +1209,7 @@
       <div class="fun-fact-card fade-in-hidden">
         <h3 class="font-heading text-primary-navy fun-fact-title" data-translate-key="factSweetPredictionsTitle">Sweet Predictions</h3>
         <p class="fun-fact-text text-text-medium font-body" data-translate-key="factSweetPredictionsText">
-          Our top secret culinary forecast predicts the wedding cake will vanish faster than a plate of fresh kugel at a simcha. Consider yourselves warned... and bring a fork!
+          We predict the dessert table will be the most popular dance floor. Make sure to grab your treats early, before the sugar rush kicks in!
         </p>
       </div>
 
@@ -1143,9 +1244,11 @@
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
           <span data-translate-key="faqQ1">What time should I arrive?</span>
           <!-- Arrow icon for accordion toggle -->
-          <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
+          <span class="faq-arrow">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
         </summary>
         <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body" data-translate-key="faqA1">
           <p>We'd love to see you for Kabulas Panim at <strong>6:30 PM</strong>. Don't miss the Chuppah at 7:30 PM – it's the main event! Seriously, the good parts (and food!) start punctually.</p>
@@ -1155,9 +1258,11 @@
       <details class="faq-item group">
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
           <span data-translate-key="faqQ2">What's the dress code?</span>
-          <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
+          <span class="faq-arrow">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
         </summary>
         <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body" data-translate-key="faqA2">
           <p>Dress to impress, but also dress to dance! Formal, modest attire is appreciated. Think "Simcha Chic" – because comfort meets elegance when you're celebrating!</p>
@@ -1167,9 +1272,11 @@
       <details class="faq-item group">
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
           <span data-translate-key="faqQ3">Can I bring my kids?</span>
-          <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
+          <span class="faq-arrow">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
         </summary>
         <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body" data-translate-key="faqA3">
           <p>Absolutely! The more simcha, the merrier. Just remember to keep them away from the band's drum set and the dessert table (unless you brought extra for us!).</p>
@@ -1179,9 +1286,11 @@
       <details class="faq-item group">
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
           <span data-translate-key="faqQ4">Is there food?</span>
-          <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
+          <span class="faq-arrow">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
         </summary>
         <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body" data-translate-key="faqA4">
           <p>Is the sky blue?! We're having a wedding, so yes, there will be plenty of delicious food. Come hungry, leave happy!</p>
@@ -1191,9 +1300,11 @@
       <details class="faq-item group">
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
           <span data-translate-key="faqQ5">Where can I park?</span>
-          <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
+          <span class="faq-arrow">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
         </summary>
         <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body" data-translate-key="faqA5">
           <p>Ample parking is available on-site. For the full Monsey experience, allow an extra 15 minutes for unexpected traffic (especially on simcha days!).</p>
@@ -1203,9 +1314,11 @@
       <details class="faq-item group">
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
           <span data-translate-key="faqQ6">Can I take photos?</span>
-          <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
+          <span class="faq-arrow">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
         </summary>
         <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body" data-translate-key="faqA6">
           <p>We kindly request no flash photography during the Chuppah. Otherwise, snap away and share the simcha! Just don't block the professional photographers – they've got a job to do!</p>
@@ -1216,21 +1329,25 @@
       <details class="faq-item group">
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
           <span data-translate-key="faqQ7">Can I be part of the flashmob?</span>
-          <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
+          <span class="faq-arrow">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
         </summary>
-        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body" data-translate-key="faqA7">
-          <p>You're asking the real questions! Absolutely! If you've got moves (or even just enthusiasm!), we'd love to have you. Just reach out to <strong data-translate-key="tzippyKallah">Tzippy the kallah</strong>, and she'll share all the secret steps and make sure you're ready to bust a move! Get ready to dance the night away!</p>
+        <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body">
+          <p><span data-translate-key="faqA7_line1">You're asking the real questions! Absolutely! If you've got moves (or even just enthusiasm!), we'd love to have you.</span> <span data-translate-key="faqA7_line2">Just reach out to <a href="mailto:tzippykornbluh@gmail.com" data-email-trigger="tzippykornbluh@gmail.com" class="text-primary-navy hover:underline font-bold" data-translate-key="tzippyKallah">Tzippy the kallah</a>, and she'll share all the secret steps and make sure you're ready to bust a move! Get ready to dance the night away!</span></p>
         </div>
       </details>
 
       <details class="faq-item group">
         <summary class="faq-question font-heading text-primary-navy cursor-pointer flex justify-between items-center py-4 px-6 rounded-lg transition-colors duration-300">
           <span data-translate-key="faqQ8">What if I have a question not listed here?</span>
-          <svg class="faq-arrow h-6 w-6 transform transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
+          <span class="faq-arrow">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
         </summary>
         <div class="faq-answer px-6 pb-4 pt-2 text-text-medium text-lg leading-relaxed font-body" data-translate-key="faqA8">
           <p>No worries! Scroll down to our "Chat" section – we're (virtually) here to help with almost anything. Or just find us at the dessert table on the night!</p>
@@ -1254,9 +1371,9 @@
       <div class="info-card md:col-span-2 fade-in-hidden">
         <div class="icon-wrapper">
           <!-- Location Pin SVG Icon -->
-          <svg class="icon-large text-accent-copper" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
           </svg>
         </div>
         <h3 class="font-heading text-2xl font-bold text-primary-navy mb-4" data-translate-key="locationMapTitle">Location Map</h3>
@@ -1272,9 +1389,11 @@
           Your guide to the grand celebration! See you there, ready to party!
         </p>
         <a href="https://www.google.com/maps/dir/?api=1&destination=Ateres+Chaya+Surah,+106+S+Madison+Ave,+Spring+Valley,+NY" target="_blank" rel="noopener noreferrer" class="btn btn-secondary mt-4 inline-flex items-center space-x-2 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          <!-- Directions SVG Icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+            <line x1="16" y1="2" x2="16" y2="18"></line>
+            <line x1="8" y1="6" x2="8" y2="22"></line>
           </svg>
           <span data-translate-key="btnGetDirections">Get Directions</span>
         </a>
@@ -1285,8 +1404,9 @@
       <div class="info-card fade-in-hidden">
         <div class="icon-wrapper">
           <!-- List/Clipboard SVG Icon for "What's Pinned" -->
-          <svg class="icon-large text-accent-copper" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M12 16h.01" />
+          <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"></path>
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
           </svg>
         </div>
         <h3 class="font-heading text-2xl font-bold text-primary-navy mb-3" data-translate-key="whatsPinnedTitle">What’s Pinned?</h3>
@@ -1301,8 +1421,11 @@
       <div class="info-card fade-in-hidden">
         <div class="icon-wrapper">
           <!-- Lightbulb SVG Icon for "Top Tip" -->
-          <svg class="icon-large text-accent-copper" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17H5.93a2 2 0 00-1.932 2.56L5 21h14a2 2 0 001.932-2.56L14.337 17H9.663zM12 7a3 3 0 11-6 0 3 3 0 016 0z" />
+          <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <path d="M12 18L12 12"></path>
+            <path d="M9 10L12 12"></path>
+            <path d="M15 10L12 12"></path>
           </svg>
         </div>
         <h3 class="font-heading text-2xl font-bold text-primary-navy mb-3" data-translate-key="topTipTitle">Top Tip:</h3>
@@ -1325,9 +1448,12 @@
       <!-- Oifruf Card -->
       <div class="info-card fade-in-hidden">
         <div class="icon-wrapper">
-          <!-- Book/Torah scroll SVG Icon -->
-          <svg class="icon-large text-accent-copper" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253" />
+          <!-- Torah Scroll SVG Icon -->
+          <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 21h22"></path>
+            <path d="M7 21V5a2 2 0 012-2h6a2 2 0 012 2v16"></path>
+            <path d="M16 17H8"></path>
+            <path d="M16 13H8"></path>
           </svg>
         </div>
         <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="oifrufSeudahTitle">Shabbos Oifruf Seudah</h3>
@@ -1344,9 +1470,10 @@
       <!-- Bogleiten Card -->
       <div class="info-card fade-in-hidden">
         <div class="icon-wrapper">
-          <!-- People Walking SVG Icon -->
-          <svg class="icon-large text-accent-copper" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292V15a4 4 0 010 5.292V21m0-16V3a1 1 0 00-1-1H4a1 1 0 00-1 1v2m0 13V9a1 1 0 011-1h7a1 1 0 011 1v7m0 0a1 1 0 001 1h7a1 1 0 001-1v-2m0 0a1 1 0 011-1h7a1 1 0 011 1v2" />
+          <!-- Walking People SVG Icon -->
+          <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="4" r="2"></circle>
+            <path d="M8 21v-5h4l-2-7c-.5-1.5 1-2.5 1.5-2.5s2.5.5 3 2.5l2 7h4v5z"></path>
           </svg>
         </div>
         <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="bogleitenTitle">Bogleiten</h3>
@@ -1363,9 +1490,12 @@
       <!-- Bovarfen Card -->
       <div class="info-card fade-in-hidden">
         <div class="icon-wrapper">
-          <!-- Food/Candy SVG Icon for Bovarfen (representing treats/candy) -->
-          <svg class="icon-large text-accent-copper" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c1.657 0 3-4.5 3-9S13.657 0 12 0 9 4.5 9 9s1.343 9 3 9zM12 21a2 2 0 100-4 2 2 0 000 4zM12 17a2 2 0 100-4 2 2 0 000 4zM12 13a2 2 0 100-4 2 2 0 000 4z" />
+          <!-- Candy SVG Icon for Bovarfen (representing treats/candy) -->
+          <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22v-5l-2-2"></path>
+            <path d="M12 22v-5l2-2"></path>
+            <path d="M12 17l2-2h4l2-2V7.5L18 5 15 2 12 5 9 2 6 5 4 7.5V11l2 2h4l2 2Z"></path>
+            <path d="M10 11L12 13L14 11"></path>
           </svg>
         </div>
         <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="bovarfenTitle">Bovarfen</h3>
@@ -1383,8 +1513,8 @@
       <div class="info-card fade-in-hidden">
         <div class="icon-wrapper">
           <!-- Star/Sparkle SVG Icon for Sheva Brachas -->
-          <svg class="icon-large text-accent-copper" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.324 1.114l1.519 4.674c.3.921-.755 1.688-1.539 1.114l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.574-1.839-.193-1.539-1.114l1.519-4.674a1 1 0 00-.324-1.114L2.093 10.09c-.783-.57-.381-1.81.588-1.81h4.915a1 1 0 00.95-.69l1.519-4.674z" />
+          <svg class="icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1l3 6 6 3-6 3-3 6-3-6-6-3 6-3 3-6Z"></path>
           </svg>
         </div>
         <h3 class="font-heading text-2xl font-bold text-primary-navy mb-2" data-translate-key="shevaBrachasTitle">Shabbos Sheva Brachas</h3>
@@ -1477,8 +1607,22 @@
       <p class="text-3xl md:text-4xl font-bold font-heading text-primary-navy" data-translate-key="thankYouNames">Meilech & Tzippy</p>
     </div>
 
-    <!-- Button to navigate back to the chat section -->
+    <!-- Share with Friends Button -->
     <div class="mt-12">
+      <button id="share-website-btn" class="btn btn-primary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center space-x-2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="18" cy="5" r="3"></circle>
+          <circle cx="6" cy="12" r="3"></circle>
+          <circle cx="18" cy="19" r="3"></circle>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+        </svg>
+        <span data-translate-key="btnShareWithFriends">Share with Friends!</span>
+      </button>
+    </div>
+
+    <!-- Button to navigate back to the chat section -->
+    <div class="mt-8">
       <a href="#chat-section" class="btn btn-secondary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105" data-translate-key="btnStillQuestion">
         Still Have a Question? Chat With Us!
       </a>
@@ -1494,9 +1638,13 @@
   <!-- Message box for copy confirmation -->
   <div id="message-box" class="message-box"></div>
 
+  <!-- Back to Top Button -->
+  <button id="back-to-top-btn" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
   
-
-
   <!-- Confetti.js CDN - Required for confetti effects -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -1511,6 +1659,7 @@
       // --- Configuration Variables ---
       const ENGAGEMENT_TS = new Date("2025-01-29T00:00:00").getTime();
       const WEDDING_TS    = new Date("2025-11-03T18:30:00").getTime(); // Nov 3, 2025 at 6:30 PM
+      const FORM_SUBMIT_EMAILS = 'elimelechmoster@gmail.com, tzippykornbluh@gmail.com'; // New: Multiple recipients for form submissions
 
       // --- DOM Element References ---
       const htmlElement         = document.documentElement;
@@ -1547,6 +1696,10 @@
       const metaDescription = headElement.querySelector('meta[name="description"]');
       const metaKeywords = headElement.querySelector('meta[name="keywords"]');
       const countdownGridWrapper = document.getElementById('countdown-grid-wrapper');
+      const heroNamesEl         = document.querySelector('.hero-names'); // For confetti trigger
+      const backToTopBtn        = document.getElementById('back-to-top-btn');
+      const shareWebsiteBtn     = document.getElementById('share-website-btn');
+
 
       // --- State Variables ---
       let countdownInterval; // Defined in the outer scope
@@ -1556,29 +1709,49 @@
       let currentHighlightedBlessingIndex = 0;
       let lastJokeIndex = -1;
       let currentAnimatedPercent = 0;
-      let currentLang = 'en';
+      let currentLang = 'en'; // Initialized to 'en' by default
       let app, db, auth, userId;
       let isAuthReady = false;
+      let tipInterval; // For periodic tips
+
 
       // --- Curated Blessings Data (Replaces public submissions) ---
       const curatedBlessings_en = [
-          { name: "The Nosy Neighbor", text: "Finally! I've been watching you two since the beginning. Wishing you a lifetime of happiness... and thicker curtains." },
-          { name: "Aunt Carol's Kugel", text: "May your love be as rich, sweet, and satisfying as my famous noodle kugel. Don't worry, I'm bringing a big pan." },
-          { name: "The Entire Shtetl", text: "The whole town is buzzing with excitement! We can't wait to dance and celebrate with you both. Mazel Tov!" },
-          { name: "Your Future Kids' Future Principal", text: "I'm already preparing the paperwork. Just kidding... mostly. May your home be filled with joy and only a *little* bit of classroom-level chaos." },
-          { name: "That one guy from the bagel store", text: "You two always order the everything bagel with a schmear. It's a sign of a solid foundation. Wishing you all the best!" },
-          { name: "The Shadchan Who Takes All The Credit", text: "A perfect match! I knew it from the start. You're welcome. Wishing you endless years of wedded bliss (and maybe send some referrals my way)." },
-          { name: "An Anonymous Well-Wisher", text: "May you always find the afikoman in your life together, and may your love be the greatest treasure of all." }
+          { name: "Your Aunt Rivky", text: "May your home always be filled with joy and laughter! So happy for you both!" },
+          { name: "Moshe G.", text: "Mazel Tov on this incredible journey! Wishing you a lifetime of happiness." },
+          { name: "Next-Door Neighbor", text: "So excited to celebrate with you! May your life together be as sweet as our neighborhood desserts." },
+          { name: "Your Cousin Sarah", text: "From playdates to wedding dates, so much love for you both! Mazel Tov!" },
+          { name: "A Family Friend", text: "May your days be blessed with harmony, health, and endless simcha. All the best!" },
+          { name: "The Baker from Main St.", text: "Wishing you a marriage as perfectly crafted and delightful as a fresh challah! Mazel Tov!" },
+          { name: "An Admirer", text: "May your love story inspire all who witness it. Mazel Tov to the beautiful couple!" }
       ];
 
       const curatedBlessings_he = [
-          { name: "השכנה החטטנית", text: "סוף סוף! צפיתי בכם מההתחלה. מאחלת לכם חיים שלמים של אושר... ווילונות עבים יותר." },
-          { name: "הקוגל של דודה שרה", text: "שהאהבה שלכם תהיה עשירה, מתוקה ומשביעה כמו קוגל האטריות המפורסם שלי. אל תדאגו, אני מביאה תבנית גדולה." },
-          { name: "כל השטעטל", text: "כל העיירה רוחשת מהתרגשות! אנחנו לא יכולים לחכות לרקוד ולחגוג אתכם. מזל טוב!" },
-          { name: "מנהל בית הספר העתידי של הילדים שלכם", text: "אני כבר מכין את הניירת. סתם... לרוב. שביתכם יתמלא בשמחה ורק *קצת* כאוס ברמת כיתה." },
-          { name: "ההוא מהבייגל", text: "שניכם תמיד מזמינים בייגל הכל עם גבינת שמנת. זה סימן ליסודות איתנים. מאחל לכם את כל הטוב!" },
-          { name: "השדכנית שלוקחת את כל הקרדיט", text: "שידוך מושלם! ידעתי את זה מהרגע הראשון. בבקשה. מאחלת לכם שנים אינסופיות של אושר זוגי (ואולי תשלחו כמה הפניות בדרך)." },
-          { name: "מאחל אנונימי", text: "שתמיד תמצאו את האפיקומן בחיים המשותפים שלכם, ושהאהבה שלכם תהיה האוצר הגדול מכולם." }
+          { name: "דודה רבקי", text: "שביתכם תמיד יתמלא בשמחה וצחוק! כל כך שמחה בשבילכם, מזל טוב!" },
+          { name: "משה ג.", text: "מזל טוב למסע המדהים הזה! מאחל לכם חיים של אושר אינסופי." },
+          { name: "השכן ממול", text: "מתרגש מאוד לחגוג איתכם! יהי רצון שחייכם המשותפים יהיו מתוקים כמו הקינוחים מהשכונה שלנו." },
+          { name: "בת דודתכם שרה", text: "מפגישות משחק ועד יום החתונה, כל כך הרבה אהבה לשניכם! מזל טוב!" },
+          { name: "ידיד המשפחה", text: "שיימיכם יתברכו בהרמוניה, בריאות ושמחה ללא גבול. כל טוב!" },
+          { name: "האופה מהרחוב הראשי", text: "מאחל לכם נישואין מושלמים ומהנים כמו חלה טרייה! מזל טוב!" },
+          { name: "מעריץ אנונימי", text: "שסיפור האהבה שלכם יעניק השראה לכל מי שזוכה לראות אותו. מזל טוב לזוג המהמם!" }
+      ];
+
+      // Array of periodic funny tips
+      const funnyTips_en = [
+        "Don't forget your dancing shoes! We've got a certified simcha zone.",
+        "Hydration is key! Especially when there's this much joyous dancing.",
+        "If you see us looking stressed, just shout 'Mazel Tov!' It helps.",
+        "Warning: Spontaneous outbreaks of happiness may occur. Embrace it!",
+        "Lost your partner on the dance floor? Check the dessert table, they're probably there.",
+        "Remember: calories consumed at a simcha don't count. It's science!"
+      ];
+      const funnyTips_he = [
+        "אל תשכחו את נעלי הריקוד! יש לנו פה רחבת שמחה מאושרת רשמית.",
+        "הידרציה היא המפתח! במיוחד כשיש כל כך הרבה ריקודי שמחה.",
+        "אם אתם רואים אותנו לחוצים, פשוט תצעקו 'מזל טוב!' זה עוזר.",
+        "אזהרה: התפרצויות ספונטניות של אושר עלולות להתרחש. תזרמו עם זה!",
+        "איבדתם את בן/בת הזוג ברחבת הריקודים? בדקו בשולחן הקינוחים, הם כנראה שם.",
+        "זכרו: קלוריות שנצרכות בשמחה לא נספרות. זו עובדה מדעית!"
       ];
 
 
@@ -1645,7 +1818,7 @@
           factRoyalStatusTitle: 'Royal Status',
           factRoyalStatusText: 'According to Jewish tradition, the Kallah is a queen and the Chassan is a king on their wedding day. So, feel free to address us by our royal titles! (Only for November 3rd, promise.)',
           factSweetPredictionsTitle: 'Sweet Predictions',
-          factSweetPredictionsText: 'Our top secret culinary forecast predicts the wedding cake will vanish faster than a plate of fresh kugel at a simcha. Consider yourselves warned... and bring a fork!',
+          factSweetPredictionsText: 'We predict the dessert table will be the most popular dance floor. Make sure to grab your treats early, before the sugar rush kicks in!',
           factDancingShoesTitle: 'Dancing Shoes Alert',
           factDancingShoesText: 'Good news, dance enthusiasts! We\'ve surveyed the dance floor, and it\'s officially certified for maximum simcha! There\'s plenty of room for all your best moves, so don\'t hold back!',
           factHistoricDayTitle: 'Historic Day',
@@ -1665,8 +1838,9 @@
           faqQ6: 'Can I take photos?',
           faqA6: 'We kindly request no flash photography during the Chuppah. Otherwise, snap away and share the simcha! Just don\'t block the professional photographers – they\'ve got a job to do!',
           faqQ7: 'Can I be part of the flashmob?',
-          faqA7: 'You\'re asking the real questions! Absolutely! If you\'ve got moves (or even just enthusiasm!), we\'d love to have you. Just reach out to <strong>Tzippy the kallah</strong>, and she\'ll share all the secret steps and make sure you\'re ready to bust a move! Get ready to dance the night away!',
-          tzippyKallah: 'Tzippy the kallah',
+          faqA7_line1: 'You\'re asking the real questions! Absolutely! If you\'ve got moves (or even just enthusiasm!), we\'d love to have you.',
+          faqA7_line2: 'Just reach out to <strong data-translate-key="tzippyKallah">Tzippy the kallah</strong>, and she\'ll share all the secret steps and make sure you\'re ready to bust a move! Get ready to dance the night away!',
+          tzippyKallah: 'Tzippy the kallah', // Retained for translation lookup
           faqQ8: 'What if I have a question not listed here?',
           faqA8: 'No worries! Scroll down to our "Chat" section – we\'re (virtually) here to help with almost anything. Or just find us at the dessert table on the night!',
           mapTitle: 'Where to Find the Fun',
@@ -1723,10 +1897,10 @@
           yourBruchaAdded: 'Your brucha was added to the wall! Thank you!',
           authNotReady: 'Authentication not ready. Please try again in a moment.',
           fillNameBlessing: 'Please fill in both your name and blessing!',
-          failedSendBrucha: 'Failed to send brucha. Please try again.',
+          failedSendBrucha: 'Failed to send brucha. Please again.',
           fillAllFields: 'Please fill in all fields before sending your message!',
           messageSentSuccess: 'Your message zoomed right to us! We\'ll get back to you faster than you can say \'Mazel Tov!\'',
-          messageSentError: 'Oops! Something went wrong sending your message. Please try again.',
+          messageSentError: 'Oops! Something went wrong sending your message. Please again.',
           networkError: 'Network error: Couldn\'t send your message. Check your connection!',
           authFailed: 'Failed to authenticate. Features requiring sign-in may not function.',
           excitementOffCharts: 'Excitement levels are off the charts!',
@@ -1743,166 +1917,181 @@
           authError: 'Auth Error!',
           viewWeddingProgress: 'View wedding progress',
           closeBlessingForm: 'Close blessing form',
+          // New strings for tips
+          tip1: "Don't forget your dancing shoes! We've got a certified simcha zone.",
+          tip2: "Hydration is key! Especially when there's this much joyous dancing.",
+          tip3: "If you see us looking stressed, just shout 'Mazel Tov!' It helps.",
+          tip4: "Warning: Spontaneous outbreaks of happiness may occur. Embrace it!",
+          tip5: "Lost your partner on the dance floor? Check the dessert table, they're probably there.",
+          tip6: "Remember: calories consumed at a simcha don't count. It's science!"
         },
         he: {
           siteTitle: 'מיילך וציפי',
           navHome: 'ראשי',
           navCountdown: 'ספירה לאחור',
           navDetails: 'פרטים',
-          navFunFacts: 'עובדות פיקנטיות', // More playful
-          navQandA: 'שאלות בוערות ותשובות כנות', // More witty
+          navFunFacts: 'עובדות פיקנטיות',
+          navQandA: 'שאלות ותשובות',
           navMap: 'מפה',
           navShabbos: 'שבת',
           navBrachos: 'ברכות',
-          navChat: 'שאלות ודיבורים', // More conversational
+          navChat: 'צ׳אט ופניות',
           openNavMenu: 'פתח תפריט ניווט',
           heroNames: 'מיילך וציפי',
-          heroTagline: 'קושרים את הקשר... וגם את הלבבות! 💍', // Cute and witty
-          heroDescription: 'הלב שלנו קופץ משמחה ומהתרגשות! אנחנו יוצאים להרפתקה הכי מטורפת שיש: לבנות עתיד משותף יחד. נוכחותכם תהפוך את החגיגה שלנו למושלמת באמת, אז בואו לרקוד איתנו את הדרך אל האושר!', // More personal, cute, and exciting
-          btnSaveDate: 'שמרו את התאריך בחום!', // More inviting
-          btnFindFlights: 'מצאו טיסות שיביאו אתכם לשמחה!', // More engaging
-          progressPrefix: 'ההתרגשות מבעבעת! מד האהבה שלנו ב-',
-          progressSuffix: ' לקראת היום הגדול, וזה רק הולך ומתחמם!', // More dynamic
-          unlockSecret: 'גלו אוצר קטן וסודי... 🤫', // More mysterious and cute
-          discoverSecretMessage: 'גלו הודעה סודית קטנה', // Keep as is, it's good
-          triggerConfetti: 'הפעילו קונפטי!', // More active
-          countdownTitle: 'הספירה לאחור – הדופק עולה!', // More engaging
+          heroTagline: 'מתחתנים!',
+          heroDescription: 'הלב שלנו מתמלא בשמחה והתרגשות עצומה, ואנו מזמינים אתכם להצטרף אלינו למסע הגדול בחיינו: בניית עתיד משותף! נוכחותכם תשלים את חגיגתנו באמת, אז בואו לחגוג איתנו את היום המיוחד הזה.',
+          btnSaveDate: 'שמרו את התאריך!',
+          btnFindFlights: 'מצאו טיסות!',
+          progressPrefix: 'ההתרגשות בשיאה! מד האהבה שלנו ב-',
+          progressSuffix: ' לקראת היום הגדול!',
+          unlockSecret: 'גלו סוד קטן... 🤫',
+          discoverSecretMessage: 'גלו הודעה סודית קטנה',
+          triggerConfetti: 'הפעילו קונפטי!',
+          countdownTitle: 'הספירה לאחור החלה!',
           countdownDaysLeftOnly: 'רק',
-          countdownDaysLeftToGo: 'ימים לשיגעון!', // More exciting
+          countdownDaysLeftToGo: 'ימים נותרו!',
           weeks: 'שבועות',
           days: 'ימים',
           hours: 'שעות',
           minutes: 'דקות',
           seconds: 'שניות',
           totalMinutesPrefix: 'ההרפתקה הגדולה שלנו במרחק ',
-          totalMinutesSuffix: ' דקות בודדות! תתחילו להתכונן לחגיגה ששווה כל שנייה וכל דקה!', // More enthusiastic and cute
-          detailsTitle: 'פרטי יום החתונה המרגשים!', // More engaging
-          venueTitle: 'האולם המרכזי', // Simpler, more direct
-          venueDescription: 'המקום שבו הקסם מתחיל, ורחבת הריקודים כבר מחכה לרגליים שלכם!', // More inviting and playful
-          dateTitle: 'היום הגדול והמיוחד', // More special
+          totalMinutesSuffix: ' דקות בלבד! התכוננו לחגיגה ששווה כל שנייה!',
+          detailsTitle: 'פרטי יום החתונה',
+          venueTitle: 'האולם המרכזי',
+          venueDescription: 'המקום בו הקסם קורה ורחבת הריקודים תמיד מוכנה לפעולה!',
+          dateTitle: 'היום הגדול',
           weddingDateEnglish: 'Monday, November 3, 2025',
           weddingDateHebrew: 'י"ב חשון תשפ"ו',
-          dateDescription: 'סמנו אותו ביומן, הדגישו בזרחן, ואולי אפילו קעקעו! (טוב, אולי רק סמנו 😉) זה הולך להיות מטורף!', // Funnier, more personal
-          scheduleTitle: 'סדר היום של השמחה הבלתי נשכחת', // More descriptive
+          dateDescription: 'סמנו ביומן, הדגישו! זה הולך להיות אירוע בלתי נשכח!',
+          scheduleTitle: 'סדר היום של השמחה',
           kabulasPanimTime: 'קבלת פנים',
-          kabulasPanimValue: '18:30 (מומלץ להגיע מוקדם, האוכל הטוב מתחיל בדיוק בזמן!)', // Witty, encouraging early arrival for food
+          kabulasPanimValue: '18:30 (הגיעו מוקדם, האוכל הטוב מתחיל בזמן!)',
           chuppahTime: 'חופה',
-          chuppahValue: '19:30 (הכינו את הטישו לרגעים מרגשים ובלתי נשכחים!)', // More emotional and personal
+          chuppahValue: '19:30 (הכינו את הטישו לרגעים מרגשים ובלתי נשכחים!)',
           seudahTime: 'סעודה',
-          seudahValue: '20:30 (תנו למשתה להתחיל! תשמחו שלבשתם מכנסיים נוחים...)', // Funnier, practical advice
+          seudahValue: '20:30 (תנו למשתה להתחיל! תשמחו שלבשתם מכנסיים נוחים.)',
           dancingBeginsTime: 'תחילת ריקודים',
-          dancingBeginsValue: '22:00 (תביאו את נעלי הריקוד ותתכוננו לשמחה מקסימלית – בלי מעצורים!)', // More energetic
-          vibeTitle: 'האווירה שתהיה', // More colloquial
-          vibeDescription: 'בואו מוכנים לחגוג באושר וכבוד. הערב יהיה מלא במוזיקה שתעיף אתכם, חום בלב ושמחה אמיתית – צפו לריקודים רציניים במיוחד!', // More vivid and exciting
-          transportationTitle: 'איך מגיעים לכיף?', // More playful
-          transportationDescription: 'החניה עלינו! בואו יחד ברכב לאווירה טובה יותר (ותדאגו שיהיה לכם בן/בת זוג לריקודים!).', // More personal and fun
-          funFactsTitle: 'עובדות קטנות ופיקנטיות על הזוג!', // More cute and engaging
-          funFactsDescription: 'כי כל סיפור אהבה אגדי ראוי לכמה הערות שוליים מפתיעות וטריוויה אקראית. תתכוננו להתגלגל מצחוק!', // More humorous
-          factDidYouKnowTitle: 'הידעתם כבר?',
-          factDidYouKnowText: 'ב-3 בנובמבר, יום חתונתנו המיוחד, אנחנו לא רק נקושר קשר - אנחנו גם נחגוג את יום הסנדוויץ\' הלאומי! צירוף מקרים? לא חושבים כך. התכוננו לאהבה שהיא עשירה ומשביעה כמו סנדוויץ\' הדלי האהוב עליכם!', // More playful and descriptive
-          factMusicalTitle: 'רגע מוזיקלי מרגש',
-          factMusicalText: 'הכינו את מיתרי הקול! אנחנו מצפים לסימפוניה של \'מזל טוב!\' נלהבים ושירה שמחה שתטלטל את התקרה (בצורה הכי טובה שיש, כמובן!).', // Enthusiastic
-          factRoyalStatusTitle: 'מעמד מלכותי רשמי',
-          factRoyalStatusText: 'על פי המסורת היהודית, הכלה היא מלכה והחתן הוא מלך ביום חתונתם. אז, הרגישו חופשי לפנות אלינו בתארינו המלכותיים! (רק ל-3 בנובמבר, מבטיחים 😉).', // More playful
-          factSweetPredictionsTitle: 'תחזיות מתוקות במיוחד',
-          factSweetPredictionsText: 'התחזית הקולינרית הסודית שלנו חוזה שעוגת החתונה תיעלם מהר יותר מצלחת קוגל טרי בשמחה. אתם מוזהרים... ותביאו מזלג!', // Funny warning
+          dancingBeginsValue: '22:00 (הביאו את נעלי הריקוד והתכוננו לשמחה מקסימלית!)',
+          vibeTitle: 'האווירה',
+          vibeDescription: 'בואו מוכנים לחגוג בשמחה וכבוד. הערב יהיה מלא במוזיקה, חום ושמחה אמיתית – צפו לריקודים סוחפים!',
+          transportationTitle: 'הגעה למקום',
+          transportationDescription: 'החניה עלינו! בואו בנסיעה משותפת לאווירה טובה יותר (ודאגו שיהיה לכם בן זוג לריקודים).',
+          funFactsTitle: 'עובדות מהנות וקטנות!',
+          funFactsDescription: 'כי כל סיפור אהבה אגדי ראוי לכמה עובדות מפתיעות וטריוויה אקראית. תתכוננו לשמוע פרטים משעשעים!',
+          factDidYouKnowTitle: 'הידעתם?',
+          factDidYouKnowText: 'ב-3 בנובמבר, יום חתונתנו, אנחנו לא רק קושרים את הקשר – אנחנו גם חוגגים את יום הסנדוויץ\' הלאומי! צירוף מקרים? לא נראה לנו. התכוננו לאהבה עשירה ומשביעה כמו סנדוויץ\' הדלי האהוב עליכם!',
+          factMusicalTitle: 'הפסקה מוזיקלית',
+          factMusicalText: 'הכינו את מיתרי הקול! אנו מצפים לסימפוניה של \'מזל טוב!\' נלהבים ושירה שמחה שתטלטל את האולם (בצורה הטובה ביותר, כמובן!).',
+          factRoyalStatusTitle: 'מעמד מלכותי',
+          factRoyalStatusText: 'על פי המסורת היהודית, הכלה היא מלכה והחתן הוא מלך ביום חתונתם. אז, הרגישו חופשי לפנות אלינו בתארינו המלכותיים! (רק ל-3 בנובמבר, מבטיחים).',
+          factSweetPredictionsTitle: 'תחזיות מתוקות',
+          factSweetPredictionsText: 'אנחנו מנבאים ששולחן הקינוחים יהיה רחבת הריקודים הפופולרית ביותר. הקפידו לתפוס את הממתקים שלכם מוקדם, לפני שהפרץ הסוכר יתחיל!',
           factDancingShoesTitle: 'התראת נעלי ריקוד!',
-          factDancingShoesText: 'חדשות טובות, חובבי ריקוד! סקרנו את רחבת הריקודים, והיא מאושרת רשמית לשמחה מקסימלית! יש המון מקום לכל הצעדים הכי שווים שלכם, אז אל תתאפקו!', // Encouraging and energetic
-          factHistoricDayTitle: 'יום היסטורי ומרגש',
-          factHistoricDayText: 'יום חתונתנו חולק תאריך עם שיגור היסטורי: ב-3 בנובמבר 1957, ספוטניק 2 נשא את הכלבה לייקה לחלל. אנחנו גם משגרים את עצמנו למשהו אינסופי – חיי נישואין! (עם קצת פחות חוסר כבידה, למרבה השמחה).', // Witty comparison
-          faqTitle: 'השאלות הבוערות שלכם (והתשובות הכנות שלנו, עם קצת חיוך!)', // More playful and witty
-          faqDescription: 'אנחנו יודעים שיש לכם המון שאלות בראש. הנה התשובות לשאלות שאתם *באמת* חושבים עליהן, בתוספת קורטוב של הומור.', // More humorous
-          faqQ1: 'באיזו שעה כדאי לי להגיע כדי לא להפסיד כלום?',
-          faqA1: 'נשמח לראות אתכם בקבלת פנים בשעה <strong>18:30</strong>! אל תחמיצו את החופה ב-19:30 – זה המאורע המרכזי! וברצינות, החלקים הכי שווים (והאוכל הטעים!) מתחילים בזמן, אז כדאי להגיע עם תיאבון!',
-          faqQ2: 'מה קוד הלבוש? כמה חגיגי זה יהיה?',
-          faqA2: 'התלבשו להרשים, אבל גם לרקוד! לבוש רשמי וצנוע מוערך. חשבו "שיק שמחה" – כי נוחות פוגשת אלגנטיות כשחוגגים בגדול!',
-          faqQ3: 'האם מותר להביא את הילדים הקטנים?',
-          faqA3: 'בהחלט! ככל שיותר שמחה, כך יותר עליז! רק זכרו להרחיק אותם מערכת התופים של הלהקה ומלחתן הקינוחים (אלא אם כן הבאתם לנו תוספות!).',
-          faqQ4: 'ואיך האוכל? יש מספיק?',
-          faqA4: 'האם השמיים כחולים?! יש לנו חתונה, אז כן, יהיה שפע של אוכל מדהים וטעים. בואו רעבים, לכו מאושרים... ומלאים!',
-          faqQ5: 'איפה אפשר לחנות את הרכב?',
-          faqA5: 'חניה בשפע זמינה במקום! לחוויית מונסי האולטימטיבית, השאירו לעצמכם עוד 15 דקות לכל פקק בלתי צפוי (במיוחד בימי שמחה!).',
-          faqQ6: 'האם מותר לצלם תמונות וסרטונים?',
-          faqA6: 'אנו מבקשים בחביבות לא להשתמש בפלאש במהלך החופה. חוץ מזה, תצלמו ותשתפו את השמחה! רק אל תחסמו את הצלמים המקצועיים – יש להם עבודה חשובה לעשות!',
-          faqQ7: 'האם אני יכול/ה להיות חלק מהפלאשמוב המטורף?',
-          faqA7: 'אתם שואלים את השאלות האמיתיות! בהחלט! אם יש לכם מהלכים (או אפילו רק התלהבות שמדבקת!), נשמח שתיקחו חלק. פשוט צרו קשר עם <strong>ציפי הכלה</strong>, והיא תשתף אתכם בכל הצעדים הסודיים ותוודא שאתם מוכנים לרקוד בשיגעון! התכוננו לרקוד כל הלילה!',
+          factDancingShoesText: 'חדשות טובות, חובבי ריקוד! רחבת הריקודים אושרה רשמית לשמחה מקסימלית! יש המון מקום לכל הצעדים הטובים ביותר שלכם, אז אל תתאפקו!',
+          factHistoricDayTitle: 'יום היסטורי',
+          factHistoricDayText: 'יום חתונתנו חולק תאריך עם שיגור היסטורי: ב-3 בנובמבר 1957, ספוטניק 2 נשא את הכלבה לייקה לחלל. אנחנו גם משגרים את עצמנו למשהו אינסופי – חיי נישואין! (עם קצת פחות חוסר כבידה, לשמחתנו).',
+          faqTitle: 'השאלות הבוערות שלכם (והתשובות הכנות שלנו)',
+          faqDescription: 'אנחנו יודעים שיש לכם שאלות. הנה התשובות לשאלות שאתם *באמת* חושבים עליהן.',
+          faqQ1: 'באיזו שעה כדאי להגיע?',
+          faqA1: 'נשמח לראות אתכם בקבלת פנים בשעה <strong>18:30</strong>. אל תחמיצו את החופה ב-19:30 – זה האירוע המרכזי! ברצינות, החלקים הטובים (והאוכל!) מתחילים בזמן.',
+          faqQ2: 'מה קוד הלבוש?',
+          faqA2: 'התלבשו להרשים, אך גם לרקוד! לבוש רשמי וצנוע מוערך. חשבו "שיק שמחה" – כי נוחות פוגשת אלגנטיות כשחוגגים!',
+          faqQ3: 'האם מותר להביא ילדים?',
+          faqA3: 'בהחלט! ככל שיותר שמחה, כך עליז יותר. רק זכרו להרחיק אותם מערכת התופים של הלהקה ומלחתן הקינוחים (אלא אם הבאתם תוספות בשבילנו!).',
+          faqQ4: 'האם יש אוכל?',
+          faqA4: 'האם השמיים כחולים?! יש לנו חתונה, אז כן, יהיה שפע של אוכל טעים. בואו רעבים, לכו שמחים!',
+          faqQ5: 'איפה אפשר לחנות?',
+          faqA5: 'חניה בשפע זמינה באתר. לחוויית מונסי המלאה, הקציבו 15 דקות נוספות לפקקים בלתי צפויים (במיוחד בימי שמחה!).',
+          faqQ6: 'האם מותר לצלם תמונות?',
+          faqA6: 'אנו מבקשים שלא להשתמש בפלאש במהלך החופה. חוץ מזה, צלמו ושתפו את השמחה! רק אל תחסמו את הצלמים המקצועיים – יש להם עבודה לעשות!',
+          faqQ7: 'האם אוכל להיות חלק מהפלאשמוב?',
+          faqA7_line1: 'אתם שואלים את השאלות האמיתיות! בהחלט! אם יש לכם מהלכים (או אפילו רק התלהבות!), נשמח שתצטרפו.',
+          faqA7_line2: 'פשוט צרו קשר עם <strong data-translate-key="tzippyKallah">ציפי הכלה</strong>, והיא תשתף אתכם בכל הצעדים הסודיים ותוודא שאתם מוכנים לריקודים! התכוננו לרקוד כל הלילה!',
           tzippyKallah: 'ציפי הכלה',
-          faqQ8: 'What if I have a question not listed here?',
-          faqA8: 'אל דאגה! גללו למטה למקטע "שאלות ודיבורים" שלנו – אנחנו כאן (וירטואלית) כדי לעזור עם כמעט כל דבר. או פשוט מצאו אותנו ליד שולחן הקינוחים בלילה – כנראה שנהיה שם!',
-          mapTitle: 'איפה למצוא את כל הכיף!', // More playful
-          mapLost: 'הלכתם לאיבוד? אל דאגה! סימנו לכם את כל נקודות השמחה החשובות, כדי שלא תפספסו כלום.',
-          mapFollowMusic: 'צריכים עזרה במציאתנו? פשוט עקבו אחרי המוזיקה והחיוכים – אנחנו נהיה שם, מחכים לכם!',
-          locationMapTitle: 'מפת המיקום המדויקת',
-          mapGuideText: 'המדריך שלכם לחגיגה הגדולה! נתראה שם, מוכנים לשיגעון!',
-          btnGetDirections: 'קבלו הוראות הגעה בקלות',
-          whatsPinnedTitle: 'מה סימנו לכם על המפה?',
+          faqQ8: 'מה אם יש לי שאלה שלא מופיעה כאן?',
+          faqA8: 'אל דאגה! גללו למטה למקטע "צ׳אט ופניות" שלנו – אנחנו כאן (וירטואלית) כדי לעזור כמעט בכל דבר. או פשוט מצאו אותנו ליד שולחן הקינוחים בלילה!',
+          mapTitle: 'היכן למצוא את הכיף',
+          mapLost: 'הלכתם לאיבוד? אל דאגה! סימנו את כל תחנות השמחה החשובות במיוחד בשבילכם.',
+          mapFollowMusic: 'צריכים עזרה במציאתנו? פשוט עקבו אחרי המוזיקה והחיוכים – אנחנו נהיה שם!',
+          locationMapTitle: 'מפת המיקום',
+          mapGuideText: 'המדריך שלכם לחגיגה הגדולה! נתראה שם, מוכנים למסיבה!',
+          btnGetDirections: 'קבלו הוראות הגעה',
+          whatsPinnedTitle: 'מה מסומן במפה?',
           venueLabel: 'מקום החתונה:',
           oifrufLabel: 'אויפרוף:',
           bogleitenLabel: 'בוגלייטן:',
           bovarfenLabel: 'בוארופן:',
           shabbosBrachasLabel: 'שבע ברכות שבת:',
-          topTipTitle: 'טיפ הזהב שלנו:',
-          topTipText: 'התנועה במונסי: קלף פראי! השאירו תמיד זמן עודף כדי לא להחמיץ את המנות הראשונות (הזוועה!).',
-          shabbosEventsTitle: 'שבת אויפרוף ושבע ברכות – ממשיכים לחגוג!', // More engaging
-          shabbosEventsDescription: 'השמחה לא נגמרת! הצטרפו אלינו להתכנסויות השבת המיוחדות שמסביב לחגיגת חתונתנו. הולך להיות שמח במיוחד!',
+          topTipTitle: 'טיפ מנצח:',
+          topTipText: 'תנועה במונסי: קלף פראי! השאירו זמן נוסף כדי לא להחמיץ מנות ראשונות (הזוועה!).',
+          shabbosEventsTitle: 'שבת אויפרוף ושבע ברכות',
+          shabbosEventsDescription: 'השמחה ממשיכה! הצטרפו אלינו להתכנסויות השבת המיוחדות שמסביב לחגיגת חתונתנו.',
           oifrufSeudahTitle: 'סעודת אויפרוף שבת',
-          oifrufSeudahDescription: 'הצטרפו אלינו לאחל לחתן "מזל טוב!" רועם לפני היום הגדול! צפו לאווירה שוקקת באנרגיות מטורפות!',
+          oifrufSeudahDescription: 'הצטרפו אלינו לאחל לחתן "מזל טוב!" רועם לפני היום הגדול! צפו לאווירה שוקקת באנרגיות טובות!',
           bogleitenTitle: 'בוגלייטן',
           bogleitenDepartingFrom: 'יוצאים מ:',
-          bogleitenDescription: 'הפרידה הגדולה והשמחה של הכלה! תביאו את קולות השירה החזקים ביותר שלכם ותתכוננו לתהלוכה עליזה!',
+          bogleitenDescription: 'הפרידה החגיגית של הכלה! הביאו את קולות השירה החזקים ביותר שלכם והתכוננו לתהלוכה שמחה!',
           bovarfenTitle: 'בוארופן',
-          bovarfenDescription: 'התכוננו למתוקים ולרגעים מתוקים עוד יותר! (תפיסת ממתקים אסטרטגית מומלצת בחום רב.)',
+          bovarfenDescription: 'התכוננו למתוקים ולרגעים מתוקים עוד יותר! (תפיסת ממתקים אסטרטגית מומלצת בחום.)',
           shevaBrachasTitle: 'שבת שבע ברכות',
-          shevaBrachasDescription: 'האריכו את השמחה בשבת קודש איתנו! צפו לעוד אוכל משובח ועוד חברה מדהימה. אי אפשר לפספס!',
-          blessingsTitle: 'איחולים חמים ומחשבות טובות!',
+          shevaBrachasDescription: 'האריכו את השמחה בשבת איתנו! צפו לעוד אוכל טעים ועוד חברה מדהימה.',
+          blessingsTitle: 'איחולים מכל הלב ומחשבות טובות!',
           blessingsDescription: 'כמה מילים מהקרובים אלינו (וכמה שהמצאנו בשביל הכיף).',
-          btnAddBruchas: 'הוסיפו את הברכות הכי שוות שלכם! ✨',
+          btnAddBruchas: 'הוסיפו את ברכותיכם! ✨',
           yourUserId: 'מזהה המשתמש שלך:',
-          chatTitle: 'יש לכם שאלה ששורפת לכם על קצה הלשון?', // More dramatic/witty
-          chatDescription: 'בין אם זה על הוראות הגעה, באיזו שעה כדאי להופיע, או איפה מוצאים את הקוגל הכי טעים – אנחנו כאן (וירטואלית) כדי לעזור! אל תתביישו לשאול.',
-          hpFieldLabel: 'נא להשאיר שדה זה ריק',
-          yourNameLabel: 'שמך המלא',
-          yourNamePlaceholder: 'שמך',
-          yourEmailLabel: 'האימייל שלך',
-          yourEmailPlaceholder: 'האימייל שלך',
-          yourQuestionLabel: 'שאלתך / הודעתך האישית',
-          yourQuestionMessage: 'שאלתך או הודעתך',
-          yourQuestionPlaceholder: 'כתבו את ברכתכם הכנה והמצחיקה/מרגשת כאן...',
-          btnSendMessage: 'שלחו את הודעתכם אלינו!',
-          chatClosingNote: 'נחזור אליכם במהירות שיא – או פשוט תמצאו אותנו ליד שולחן הקינוחים בלילה – כנראה שנהיה שם!',
-          thankYouTitle: 'תודה ענקית מהלב, ממיילך וציפי!', // More heartfelt
-          thankYouGreeting: 'משפחה וחברים יקרים שלנו,',
-          thankYouPara1: 'ככל שיום חתונתנו מתקרב, הלב שלנו פשוט מתפוצץ מאושר ומכרת תודה עצומה. כשאנחנו מסתכלים אחורה על כל הרגעים המדהימים שהובילו עד לכאן, אנחנו מבינים כמה בני מזל אנחנו שיש לנו כל אחד ואחת מכם בחיים שלנו. התמיכה הבלתי מתפשרת שלכם, העידוד האינסופי והשמחה הטהורה ששיתפתם איתנו, הפכו כל צעד במסע הזה לבלתי נשכח באמת.',
-          thankYouPara2: 'מעומק ליבנו, תודה לכם על היותכם חלק מהסיפור המיוחד שלנו. תודה על הצחוקים, העצות, השמחה, ופשוט על כך שאתם *אתם*. הידיעה שאתם חוגגים איתנו, בין אם פיזית ובין אם ברוח, ממלאת אותנו באושר שאין כדוגמתו.',
-          thankYouPara3: 'תתכוננו ללילה של ריקודים משוגעים, אוכל שפשוט תתמכרו אליו, וזיכרונות שננצור לנצח. אנחנו באמת, אבל באמת, לא יכולים לחכות לחלוק איתכם את האירוע ההיסטורי הזה ולהתחיל את חיינו יחד כבעל ואישה. בואו לעשות שמח!',
-          thankYouClosing: 'באהבה גדולה והתרגשות עצומה,',
+          chatTitle: 'יש לכם שאלה בוערת?',
+          chatDescription: 'בין אם זה על הוראות הגעה, שעת הגעה, או איפה מוצאים את הקוגל הטוב ביותר – אנחנו (וירטואלית) כאן כדי לעזור!',
+          hpFieldLabel: 'השאירו שדה זה ריק',
+          yourNameLabel: 'שמכם',
+          yourNamePlaceholder: 'שמכם',
+          yourEmailLabel: 'האימייל שלכם',
+          yourEmailPlaceholder: 'האימייל שלכם',
+          yourQuestionLabel: 'שאלתכם / הודעתכם',
+          yourQuestionMessage: 'שאלתכם או הודעתכם',
+          yourQuestionPlaceholder: 'כתבו את שאלתכם או הודעתכם כאן...',
+          btnSendMessage: 'שלחו הודעה!',
+          chatClosingNote: 'נחזור אליכם בהקדם – או שתמצאו אותנו ליד שולחן הקינוחים (כנראה שנהיה שם!) 😉',
+          thankYouTitle: 'תודה מקרב לב, ממיילך וציפי!',
+          thankYouGreeting: 'משפחה וחברים יקרים,',
+          thankYouPara1: 'ככל שיום חתונתנו מתקרב, ליבנו מתמלא בהתרגשות עצומה ובתחושת תודה עמוקה. כשאנו מביטים לאחור על הרגעים המדהימים שהובילו עד הלום, אנו מבינים כמה ברי מזל אנחנו שיש לכל אחד ואחת מכם בחיים. תמיכתכם הבלתי מעורערת, העידוד האינסופי והשמחה הטהורה ששיתפתם איתנו הפכו כל שלב במסע הזה לבלתי נשכח באמת.',
+          thankYouPara2: 'ממעמקי ליבנו, תודה לכם על היותכם חלק מהסיפור שלנו. תודה על הצחוקים, העצות, השמחה, ופשוט על היותכם *אתם*. הידיעה שאתם חוגגים איתנו, בין אם באופן אישי ובין אם ברוח, ממלאת אותנו באושר רב.',
+          thankYouPara3: 'התכוננו ללילה של ריקודים אפיים, אוכל משובח וזיכרונות שננצור לנצח. אנו באמת לא יכולים לחכות לחלוק עמכם את האירוע ההיסטורי הזה ולהתחיל את חיינו יחד כבעל ואישה.',
+          thankYouClosing: 'באהבה והתרגשות רבה,',
           thankYouNames: 'מיילך וציפי',
-          btnStillQuestion: 'עדיין יש שאלה? בואו נדבר צ\'אט!',
-          footerCopyright: '&copy; 2025 מיילך וציפי. נבנה באהבה, המון צחוק וקצת קסם.',
-          footerQuestions: 'שאלות כלשהן? מוזמנים ליצור קשר איתנו בכתובת:',
-          yourBruchaAdded: 'הברכה שלכם נוספה לקיר הברכות! תודה רבה!',
-          authNotReady: 'שירות האימות עדיין לא מוכן. אנא נסה שוב בעוד רגע קצר.',
-          fillNameBlessing: 'אנא מלאו בבקשה גם את שמכם וגם את תוכן הברכה!',
-          failedSendBrucha: 'שליחת הברכה נכשלה. אנא נסה שוב בעוד כמה שניות.',
-          fillAllFields: 'אנא מלא את כל השדות הנדרשים לפני שליחת הודעתך!',
-          messageSentSuccess: 'ההודעה שלך שוגרה אלינו במהירות האור! נחזור אליך מהר יותר ממה שתוכל לומר \'מזל טוב!\' כפול שתיים!',
-          messageSentError: 'אופס! משהו השתבש בשליחת ההודעה שלך. אנא נסה שוב, אנחנו מחכים לה!',
-          networkError: 'שגיאת רשת: לא ניתן לשלוח את הודעתך. אנא בדוק את חיבור האינטרנט שלך!',
-          authFailed: 'שגיאת אימות: הכניסה למערכת נכשלה. תכונות הדורשות אימות עשויות שלא לפעול כרגע.',
-          excitementOffCharts: 'רמות ההתרגשות פשוט מטורפות!',
-          markedCalendar: 'לא יכולים לחכות לחגוג איתכם! תודה ענקית שסימנתם ביומן!',
-          modalBlessingTitle: 'שתפו את השמחה שלכם איתנו! 🎉',
-          modalBlessingDescription: 'שפכו את ליבכם! השאירו ברכה מיוחדת ומרגשת למיילך וציפי.',
-          modalYourNameLabel: 'שמכם המלא',
+          btnStillQuestion: 'עדיין יש שאלה? צ\'אטו איתנו!',
+          footerCopyright: '&copy; 2025 מיילך וציפי. נבנה באהבה, צחוק ונגיעה של קסם.',
+          footerQuestions: 'שאלות? צרו קשר איתנו בכתובת:',
+          yourBruchaAdded: 'ברכתכם נוספה לקיר! תודה רבה!',
+          authNotReady: 'שירות האימות אינו מוכן. אנא נסו שוב בעוד רגע.',
+          fillNameBlessing: 'אנא מלאו גם את שמכם וגם את הברכה!',
+          failedSendBrucha: 'שליחת הברכה נכשלה. אנא נסו שוב.',
+          fillAllFields: 'אנא מלאו את כל השדות לפני שליחת ההודעה!',
+          messageSentSuccess: 'הודעתכם נשלחה אלינו במהירות! נחזור אליכם מהר יותר ממה שתוכלו לומר \'מזל טוב!\'',
+          messageSentError: 'אופס! משהו השתבש בשליחת הודעתכם. אנא נסו שוב.',
+          networkError: 'שגיאת רשת: לא ניתן לשלוח את הודעתכם. בדקו את חיבור האינטרנט שלכם!',
+          authFailed: 'כשל באימות. ייתכן שתכונות הדורשות כניסה לא יפעלו.',
+          excitementOffCharts: 'רמות ההתרגשות בשמיים!',
+          markedCalendar: 'לא יכולים לחכות לחגוג איתכם! תודה שסימנתם ביומן!',
+          modalBlessingTitle: 'שתפו את שמחתכם! �',
+          modalBlessingDescription: 'שפכו את ליבכם! השאירו הודעה מיוחדת למיילך וציפי.',
+          modalYourNameLabel: 'שמכם',
           yourBlessingName: 'שמכם עבור הברכה',
-          modalYourBlessingLabel: 'הברכה המיוחדת שלכם',
-          yourBlessingText: 'תוכן הברכה שלכם',
-          yourBlessingPlaceholder: 'כתבו את ברכתכם הכנה והמצחיקה/מרגשת כאן...',
-          btnSendLove: 'שלחו את האהבה שלכם אלינו! ❤️',
-          loading: 'בטעינה...',
+          modalYourBlessingLabel: 'ברכתכם',
+          yourBlessingText: 'טקסט הברכה שלכם',
+          yourBlessingPlaceholder: 'כתבו את ברכתכם הכנה כאן...',
+          btnSendLove: 'שלחו אהבה! ❤️',
+          loading: 'טוען...',
           authError: 'שגיאת אימות!',
           viewWeddingProgress: 'צפו בהתקדמות החתונה',
           closeBlessingForm: 'סגור טופס ברכה',
+          // New strings for tips (Hebrew)
+          tip1: "אל תשכחו את נעלי הריקוד! יש לנו פה רחבת שמחה מאושרת רשמית.",
+          tip2: "הידרציה היא המפתח! במיוחד כשיש כל כך הרבה ריקודי שמחה.",
+          tip3: "אם אתם רואים אותנו לחוצים, פשוט תצעקו 'מזל טוב!' זה עוזר.",
+          tip4: "אזהרה: התפרצויות ספונטניות של אושר עלולות להתרחש. תזרמו עם זה!",
+          tip5: "איבדתם את בן/בת הזוג ברחבת הריקודים? בדקו בשולחן הקינוחים, הם כנראה שם.",
+          tip6: "זכרו: קלוריות שנצרכות בשמחה לא נספרות. זו עובדה מדעית!"
         }
       };
 
@@ -1916,17 +2105,17 @@
         "Don't tell anyone, but we're pretty excited to see *you* there!"
       ];
       const secretMessages_he = [
-        "ספוילר: אנחנו לגמרי מתחתנים, וזה סופי!", // More emphatic
-        "אזהרה: עלולים לפרוץ בריקודים ספונטניים בכל רגע נתון!", // More descriptive
-        "עובדה מצחיקה: אנחנו מתרגלים את חיוכי ה'רק התחתנו' שלנו. הם פשוט מסנוורים!", // More playful
-        "סיפור האהבה שלנו קיבל דירוג 'מתוק' – במיוחד לחובבי עוגות!", // Cute rating
-        "תתכוננו לחגיגה כזו אגדית, שהיא תיכנס לספרי ההיסטוריה (או לפחות לאגדות המשפחתיות!)", // More dramatic and funny
-        "אל תגלו לאף אחד, אבל אנחנו ממש, אבל ממש, נרגשים לראות *אתכם* שם!" // More personal and emphatic
+        "ספוילר: אנחנו לגמרי מתחתנים!",
+        "אזהרה: עלולים לפרוץ בריקודים ספונטניים בכל רגע!",
+        "עובדה כיפית: אנחנו מתרגלים את חיוכי ה'רק התחתנו' שלנו. הם מסנוורים!",
+        "סיפור האהבה שלנו מדורג רשמית כ'מומלץ לכולם' (במיוחד לאוהבי עוגות!)",
+        "התכוננו לחגיגה כה אדירה, שהיא תיכנס להיסטוריה (או לפחות לאגדות המשפחתיות!)",
+        "אל תגלו לאף אחד, אבל אנחנו ממש מתרגשים לראות *אתכם* שם!"
       ];
 
       // Array of funny jokes/quotes for countdown cards (new feature)
       const countdownJokes_en = [
-          "Tick-tock, goes the clock! But seriously, don't miss the cake.",
+          "Tick-tock, goes the clock! Get ready for the big day!",
           "We're getting closer! Our excitement levels are reaching critical mass.",
           "Soon, 'single' will just be a word in the dictionary for us!",
           "Warning: May spontaneously start dancing due to overwhelming anticipation!",
@@ -1937,15 +2126,15 @@
           "It's happening! We're not just counting days, we're counting memories to make!"
       ];
       const countdownJokes_he = [
-          "טיק-טוק, השעון מתקתק! אבל ברצינות, אל תחמיצו את העוגה – היא שווה את זה.", // Emphasize cake worth
-          "אנחנו מתקרבים בצעדי ענק! רמות ההתרגשות שלנו הגיעו למסה קריטית ומשם רק עולות!", // More dramatic
-          "בקרוב, 'רווק' יהיה רק מילה מיושנת בארכיון המילון שלנו!", // Witty
-          "אזהרה: עלולים לפרוץ בריקודים ספונטניים עקב עודף התרגשות בלתי נשלט!", // More descriptive
-          "הספירה לאחור לחתונה היא כמו יין משובח, היא רק משתבחת עם כל שנייה שעוברת!", // More poetic
-          "עדיין יש לכם זמן למצוא דייט חמוד, או פשוט לבוא עם נעלי הריקוד הכי נוחות שלכם!", // Friendly advice
-          "פחות זמן לרגליים קרות, יותר זמן ללבבות חמים ומלאי אהבה!", // Cute and warm
-          "אל דאגה, אנחנו מתרגלים את חיוכי ה'רק התחתנו' שלנו. הם יאירו לכם את הערב!", // Reassuring and charming
-          "זה קורה! אנחנו לא רק סופרים ימים, אנחנו סופרים את הזיכרונות המדהימים שעומדים להיווצר!" // More profound and exciting
+          "טיק-טוק, השעון מתקתק! תתכוננו ליום הגדול!",
+          "אנחנו מתקרבים בצעדי ענק! רמות ההתרגשות שלנו מגיעות לשיא.",
+          "בקרוב, 'רווק' תהיה רק מילה מיושנת במילון שלנו!",
+          "אזהרה: עלולים לפרוץ בריקודים ספונטניים עקב התרגשות יתר!",
+          "הספירה לאחור לחתונה היא כמו יין משובח, היא רק משתבחת עם כל שנייה שעוברת!",
+          "עדיין יש לכם מספיק זמן למצוא דייט, או פשוט להביא את נעלי הריקוד!",
+          "פחות זמן לרגליים קרות, יותר זמן ללבבות חמים ומלאי אהבה!",
+          "אל דאגה, אנחנו מתרגלים את חיוכי ה'רק התחתנו' שלנו. הם מסנוורים!",
+          "זה קורה! אנחנו לא רק סופרים ימים, אנחנו סופרים את הזיכרונות שעומדים להיווצר!"
       ];
 
 
@@ -1957,8 +2146,29 @@
           if (metaDescription) metaDescription.setAttribute('content', metaDescription.getAttribute(`data-${lang}-content`));
           if (metaKeywords) metaKeywords.setAttribute('content', metaKeywords.getAttribute(`data-${lang}-content`));
 
+          // Handle special FAQ answer for email link
+          // This part needs to be dynamically updated based on the original HTML structure and translation keys
+          const faqQ7Detail = document.querySelector('details.faq-item:has(span[data-translate-key="faqQ7"])');
+          if (faqQ7Detail) {
+              const faqA7Element = faqQ7Detail.querySelector('.faq-answer p');
+              if (faqA7Element) {
+                  const faqA7Line1Text = translations[lang].faqA7_line1 || '';
+                  const faqA7Line2Text = translations[lang].faqA7_line2 || '';
+                  const tzippyKallahText = translations[lang].tzippyKallah || 'Tzippy the kallah';
+                  
+                  // Construct the innerHTML with the mailto link embedded into the phrase
+                  // Ensure the mailto link uses data-email-trigger for JS click handling
+                  faqA7Element.innerHTML = `${faqA7Line1Text} ${faqA7Line2Text.replace(tzippyKallahText, `<a href="mailto:tzippykornbluh@gmail.com" data-email-trigger="tzippykornbluh@gmail.com" class="text-primary-navy hover:underline font-bold" data-translate-key="tzippyKallah">${tzippyKallahText}</a>`)}`;
+              }
+          }
+
           allTranslatableElements.forEach(element => {
+              // Skip faqA7_line1, faqA7_line2, tzippyKallah as they are handled above or are just translation keys for the JS
               const key = element.getAttribute('data-translate-key');
+              if (key && (key.startsWith('faqA7_line') || key === 'tzippyKallah')) {
+                  return;
+              }
+
               const ariaLabelKey = element.getAttribute('data-translate-aria-label-key');
               const placeholderKey = element.getAttribute('data-translate-placeholder-key');
 
@@ -1972,22 +2182,38 @@
           updateAllCountdownElements();
       }
 
-      function showMessageBox(key, duration = 5000) {
-          const messageText = translations[currentLang][key] || key;
-          messageBox.textContent = messageText;
+      function showMessageBox(messageContent, duration = 5000, isHTML = false) {
+          if (isHTML) {
+            messageBox.innerHTML = messageContent;
+          } else {
+            messageBox.textContent = messageContent;
+          }
           messageBox.classList.add('show');
           setTimeout(() => messageBox.classList.remove('show'), duration);
       }
 
       function showModal(modalElement) { if(modalElement) modalElement.classList.add('show'); }
       function hideModal(modalElement) { if(modalElement) modalElement.classList.remove('show'); }
-      function triggerConfetti(options = {}) { if(typeof confetti === 'function') confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#B85C3A', '#1E2C4F', '#84A98C', '#F2F4F7'], ...options }); }
+      
+      const themeColors = ['#B85C3A', '#1E2C4F', '#84A98C', '#FFFFFF']; // Defined theme colors for confetti (copper, navy, sage, white)
 
-      function triggerLocalizedConfetti(targetElement, colors) {
+      function triggerConfetti(options = {}) {
+        if(typeof confetti === 'function') {
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: themeColors, // Use theme colors
+            ...options
+          });
+        }
+      }
+
+      function triggerLocalizedConfetti(targetElement) {
           const rect = targetElement.getBoundingClientRect();
           const originX = (rect.left + rect.right) / 2 / window.innerWidth;
           const originY = (rect.top + rect.bottom) / 2 / window.innerHeight;
-          triggerConfetti({ origin: { x: originX, y: originY }, colors: colors });
+          triggerConfetti({ origin: { x: originX, y: originY }, colors: themeColors }); // Use theme colors
       }
 
       // --- Countdown & Progress Logic ---
@@ -2081,30 +2307,67 @@
           selectedBlessings.forEach(blessing => createBlessingCard(blessing));
       }
 
-      
+      // --- Periodic Tips Logic ---
+      let currentTipIndex = 0;
+      function showRandomTip() {
+        const tips = (currentLang === 'en') ? funnyTips_en : funnyTips_he;
+        if (tips.length === 0) return;
+
+        let nextIndex;
+        do {
+          nextIndex = Math.floor(Math.random() * tips.length);
+        } while (nextIndex === currentTipIndex && tips.length > 1); // Ensure different tip if possible
+
+        currentTipIndex = nextIndex;
+        showMessageBox(tips[currentTipIndex], 7000, false); // Show for 7 seconds, not HTML
+      }
+
+
       // --- Contact Form & Firebase Init --- (No changes to logic, just ensuring robustness)
       async function handleContactSubmit(event) {
           event.preventDefault();
           const name = contactForm.querySelector('[name="name"]').value.trim();
           const email = contactForm.querySelector('[name="email"]').value.trim();
           const question = contactForm.querySelector('[name="question"]').value.trim();
-          if (!name || !email || !question) { showMessageBox("fillAllFields", 3000); return; }
-          const formData = new FormData(contactForm);
+          if (!name || !email || !question) { showMessageBox(translations[currentLang].fillAllFields, 3000); return; }
+          
+          // FormSubmit requires emails comma-separated in the action attribute or a hidden field.
+          // Using a hidden field with a shared constant for multiple recipients.
+          const form = event.target;
+          const hiddenRecipientsInput = document.createElement('input');
+          hiddenRecipientsInput.type = 'hidden';
+          hiddenRecipientsInput.name = '_recipients';
+          hiddenRecipientsInput.value = FORM_SUBMIT_EMAILS;
+          form.appendChild(hiddenRecipientsInput);
+
           try {
-              const response = await fetch('https://formsubmit.co/ajax/elimelechmoster@gmail.com', {
+              // Note: Formsubmit's `ajax` endpoint can only send to the email in its action attribute.
+              // To send to multiple, we explicitly list them in `_recipients` in the payload.
+              // The primary email in the fetch URL determines *which* Formsubmit endpoint is hit.
+              const response = await fetch('https://formsubmit.co/ajax/' + FORM_SUBMIT_EMAILS.split(',')[0].trim(), { 
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                  body: JSON.stringify(Object.fromEntries(formData))
+                  body: JSON.stringify({
+                      name: name,
+                      email: email,
+                      question: question,
+                      _subject: translations[currentLang].weddingWebsiteInquirySubject || 'Wedding Website Inquiry!', // Dynamic subject
+                      _recipients: FORM_SUBMIT_EMAILS // This field is important for Formsubmit
+                  })
               });
-              if (response.ok) { showMessageBox("messageSentSuccess"); contactForm.reset(); }
+              if (response.ok) { showMessageBox(translations[currentLang].messageSentSuccess); contactForm.reset(); }
               else { throw new Error('Form submission failed'); }
-          } catch (error) { console.error('Formsubmit error:', error); showMessageBox("messageSentError"); }
+          } catch (error) { console.error('Formsubmit error:', error); showMessageBox(translations[currentLang].messageSentError); }
+          finally {
+            if (hiddenRecipientsInput.parentNode) {
+              hiddenRecipientsInput.parentNode.removeChild(hiddenRecipientsInput); // Clean up
+            }
+          }
       }
 
       // --- Main DOM Content Loaded Event Listener ---
       document.addEventListener("DOMContentLoaded", () => {
-        const browserLang = navigator.language.split('-')[0];
-        setLanguage(browserLang === 'he' ? 'he' : 'en');
+        setLanguage('en'); // Always default to English
         if(heroContent) heroContent.classList.add('opacity-100', 'scale-100');
         
         setupSaveDate();
@@ -2113,13 +2376,29 @@
         requestAnimationFrame(animateProgressBar);
         displayCuratedBlessings(); // Display curated blessings on load
 
+        // Start periodic tips
+        showRandomTip(); // Show first tip immediately
+        tipInterval = setInterval(showRandomTip, 30000); // Show a new tip every 30 seconds
+
         // Event Listeners
         hamburgerMenu.addEventListener('click', () => navLinksContainer.classList.toggle('open'));
         navLinks.forEach(link => link.addEventListener('click', () => navLinksContainer.classList.remove('open')));
         langToggleButton.addEventListener('click', () => setLanguage(currentLang === 'en' ? 'he' : 'en'));
-        window.addEventListener('scroll', () => navHeader.classList.toggle('scrolled', window.scrollY > 50));
-        if (totalDaysHiddenEl) totalDaysHiddenEl.addEventListener('click', () => triggerConfetti({ particleCount: 150 }));
-        if (heroContent) heroContent.querySelector('h1').addEventListener('click', () => triggerConfetti({ particleCount: 150 }));
+        window.addEventListener('scroll', () => {
+            navHeader.classList.toggle('scrolled', window.scrollY > 50);
+            // Show/hide back to top button
+            if (backToTopBtn) {
+                backToTopBtn.classList.toggle('show', window.scrollY > 300); // Show after 300px scroll
+            }
+        });
+        
+        // Confetti for Hero Names click/hover
+        if (heroNamesEl) {
+          heroNamesEl.addEventListener('click', () => triggerConfetti({ particleCount: 150, spread: 120 })); // Larger, wider confetti for main names
+          heroNamesEl.addEventListener('mouseenter', () => triggerConfetti({ particleCount: 50, spread: 60 })); // Smaller burst on hover
+        }
+
+        // Confetti for secret trigger spot
         if(confettiTriggerSpot) confettiTriggerSpot.addEventListener('click', () => triggerConfetti({ particleCount: 200 }));
         
         // Event Delegation for Countdown Cards
@@ -2154,8 +2433,8 @@
           });
         }
         
-        if (progressButton) progressButton.addEventListener('click', () => showMessageBox("excitementOffCharts"));
-        if (saveDateBtn) saveDateBtn.addEventListener('click', () => showMessageBox("markedCalendar"));
+        if (progressButton) progressButton.addEventListener('click', () => showMessageBox(translations[currentLang].excitementOffCharts));
+        if (saveDateBtn) saveDateBtn.addEventListener('click', () => showMessageBox(translations[currentLang].markedCalendar));
         if (contactForm) contactForm.addEventListener('submit', handleContactSubmit);
         if(secretMessageTrigger) secretMessageTrigger.addEventListener('click', () => {
             if (secretMessageTimeout) clearTimeout(secretMessageTimeout);
@@ -2169,7 +2448,53 @@
             secretMessageTimeout = setTimeout(() => secretMessageContent.classList.remove('revealed'), 10000);
         });
 
-        // Intersection Observer
+        // Email trigger for Tzippy the kallah in FAQ (direct mailto)
+        document.addEventListener('click', (event) => {
+            const target = event.target.closest('[data-email-trigger]');
+            if (target) {
+                // Ensure the email link itself is a mailto, not just data-trigger
+                const mailtoLink = `mailto:${target.getAttribute('data-email-trigger')}`;
+                window.location.href = mailtoLink; // Directly trigger mail client
+            }
+        });
+
+        // Back to top button functionality
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // Share Website Button
+        if (shareWebsiteBtn) {
+            shareWebsiteBtn.addEventListener('click', async () => {
+                const shareData = {
+                    title: translations[currentLang].siteTitle,
+                    text: translations[currentLang].shareWebsiteText || (currentLang === 'en' ? 'Join us to celebrate Meilech & Tzippy\'s wedding!' : 'הצטרפו לחגוג את חתונתם של מיילך וציפי!'),
+                    url: window.location.href
+                };
+                try {
+                    if (navigator.share) {
+                        await navigator.share(shareData);
+                        showMessageBox(translations[currentLang].websiteSharedSuccessfully);
+                    } else {
+                        // Fallback: Copy to clipboard
+                        const dummy = document.createElement('textarea');
+                        document.body.appendChild(dummy);
+                        dummy.value = window.location.href;
+                        dummy.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(dummy);
+                        showMessageBox(translations[currentLang].websiteLinkCopied);
+                    }
+                } catch (err) {
+                    console.error('Share failed:', err);
+                    showMessageBox(translations[currentLang].websiteShareFailed);
+                }
+            });
+        }
+        
+        // Intersection Observer for fade-in animations
         const observer = new IntersectionObserver((entries, observer) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
