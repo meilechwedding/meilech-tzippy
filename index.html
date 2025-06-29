@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -203,7 +203,8 @@
 
     /* Hero Section Specifics */
     .hero-section {
-      background: linear-gradient(135deg, #F2F4F7 0%, #E0E7EB 50%, #F2F4F7 100%);
+      /* Solid background color instead of animated gradients */
+      background-color: var(--color-base-light); /* Using a light solid color from palette */
       position: relative;
       min-height: 100vh;
       padding-top: 8rem;
@@ -215,32 +216,9 @@
       overflow: hidden; /* Important for background animation */
     }
 
-    /* Background Animation Overlay */
+    /* Remove animated background overlay */
     .hero-section::before {
-      content: '';
-      position: absolute;
-      top: -50%; /* Start off-screen */
-      left: -50%; /* Start off-screen */
-      width: 200%; /* Cover entire area when animated */
-      height: 200%; /* Cover entire area when animated */
-      background: radial-gradient(circle at var(--grad1-x) var(--grad1-y), rgba(184, 92, 58, 0.4) 0%, transparent 40%), /* Increased opacity, dynamic position, more bold */
-                  radial-gradient(circle at var(--grad2-x) var(--grad2-y), rgba(30, 44, 79, 0.4) 0%, transparent 40%); /* Increased opacity, dynamic position, more bold */
-      background-size: 80% 80%, 80% 80%; /* Ensure gradients are distinct and cover large area */
-      animation: dynamicBackgroundMove 40s ease-in-out infinite alternate; /* Slower, smoother, more dynamic */
-      z-index: 0; /* Behind content */
-      opacity: 1;
-      --grad1-x: 60%; /* Initial values */
-      --grad1-y: 40%;
-      --grad2-x: 40%;
-      --grad2-y: 60%;
-    }
-
-    @keyframes dynamicBackgroundMove {
-      0% { --grad1-x: 50%; --grad1-y: 30%; --grad2-x: 70%; --grad2-y: 50%; }
-      25% { --grad1-x: 30%; --grad1-y: 60%; --grad2-x: 50%; --grad2-y: 80%; }
-      50% { --grad1-x: 80%; --grad1-y: 40%; --grad2-x: 20%; --grad2-y: 60%; }
-      75% { --grad1-x: 40%; --grad1-y: 20%; --grad2-x: 60%; --grad2-y: 70%; }
-      100% { --grad1-x: 50%; --grad1-y: 30%; --grad2-x: 70%; --grad2-y: 50%; }
+      content: none; /* Explicitly remove the pseudo-element background */
     }
 
 
@@ -970,7 +948,7 @@
         <a href="https://www.google.com/travel/flights/search?tfs=CBwQAhojEgoyMDI1LTEwLTI5ajwIAhIIL2m0dxzvyBwgBEgNFV1IaIxIKMjAyNS01LTA3ajHCAESA0VXUnIMCAISCC9tLzA3cXp2QAFIAXABggELCP___________wGYAQE" target="_blank" rel="noopener noreferrer" class="btn btn-primary shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center space-x-2 w-full sm:w-auto">
           <!-- Plane SVG Icon -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+            <path d="M17.8 19.2L16 11l3.5-3.5C21 6.5 22 5.5 22 4.5 22 2.8 20.2 2 18.5 3.5c-1 .5-2 1.5-3.5 3L11 16 2.8 17.8c-.8.8-1.2 2-.4 2.8.8.8 2-.4 2.8-.4z"></path>
           </svg>
           <span data-translate-key="btnFindFlights">Find Your Flights!</span>
         </a>
@@ -2073,13 +2051,13 @@
           authFailed: 'כשל באימות. ייתכן שתכונות הדורשות כניסה לא יפעלו.',
           excitementOffCharts: 'רמות ההתרגשות בשמיים!',
           markedCalendar: 'לא יכולים לחכות לחגוג איתכם! תודה שסימנתם ביומן!',
-          modalBlessingTitle: 'שתפו את שמחתכם! �',
+          modalBlessingTitle: 'שתפו את שמחתכם! 🎉',
           modalBlessingDescription: 'שפכו את ליבכם! השאירו הודעה מיוחדת למיילך וציפי.',
           modalYourNameLabel: 'שמכם',
           yourBlessingName: 'שמכם עבור הברכה',
           modalYourBlessingLabel: 'ברכתכם',
-          yourBlessingText: 'טקסט הברכה שלכם',
-          yourBlessingPlaceholder: 'כתבו את ברכתכם הכנה כאן...',
+          modalYourBlessingText: 'טקסט הברכה שלכם',
+          modalYourBlessingPlaceholder: 'כתבו את ברכתכם הכנה כאן...',
           btnSendLove: 'שלחו אהבה! ❤️',
           loading: 'טוען...',
           authError: 'שגיאת אימות!',
