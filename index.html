@@ -22,8 +22,7 @@
   <!-- Tailwind CSS CDN - Provides utility classes for rapid styling -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
   
-  <!-- ** ICONS RESTORED ** -->
-  <!-- I corrected the typo from 'xintegrity' to 'integrity'. This fixes the missing icons issue. -->
+  <!-- Font Awesome Icons CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
@@ -487,19 +486,23 @@
     <h2 class="section-title text-primary-navy mb-10 font-heading" data-translate-key="mapTitle">Where to Find the Fun</h2>
     <p class="text-lg text-text-medium mb-4 max-w-2xl mx-auto font-body" data-translate-key="mapLost">Lost? Don’t worry! We\'ve pinned all the essential simcha stops just for you.</p>
     <p class="text-md text-text-medium mb-10 italic max-w-2xl mx-auto font-body" data-translate-key="mapFollowMusic">Need help finding us? Just follow the music and smiles — we\'ll be there!</p>
-    <div class="info-card-grid max-w-xl mx-auto">
-      <div class="info-card fade-in-hidden">
-        <div class="icon-wrapper"><i class="fa-solid fa-map-location-dot icon-large"></i></div>
-        <h3 class="font-heading text-2xl font-bold text-primary-navy mb-4" data-translate-key="locationMapTitle">Location Map</h3>
-        <div class="map-embed rounded-2xl w-full">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3013.9175390779774!2d-74.0150998!3d41.139634200000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2c62c9c7f66bf%3A0xb3e1c6b1b4a8e637!2sAteres%20Chaya%20Surah!5e0!3m2!1sen!2us!4v1700688654477!5m2!1sen!2us" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    
+    <!-- ** MAP CENTERING FIX ** -->
+    <!-- I've wrapped the map card in a simple div to ensure it centers correctly -->
+    <div class="w-full flex justify-center">
+        <div class="info-card fade-in-hidden max-w-xl w-full">
+            <div class="icon-wrapper"><i class="fa-solid fa-map-location-dot icon-large"></i></div>
+            <h3 class="font-heading text-2xl font-bold text-primary-navy mb-4" data-translate-key="locationMapTitle">Location Map</h3>
+            <div class="map-embed rounded-2xl w-full">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3013.9175390779774!2d-74.0150998!3d41.139634200000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2c62c9c7f66bf%3A0xb3e1c6b1b4a8e637!2sAteres%20Chaya%20Surah!5e0!3m2!1sen!2us!4v1700688654477!5m2!1sen!2us" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <p class="text-text-medium mt-6 max-w-2xl mx-auto font-body" data-translate-key="mapGuideText">Your guide to the grand celebration! See you there, ready to party!</p>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=Ateres+Chaya+Surah,+106+S+Madison+Ave,+Spring+Valley,+NY" target="_blank" rel="noopener noreferrer" class="btn btn-secondary mt-4 inline-flex items-center space-x-2 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+            <i class="fa-solid fa-diamond-turn-right"></i><span data-translate-key="btnGetDirections">Get Directions</span>
+            </a>
         </div>
-        <p class="text-text-medium mt-6 max-w-2xl mx-auto font-body" data-translate-key="mapGuideText">Your guide to the grand celebration! See you there, ready to party!</p>
-        <a href="https://www.google.com/maps/dir/?api=1&destination=Ateres+Chaya+Surah,+106+S+Madison+Ave,+Spring+Valley,+NY" target="_blank" rel="noopener noreferrer" class="btn btn-secondary mt-4 inline-flex items-center space-x-2 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-          <i class="fa-solid fa-diamond-turn-right"></i><span data-translate-key="btnGetDirections">Get Directions</span>
-        </a>
-      </div>
     </div>
+
     <div class="max-w-4xl mx-auto text-left info-card-grid grid md:grid-cols-2 gap-8 md:gap-12 mt-12">
       <div class="info-card fade-in-hidden">
         <div class="icon-wrapper"><i class="fa-solid fa-thumbtack icon-large"></i></div>
@@ -751,7 +754,7 @@
           if(weeksEl) weeksEl.innerText = "0"; if(daysEl) daysEl.innerText = "0"; if(hoursEl) hoursEl.innerText = "0"; if(minsEl) minsEl.innerText = "0"; if(secsEl) secsEl.innerText = "0";
           if(percentDoneEl) percentDoneEl.innerText = "100%";
           const heroTaglineElement = document.querySelector('[data-translate-key="heroTagline"]');
-          if (heroTaglineElement) heroTaglineElement.textContent = translations[currentLang].weddingPassed || "They tied the knot! 🎉";
+          if (heroTaglineElement) heroTaglineElement.textContent = translations[currentLang].weddingPassed || "They tied the knot! �";
           if(saveDateBtn) saveDateBtn.style.display = "none";
           setCountdownIntensity(0);
           return;
@@ -948,7 +951,6 @@
 
         backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
         
-        // ** SHARE BUTTON LOGIC (FIXED) **
         if (shareWebsiteBtn) {
             shareWebsiteBtn.addEventListener('click', () => {
                 const dummy = document.createElement('textarea');
